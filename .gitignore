@@ -30,6 +30,11 @@ prisma/*.db
 prisma/*.db-journal
 prisma/migrations/dev.db*
 
+# Prisma's generated client — rebuilt by `prisma generate` during the image
+# build, so it is an artefact rather than source. Committing it would let the
+# checked-in client drift away from prisma/schema.prisma.
+src/generated/
+
 # Media scratch (uploads live in a Docker volume, never in git)
 deploy/media/
 public/generated/
