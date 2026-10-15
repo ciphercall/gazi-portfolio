@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing
+coverage/
+.vitest/
+
+# Environment — NEVER commit real values
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Deployment runtime state
+deploy/.runtime/
+deploy/.env
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+prisma/migrations/dev.db*
+
+# Media scratch (uploads live in a Docker volume, never in git)
+deploy/media/
+public/generated/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Build / release archives
+*.zip
+*.tar.gz

@@ -1,0 +1,42 @@
+# Keep the build context small — node_modules and .next are rebuilt inside.
+node_modules
+.next
+out
+build
+dist
+coverage
+
+# Generated
+src/generated
+
+# Env — never bake real values into an image
+.env
+.env.*
+!.env.example
+deploy/.env
+deploy/.runtime
+
+# Media and scratch
+deploy/media
+public/generated
+*tmp*
+.tmp-probe*
+.tmp-probe2
+
+# VCS / editor / OS
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Docs are not needed to run the app
+docs
+*.md
+!README.md
+
+# Logs and archives
+*.log
+*.zip
+*.tar.gz
