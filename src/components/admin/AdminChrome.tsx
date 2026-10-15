@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, useTransition, type ReactNode } from "react";
+import { useState, useTransition, type ReactNode } from "react";
 import { Toaster, toast } from "sonner";
 
 import { ActionButton, ActionLink } from "@/components/admin/action-button";
@@ -72,15 +72,16 @@ export function AdminChrome({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerRoute, setDrawerRoute] = useState<string | null>(null);
   const [signingOut, startSignOut] = useTransition();
 
   const isLogin = pathname === "/admin/login";
 
-  // A drawer that stays open after navigating is a trap on a phone.
-  useEffect(() => {
-    setDrawerOpen(false);
-  }, [pathname]);
+  // The drawer is keyed to the route it was opened on, so navigating closes it
+  // without an effect. An effect here would call setState on every pathname
+  // change and cause a cascading render for a purely derived value.
+  const drawerOpen = drawerRoute === pathname;
+  const setDrawerOpen = (next: boolean) => setDrawerRoute(next ? pathname : null);
 
   const signOut = () => {
     startSignOut(async () => {

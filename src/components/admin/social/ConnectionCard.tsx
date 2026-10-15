@@ -22,7 +22,6 @@ import {
   ReadOnlyField,
   ReadOnlyValue,
   buttonDangerClass,
-  buttonPrimaryClass,
   buttonSecondaryClass,
 } from "@/components/admin/social/ui";
 

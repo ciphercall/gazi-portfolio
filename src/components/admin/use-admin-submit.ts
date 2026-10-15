@@ -20,7 +20,7 @@ export interface AdminSubmitOptions<TData> {
   onFailure?: (errors: Record<string, string[]> | null, message: string) => void;
 }
 
-export interface AdminSubmit<TInput, TData> {
+export interface AdminSubmit<TInput> {
   submit: (input: TInput) => void;
   pending: boolean;
   errors: Record<string, string[]> | null;
@@ -38,7 +38,7 @@ function messageFromError(error: unknown): string {
 export function useAdminSubmit<TInput, TData>(
   action: (input: TInput) => Promise<ActionResult<TData>>,
   options: AdminSubmitOptions<TData> = {},
-): AdminSubmit<TInput, TData> {
+): AdminSubmit<TInput> {
   const [pending, startTransition] = useTransition();
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const [formError, setFormError] = useState<string | null>(null);

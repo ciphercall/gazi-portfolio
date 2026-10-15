@@ -38,16 +38,20 @@ function initialsOf(name: string): string {
 export function SiteNav({ fullName, tagline }: SiteNavProps) {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  // Keyed to the route the menu was opened on, so navigating closes it without
+  // an effect. An effect here would call setState on every pathname change and
+  // cause a cascading render for a value that is purely derived from the route.
+  const [openOnRoute, setOpenOnRoute] = useState<string | null>(null);
+  const open = openOnRoute === pathname;
+  const setOpen = (next: boolean) => setOpenOnRoute(next ? pathname : null);
 
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      // Calls the raw setter directly: `setOpen` is re-created each render, so
+      // referencing it here would make this effect depend on every render while
+      // adding nothing, since closing is unconditional.
+      if (event.key === "Escape") setOpenOnRoute(null);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -113,7 +117,7 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
             </ActionLink>
             <button
               type="button"
-              onClick={() => setOpen((value) => !value)}
+              onClick={() => setOpen(!open)}
               aria-expanded={open}
               aria-controls={open ? "site-menu" : undefined}
               className="pill lg:hidden"

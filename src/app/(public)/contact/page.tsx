@@ -83,7 +83,7 @@ export default async function ContactPage() {
           eyebrow="Contact"
           title={
             <>
-              Let's talk about what you need{" "}
+              Let&apos;s talk about what you need{" "}
               <span className="text-aurora">built next</span>
             </>
           }

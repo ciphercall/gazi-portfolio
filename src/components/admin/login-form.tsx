@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, KeyRound, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
@@ -115,12 +116,12 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
 /** Shown under the form: the way back to the public site. */
 export function LoginFooterLink() {
   return (
-    <a
+    <Link
       href="/"
       className="inline-flex items-center gap-1.5 text-xs text-muted transition hover:text-teal"
     >
       <ArrowRight aria-hidden className="size-3.5 rotate-180" />
       Back to the public site
-    </a>
+    </Link>
   );
 }

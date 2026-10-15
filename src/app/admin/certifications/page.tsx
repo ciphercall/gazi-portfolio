@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Award } from "lucide-react";
 
 import { CertificationsManager } from "@/components/admin/forms/certifications-manager";
 import { AdminPageFrame, AdminPageHeader } from "@/components/admin/page-frame";

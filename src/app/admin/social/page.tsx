@@ -29,6 +29,25 @@ import { listDispatches } from "@/lib/social/publish";
 import { providerToSlug, PROVIDERS } from "@/lib/social/types";
 
 /**
+ * Whether each stored token has passed its expiry, computed once per request.
+ *
+ * Kept out of the component body so the render contains no impure call: reading
+ * the clock during render is exactly what makes a component non-deterministic,
+ * and one shared timestamp is also more correct than calling it per card.
+ */
+async function expiryByProvider(
+  accounts: { provider: string; expiresAt: Date | null }[],
+): Promise<Map<string, boolean>> {
+  const now = Date.now();
+  return new Map(
+    accounts.map((account) => [
+      account.provider,
+      Boolean(account.expiresAt && account.expiresAt.getTime() < now),
+    ]),
+  );
+}
+
+/**
  * Social publishing panel.
  *
  * The whole page is one idea: publishing to LinkedIn and Facebook is *posts*,
@@ -149,6 +168,7 @@ export default async function SocialPublishingPage({
   ]);
 
   const accountBySlug = new Map(accounts.map((account) => [account.provider, account]));
+  const expiredByProvider = await expiryByProvider(accounts);
   const tokenKeyReady = isSocialPublishingConfigured();
 
   const experienceSubjects: ExperienceShareSubject[] = experienceRows.map((row) => ({
@@ -317,7 +337,7 @@ export default async function SocialPublishingPage({
         <div className="grid gap-4 lg:grid-cols-2">
           {PROVIDERS.map((provider) => {
             const account = accountBySlug.get(provider.provider);
-            const expired = Boolean(account?.expiresAt && account.expiresAt.getTime() < Date.now());
+            const expired = expiredByProvider.get(provider.provider) ?? false;
             const slug = providerToSlug(provider.provider);
 
             return (

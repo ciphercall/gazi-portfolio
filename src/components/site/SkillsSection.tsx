@@ -6,7 +6,6 @@ import {
   LayoutGrid,
   Server,
   Smartphone,
-  Sparkles,
   Wrench,
   type LucideIcon,
 } from "lucide-react";
