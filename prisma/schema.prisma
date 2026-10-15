@@ -1,0 +1,288 @@
+// Gazi Portfolio — data model.
+//
+// Prisma 7 conventions: the generator is `prisma-client` with an explicit output,
+// and the datasource carries no `url` (that lives in prisma7.config.ts).
+//
+// PII note: the source CV contained an NID number, home addresses, parents' names
+// and five referees' contact details. None of that is modelled here — this backs a
+// public, crawlable website. See src/data/cv-seed.ts for the full exclusion list.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum SocialProvider {
+  LINKEDIN
+  FACEBOOK
+}
+
+enum SocialStatus {
+  DRAFT
+  QUEUED
+  POSTED
+  FAILED
+  NEEDS_RECONNECT
+}
+
+enum SocialSubject {
+  EXPERIENCE
+  PROJECT
+}
+
+enum AssetKind {
+  CV_DESIGNED
+  CV_ATS
+}
+
+/* ------------------------------------------------------------------ auth --- */
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(ADMIN)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
+}
+
+/* --------------------------------------------------------------- content --- */
+
+/// Singleton row. Contact details live here rather than in env so he can change
+/// his WhatsApp number from the admin panel without a redeploy.
+model Profile {
+  id           String  @id @default("profile")
+  fullName     String
+  headline     String
+  subheadline  String  @default("")
+  summary      String  @db.Text
+  location     String  @default("")
+  email        String  @default("")
+  phone        String  @default("")
+  whatsapp     String  @default("")
+  linkedinUrl  String  @default("")
+  githubUrl    String  @default("")
+  facebookUrl  String  @default("")
+  messengerUsername String @default("")
+  twitterUrl   String  @default("")
+  websiteUrl   String  @default("")
+  avatarPath   String?
+  seoTitle       String  @default("")
+  seoDescription String  @db.Text @default("")
+
+  updatedAt DateTime @updatedAt
+
+  @@map("profile")
+}
+
+model Experience {
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  title          String
+  company        String
+  companyUrl     String?
+  employmentType EmploymentType @default(FULL_TIME)
+  location       String?
+  startDate      DateTime
+  endDate        DateTime?
+  isCurrent      Boolean        @default(false)
+  summary        String         @db.Text @default("")
+  bullets        String[]
+  tags           String[]
+  /// Post text used for LinkedIn/Facebook publishing and the prefilled share links.
+  shareText      String         @db.Text @default("")
+  order          Int            @default(0)
+  isPublished    Boolean        @default(true)
+
+  dispatches SocialDispatch[] @relation("ExperienceDispatches")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isPublished, order])
+  @@map("experiences")
+}
+
+model Education {
+  id        String  @id @default(cuid())
+  school    String
+  degree    String
+  field     String?
+  startYear Int
+  endYear   Int
+  details   String? @db.Text
+  order     Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@map("educations")
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  name     String @unique
+  category String @default("General")
+  level    Int?
+  order    Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, order])
+  @@map("skills")
+}
+
+model Certification {
+  id       String    @id @default(cuid())
+  name     String
+  issuer   String    @default("")
+  issuedOn DateTime?
+  url      String?
+  order    Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@map("certifications")
+}
+
+model Project {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  summary     String  @db.Text
+  body        String  @db.Text @default("")
+  role        String?
+  client      String?
+  year        Int?
+  liveUrl     String?
+  repoUrl     String?
+  techStack   String[]
+  coverPath   String?
+  featured    Boolean @default(false)
+  order       Int     @default(0)
+  isPublished Boolean @default(true)
+  shareText   String  @db.Text @default("")
+
+  images     ProjectImage[]
+  dispatches SocialDispatch[] @relation("ProjectDispatches")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isPublished, featured, order])
+  @@map("projects")
+}
+
+model ProjectImage {
+  id        String @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  path     String
+  alt      String  @default("")
+  caption  String?
+  width    Int     @default(0)
+  height   Int     @default(0)
+  order    Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId, order])
+  @@map("project_images")
+}
+
+/* ---------------------------------------------------------------- social --- */
+
+model SocialAccount {
+  id       String         @id @default(cuid())
+  provider SocialProvider @unique
+
+  /// AES-256-GCM ciphertext. Never plaintext — encryptSecret() refuses without a key.
+  accessTokenEnc  String @db.Text
+  refreshTokenEnc String? @db.Text
+  expiresAt       DateTime?
+
+  /// LinkedIn member URN, or the Facebook Page id.
+  accountRef  String
+  displayName String @default("")
+  scopes      String @default("")
+
+  connectedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("social_accounts")
+}
+
+model SocialDispatch {
+  id String @id @default(cuid())
+
+  subjectType SocialSubject
+  subjectId   String
+
+  /// Convenience relations so a dispatch can be found from either content type.
+  experienceId String?
+  experience   Experience? @relation("ExperienceDispatches", fields: [experienceId], references: [id], onDelete: Cascade)
+  projectId    String?
+  project      Project?    @relation("ProjectDispatches", fields: [projectId], references: [id], onDelete: Cascade)
+
+  provider SocialProvider
+  status   SocialStatus   @default(DRAFT)
+  message  String         @db.Text
+
+  externalId String?
+  permalink  String?
+  error      String?  @db.Text
+  attempts   Int      @default(0)
+  postedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([subjectType, subjectId])
+  @@index([status])
+  @@map("social_dispatches")
+}
+
+/* ------------------------------------------------------- generated assets --- */
+
+/// Cached CV PDFs. `sourceHash` covers every CV-relevant field, so an admin edit
+/// changes it and the asset is regenerated — that is what makes "the visitor
+/// always downloads an up-to-date CV" true rather than hoped for.
+model GeneratedAsset {
+  id   String    @id @default(cuid())
+  kind AssetKind @unique
+
+  path       String
+  bytes      Int      @default(0)
+  sha256     String   @default("")
+  sourceHash String   @default("")
+  error      String?  @db.Text
+
+  generatedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("generated_assets")
+}
