@@ -186,7 +186,7 @@ export default async function ProjectDetailPage({
             </div>
           </article>
 
-          <aside className="lg:sticky lg:top-28 lg:self-start">
+          <aside className="lg:sticky lg:top-24 lg:self-start">
             <div className="glass hairline p-6">
               <h2 className="font-display text-base font-semibold text-ink">Project details</h2>
 

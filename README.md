@@ -105,6 +105,23 @@ docs/                the three guides below
 - [`docs/CV_PDF_PIPELINE.md`](docs/CV_PDF_PIPELINE.md) — how both PDFs are produced and kept current
 - [`docs/SOCIAL_POSTING.md`](docs/SOCIAL_POSTING.md) — what the APIs can and cannot do, and how to connect them
 
+## Recent hardening (latest pass)
+
+- Web layout containers now share one max-width/padding contract (`max-w-6xl`, `px-4 sm:px-6`)
+  across the sticky header, footer and public routes (home, cv, projects, experience). Hero and
+  education grids collapse instead of leaving empty tracks when the related data set is partial.
+- `api/v1/meta` content hash reads are memoised for 30 seconds to reduce polling load; the cache is
+  invalidated when content is touched in the admin panel. Project list payloads now omit the long
+  `body` column.
+- A migration adds indexes on `SocialDispatch.experienceId` / `projectId` (and provider composites)
+  for publishing lookups. Run `portfolio-deploy.ps1 -Action migrate` after updating.
+- Admin sessions re-check the user row on every authenticated request, so deleting an admin user
+  drops access before the 7-day cookie expiry.
+- Helpers added: social token key rotation (`reencryptSecret`) and CV asset integrity check
+  (`verifyGeneratedAssets`), usable from a later scheduled job.
+- Mobile companion: settings validation, settings entry from Home, offline refresh progress bar,
+  markdown `##` heading support, and cache-dimension caps.
+
 ## Known limits
 
 - **No API can edit a LinkedIn profile's "Experience" section**, and Meta does not allow posting to

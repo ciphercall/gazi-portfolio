@@ -32,7 +32,7 @@ export function IconBadge({
   return (
     <span
       aria-hidden="true"
-      className={`hairline relative grid shrink-0 place-items-center border border-line bg-panel ${SIZES[size]} ${toneClassName} ${className}`}
+      className={`relative grid shrink-0 place-items-center border border-line bg-panel ${SIZES[size]} ${toneClassName} ${className}`}
       style={{ backgroundImage: AURORA_TINT }}
     >
       {children}
