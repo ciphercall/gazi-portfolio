@@ -1,6 +1,14 @@
 import { prisma } from "@/lib/db";
 import { contentHash } from "@/lib/crypto";
 
+let _contentHashCache: string | null = null;
+let _contentHashCachedAt: number | null = null;
+
+export function invalidateContentHash(): void {
+  _contentHashCache = null;
+  _contentHashCachedAt = null;
+}
+
 /**
  * The only module that reads portfolio content from Postgres.
  *
@@ -108,7 +116,7 @@ function toProjectDto(row: {
   slug: string;
   title: string;
   summary: string;
-  body: string;
+  body?: string;
   role: string | null;
   client: string | null;
   year: number | null;
@@ -123,7 +131,7 @@ function toProjectDto(row: {
     slug: row.slug,
     title: row.title,
     summary: row.summary,
-    body: row.body,
+    body: row.body ?? "",
     role: row.role,
     client: row.client,
     year: row.year,
@@ -149,6 +157,24 @@ const projectInclude = {
   },
 } as const;
 
+const PROJECT_SUMMARY_SELECT = {
+  slug: true,
+  title: true,
+  summary: true,
+  role: true,
+  client: true,
+  year: true,
+  liveUrl: true,
+  repoUrl: true,
+  techStack: true,
+  coverPath: true,
+  featured: true,
+  images: {
+    orderBy: { order: "asc" },
+    select: { path: true, alt: true, caption: true, width: true, height: true },
+  },
+} as const;
+
 export async function getProjects(options?: { featuredOnly?: boolean; tech?: string }) {
   const rows = await prisma.project.findMany({
     where: {
@@ -165,8 +191,17 @@ export async function getProjects(options?: { featuredOnly?: boolean; tech?: str
 
 /** List payloads omit the long body so /projects stays light. */
 export async function getProjectSummaries(options?: { featuredOnly?: boolean; tech?: string }) {
-  const projects = await getProjects(options);
-  return projects.map(({ body: _body, ...rest }) => rest);
+  const rows = await prisma.project.findMany({
+    where: {
+      isPublished: true,
+      ...(options?.featuredOnly ? { featured: true } : {}),
+      ...(options?.tech ? { techStack: { has: options.tech } } : {}),
+    },
+    orderBy: [{ featured: "desc" }, { order: "asc" }, { createdAt: "desc" }],
+    select: PROJECT_SUMMARY_SELECT,
+  });
+
+  return rows.map((row) => toProjectDto({ ...row, body: "" }));
 }
 
 export async function getProjectBySlug(slug: string): Promise<ProjectDto | null> {
@@ -340,6 +375,14 @@ export async function saveGeneratedAsset(input: {
  * content, so the Flutter app can skip a full refetch when nothing changed.
  */
 export async function getContentHash(): Promise<string> {
+  if (
+    _contentHashCache !== null &&
+    _contentHashCachedAt !== null &&
+    Date.now() - _contentHashCachedAt < 30_000
+  ) {
+    return _contentHashCache;
+  }
+
   const [profile, experiences, projects, skills, educations, certifications] =
     await Promise.all([
       getProfile(),
@@ -350,5 +393,8 @@ export async function getContentHash(): Promise<string> {
       getCertifications(),
     ]);
 
-  return contentHash({ profile, experiences, projects, skills, educations, certifications });
+  const hash = contentHash({ profile, experiences, projects, skills, educations, certifications });
+  _contentHashCache = hash;
+  _contentHashCachedAt = Date.now();
+  return hash;
 }

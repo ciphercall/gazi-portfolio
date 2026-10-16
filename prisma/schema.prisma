@@ -261,6 +261,10 @@ model SocialDispatch {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([experienceId])
+  @@index([projectId])
+  @@index([experienceId, provider])
+  @@index([projectId, provider])
   @@index([subjectType, subjectId])
   @@index([status])
   @@map("social_dispatches")
