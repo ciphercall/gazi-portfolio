@@ -105,6 +105,43 @@ export function signRenderToken(ttlSeconds = 300): string {
   return `${exp}.${mac}`;
 }
 
+/**
+ * Re-encrypt a social secret from one key to another — the rotation helper.
+ *
+ * `decryptSecret`/`encryptSecret` always use the current `SOCIAL_TOKEN_KEY`, so
+ * rotating the configured key cannot migrate existing rows without explicit
+ * handling of both sides.
+ */
+export function reencryptSecret(ciphertext: string, oldSecret: string, newSecret: string): string {
+  if (!oldSecret || !newSecret) {
+    throw new Error("Both old and new social token secrets are required.");
+  }
+  const plain = decryptSecretWith(ciphertext, oldSecret);
+  return encryptSecretWith(plain, newSecret);
+}
+
+function encryptSecretWith(plaintext: string, secret: string): string {
+  const iv = randomBytes(IV_BYTES);
+  const cipher = createCipheriv(ALGO, keyFrom(secret), iv);
+  const enc = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `v1.${iv.toString("base64url")}.${tag.toString("base64url")}.${enc.toString("base64url")}`;
+}
+
+function decryptSecretWith(ciphertext: string, secret: string): string {
+  const parts = ciphertext.split(".");
+  if (parts.length !== 4 || parts[0] !== "v1") {
+    throw new Error("Malformed encrypted secret payload.");
+  }
+  const [, ivPart, tagPart, dataPart] = parts as [string, string, string, string];
+  const decipher = createDecipheriv(ALGO, keyFrom(secret), Buffer.from(ivPart, "base64url"));
+  decipher.setAuthTag(Buffer.from(tagPart, "base64url"));
+  return Buffer.concat([
+    decipher.update(Buffer.from(dataPart, "base64url")),
+    decipher.final(),
+  ]).toString("utf8");
+}
+
 export function verifyRenderToken(token: string | null): boolean {
   if (!token) return false;
   const [expPart, macPart] = token.split(".");

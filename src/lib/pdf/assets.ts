@@ -80,6 +80,32 @@ export const CV_SLUGS: Record<CvKind, string> = {
 export const CV_KINDS = Object.keys(CV_FILENAMES) as CvKind[];
 
 /** "designed" → CV_DESIGNED. Returns null for anything else, so routes can 400. */
+/**
+ * Integrity check across cached CV assets.
+ *
+ * Returns the per-variant status and re-renders any asset whose recorded
+ * content hash no longer matches the current source. Intended as the
+ * entrypoint a (future) scheduled job or admin trigger can call; kept here so
+ * it stays next to the generation code. Never throws for a single variant.
+ */
+export async function verifyGeneratedAssets(): Promise<{ kind: CvKind; valid: boolean }[]> {
+  const currentHash = await getCvSourceHash();
+  const results: { kind: CvKind; valid: boolean }[] = [];
+  for (const kind of CV_KINDS) {
+    const asset = await getGeneratedAsset(kind);
+    const valid = Boolean(asset && asset.sourceHash === currentHash);
+    if (!valid) {
+      try {
+        await ensureCvAsset(kind, { force: true });
+      } catch (error) {
+        console.error(`[cv] verification regeneration failed for ${kind}:`, error);
+      }
+    }
+    results.push({ kind, valid });
+  }
+  return results;
+}
+
 export function cvKindFromSlug(slug: string): CvKind | null {
   const entry = (Object.entries(CV_SLUGS) as [CvKind, string][]).find(
     ([, value]) => value === slug,

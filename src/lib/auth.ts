@@ -59,10 +59,29 @@ export async function getSession(): Promise<SessionPayload | null> {
 export async function requireAdmin(): Promise<SessionPayload> {
   const session = await getSession();
   if (!session) redirect("/admin/login");
+
+  // Treat a deleted/unknown admin account as signed out rather than trusting
+  // a still-valid cookie until its 7-day expiry.
+  const user = await prisma.user.findUnique({
+    where: { id: session.sub },
+    select: { id: true },
+  });
+  if (!user) {
+    await endSession();
+    redirect("/admin/login");
+  }
   return session;
 }
 
 /** API-route variant: returns null instead of redirecting. */
 export async function requireAdminApi(): Promise<SessionPayload | null> {
-  return getSession();
+  const session = await getSession();
+  if (!session) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.sub },
+    select: { id: true },
+  });
+  if (!user) return null;
+  return session;
 }

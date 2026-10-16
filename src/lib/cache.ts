@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { after } from "next/server";
+import { invalidateContentHash } from "@/lib/queries";
 
 /**
  * The single choke point every admin mutation calls.
@@ -44,6 +45,7 @@ export function enqueueCvRegen(): void {
 
 /** Convenience: the pair of side effects a content mutation needs. */
 export function touchContent(): void {
+  invalidateContentHash();
   revalidatePublic();
   enqueueCvRegen();
 }
