@@ -39,8 +39,9 @@ function issuedLabel(issuedOn: Date | string | null): string {
 }
 
 export function EducationSection({ educations, certifications }: EducationSectionProps) {
+  const both = educations.length > 0 && certifications.length > 0;
   return (
-    <div className="mt-12 grid gap-6 lg:grid-cols-2">
+    <div className={`mt-12 grid gap-6 ${both ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
       {educations.length > 0 ? (
         <Reveal>
           <section className="glass hairline h-full p-6" aria-labelledby="education-heading">

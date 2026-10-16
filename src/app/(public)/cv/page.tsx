@@ -169,7 +169,7 @@ export default async function CvDownloadPage() {
   const profile = source?.profile;
 
   return (
-    <main className="relative mx-auto max-w-5xl px-5 pb-24 pt-28 sm:px-8">
+    <main className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-28 sm:px-6">
       <div className="aurora-mesh" aria-hidden />
 
       <div className="relative">

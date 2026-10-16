@@ -41,6 +41,7 @@ export function Hero({
   const parts = fullName.split(/\s+/).filter(Boolean);
   const firstWord = parts[0] ?? fullName;
   const remaining = parts.slice(1).join(" ");
+  const hasRoles = currentRoles.length > 0;
 
   return (
     <section className="relative isolate flex min-h-[88svh] items-center overflow-hidden px-4 pb-16 pt-10 sm:px-6 sm:pb-24">
@@ -52,7 +53,7 @@ export function Hero({
         style={{ backgroundImage: "linear-gradient(to bottom, transparent, var(--c-canvas))" }}
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl gap-14 lg:grid-cols-[1.45fr_0.75fr] lg:items-center">
+      <div className={`relative z-10 mx-auto grid w-full max-w-6xl gap-14 ${hasRoles ? "lg:grid-cols-[1.45fr_0.75fr] lg:items-center" : "lg:grid-cols-1"}`}>
         <div>
           <div className="animate-rise" style={rise(40)}>
             <AvailabilityChip />

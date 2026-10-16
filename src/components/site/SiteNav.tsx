@@ -58,7 +58,7 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
   }, [open]);
 
   return (
-    <header className="no-print sticky top-0 z-40 px-3 pt-3 sm:px-5">
+    <header className="no-print sticky top-0 z-40 px-4 pt-3 sm:px-6">
       <div className="mx-auto w-full max-w-6xl">
         <div className="glass hairline flex items-center gap-2 px-2.5 py-2 sm:gap-3 sm:px-3.5">
           <Link
@@ -105,7 +105,7 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
             })}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 lg:ml-2">
+          <div className="flex items-center gap-2 lg:ml-2">
             <ThemeToggle className="hidden sm:inline-flex" />
             <ActionLink
               href="/contact"
