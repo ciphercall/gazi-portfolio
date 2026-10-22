@@ -111,3 +111,47 @@ The stack is built for local use. To reach it from outside, point an existing Cl
 `CLOUDFLARE_TUNNEL.md`), then set `SITE_URL` in `deploy/.env` to the public origin and restart so
 metadata, the sitemap and the share links use it. The tunnel's Published Application and DNS record
 are dashboard steps on your side; nothing in this repo can complete them for you.
+
+---
+
+## VPS Deployment (Contabo — 169.58.90.13)
+
+The portfolio is also deployed on a Contabo Cloud VPS 6 (EU, Germany).
+
+### Access
+- **URL:** http://169.58.90.13:8023
+- **Admin:** http://169.58.90.13:8023/admin
+- **Admin login:** `ciphercall@gmail.com` / `uDJ8rLDgjt15hwqKEsbU7b6t`
+
+### Location on VPS
+- Code: `/opt/github/gazi-portfolio`
+- Deploy script: `/opt/deploy-gazi-portfolio.sh`
+- .env: `/opt/github/gazi-portfolio/deploy/.env`
+
+### Deploy / Update
+```bash
+# Automatic: push to main on GitHub → GitHub Actions deploys
+# Manual on VPS:
+/opt/deploy-gazi-portfolio.sh
+
+# Manual locally:
+.\deploy\deploy-local.ps1
+```
+
+### CI/CD
+- GitHub repo: `ciphercall/gazi-portfolio` (public)
+- Workflow: `.github/workflows/deploy.yml`
+- Triggers on push to `main`
+- SSH key auth with deploy key at `~/.ssh/github_actions_deploy`
+- GitHub Secrets: `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`
+
+### Health Check
+```bash
+curl http://127.0.0.1:8023/healthz
+# Expected: {"status":"ok","service":"gazi-portfolio",...}
+```
+
+### Notes
+- Image is ~3.2 GB (includes Chromium for PDF rendering)
+- `SITE_URL` set to `http://169.58.90.13:8023` (update to domain when available)
+- Ports: 8023 (web), 5436 (postgres published for inspection)
