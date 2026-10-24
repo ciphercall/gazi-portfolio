@@ -79,6 +79,7 @@ export function ImageFrame({
           sizes={sizes}
           quality={quality}
           priority={priority}
+          unoptimized={src.startsWith("/media/")}
           className={`object-cover ${imgClassName}`}
         />
       </div>

@@ -36,18 +36,20 @@ export function AboutSection({
 
   return (
     <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16">
-      <div className="relative">
-        <ImageFrame
-          src={avatarPath}
-          alt={`Portrait of ${fullName}, ${headline}`}
-          seed={fullName}
-          label={fullName}
-          kind="Portrait"
-          className="aspect-[4/5] w-full"
-          sizes="(min-width: 1024px) 360px, 80vw"
-        />
+      <div className="flex flex-col gap-4">
+        <div className="relative">
+          <ImageFrame
+            src={avatarPath}
+            alt={`Portrait of ${fullName}, ${headline}`}
+            seed={fullName}
+            label={fullName}
+            kind="Portrait"
+            className="aspect-[4/5] w-full"
+            sizes="(min-width: 1024px) 360px, 80vw"
+          />
+        </div>
 
-        <div className="glass-strong hairline absolute -bottom-6 left-4 right-4 flex max-w-full items-center gap-3 p-3 sm:left-6 sm:right-auto sm:w-64">
+        <div className="glass-strong hairline flex max-w-full items-center gap-3 p-3 sm:w-64">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-panel text-teal">
             <MapPin className="h-4 w-4" aria-hidden="true" />
           </span>

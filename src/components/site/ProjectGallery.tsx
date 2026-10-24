@@ -238,6 +238,7 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
                   alt={altFor(active, projectTitle, activeIndex)}
                   fill
                   sizes="(min-width: 1024px) 1024px, 100vw"
+                  unoptimized={active.path.startsWith("/media/")}
                   className="pointer-events-none object-contain p-3 sm:p-5"
                 />
               </motion.div>
