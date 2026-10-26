@@ -11,8 +11,37 @@ $ErrorActionPreference = "Stop"
 $ProjectDir = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $DeployDir = Join-Path $ProjectDir "deploy"
 
+# The on-demand gatekeeper owns the public port when it is running (a node
+# process listens on 8023). In that mode the real stack must bind its internal
+# port on loopback only; otherwise both try to publish 8023 and `web` fails to
+# start. Always-on mode (no gatekeeper) keeps publishing 0.0.0.0:8023.
+$GatekeeperEnv = Join-Path (Split-Path -Parent $ProjectDir) "on-demand-gatekeeper\.env.gazi"
+$OnDemand = $false
+$InternalPort = 8023
+$WebBind = "0.0.0.0"
+if (Test-Path $GatekeeperEnv) {
+    $listener = Get-NetTCPConnection -LocalPort 8023 -State Listen -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+    if ($listener) {
+        $owner = Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue
+        if ($owner -and $owner.ProcessName -eq "node") {
+            $OnDemand = $true
+            foreach ($line in Get-Content $GatekeeperEnv) {
+                if ($line -match "^\s*INTERNAL_PORT\s*=\s*(\d+)") { $InternalPort = [int]$Matches[1] }
+                if ($line -match "^\s*WEB_BIND\s*=\s*(\S+)") { $WebBind = $Matches[1] }
+            }
+            if ($WebBind -eq "0.0.0.0") { $WebBind = "127.0.0.1" }
+        }
+    }
+}
+
 Write-Host "=== Deploying Gazi Portfolio (local) ===" -ForegroundColor Cyan
 Write-Host "Timestamp: $(Get-Date)" -ForegroundColor Gray
+if ($OnDemand) {
+    Write-Host "Mode: on-demand (gatekeeper owns :8023; stack binds ${WebBind}:${InternalPort})" -ForegroundColor Gray
+} else {
+    Write-Host "Mode: always-on (stack binds ${WebBind}:${InternalPort})" -ForegroundColor Gray
+}
 
 # 1. Pull latest code
 Write-Host "`n[1/4] Pulling latest code from main..." -ForegroundColor Yellow
@@ -34,6 +63,8 @@ if (-not $SkipBuild) {
 # 3. Start containers
 Write-Host "`n[3/4] Starting containers..." -ForegroundColor Yellow
 Set-Location $DeployDir
+$env:WEB_BIND = $WebBind
+$env:WEB_PORT = "$InternalPort"
 docker compose --env-file .env up -d
 if ($LASTEXITCODE -ne 0) { throw "Docker up failed" }
 
@@ -50,8 +81,9 @@ if (-not $SkipMigrate) {
 # Health check
 Write-Host "`n=== Health check ===" -ForegroundColor Cyan
 Start-Sleep -Seconds 5
+$HealthUrl = if ($OnDemand) { "http://127.0.0.1:$InternalPort/api/health" } else { "http://localhost:8023/healthz" }
 try {
-    $response = Invoke-WebRequest -Uri "http://localhost:8023/healthz" -UseBasicParsing -TimeoutSec 10
+    $response = Invoke-WebRequest -Uri $HealthUrl -UseBasicParsing -TimeoutSec 10
     Write-Host "HTTP $($response.StatusCode) - $(($response.Content | ConvertFrom-Json).status)" -ForegroundColor Green
 } catch {
     Write-Host "Health check failed: $_" -ForegroundColor Red
