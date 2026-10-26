@@ -3,7 +3,9 @@
 #
 #    postgres :16-alpine   private, published on 5436 for inspection
 #    app      :Next.js     the site, the admin panel, the PDF renderer, the API
-#    web      :nginx       single origin on 8023, serves /media off the volume
+#    web      :nginx       single origin on ${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8023},
+#                          serves /media off the volume. In on-demand mode the
+#                          gatekeeper sets WEB_BIND=127.0.0.1 and WEB_PORT=INTERNAL_PORT.
 #
 #  Driven by  portfolio-deploy.ps1  at the workspace root.
 # ============================================================================
@@ -80,7 +82,7 @@ services:
       app:
         condition: service_started
     ports:
-      - "${WEB_PORT:-8023}:80"
+      - "${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8023}:80"
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
