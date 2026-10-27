@@ -332,14 +332,32 @@ export const PROJECTS: SeedProject[] = [
       "The systems running a live poultry and hatchery business: HRM, supply chain, inventory and attendance in one platform.",
     body:
       "A production ERP covering human resources, supply chain and attendance for a poultry and hatchery group.\n\n" +
+      "### Problem / Context\n\n" +
+      "A poultry and hatchery group was running HR, supply chain, inventory and attendance on " +
+      "disconnected tools — spreadsheets, a separate HR sheet and a manual attendance register — " +
+      "so headcount, stock and presence never agreed, and reporting was rebuilt by hand every month.\n\n" +
       "### What it does\n\n" +
-      "- HRM workflows — employee records, zones, sectors, markets and dealers\n" +
-      "- Supply chain — vendors, purchase orders, stock ledgers and sales sync\n" +
-      "- Attendance — device-sourced punches reconciled against manual entries and leave\n" +
-      "- Mobile — a Flutter attendance app talking to JWT-secured REST APIs\n\n" +
+      "- HRM workflows — employee records, zones, sectors, markets and dealers, with a custom RBAC " +
+      "catalogue scoping who can see and edit what\n" +
+      "- Supply chain — vendors, purchase orders, stock ledgers, material issues/returns and " +
+      "sales sync between the SCM and accounts sides\n" +
+      "- Inventory — partitioned stock ledger with serial registry, custody, quarantine, repair " +
+      "and scrap flows\n" +
+      "- Attendance — device-sourced biometric punches reconciled against manual entries and leave, " +
+      "with geo trails and FCM push\n" +
+      "- Production — BOM/work orders, byproducts and wastage with cost estimation and overhead\n" +
+      "- Mobile — a Flutter attendance app talking to JWT-secured REST APIs with OTA updates\n" +
+      "- Reporting — dashboards plus financial, production, vendor and inventory reports\n\n" +
       "### Engineering notes\n\n" +
-      "Docker-based deployments with a PostgreSQL primary and MySQL for the HRM side. " +
-      "The API layer is Laravel with a custom RBAC catalogue, and the front ends are React SPAs.",
+      "Laravel 12 API with a custom RBAC permission catalogue over PostgreSQL (primary) and MySQL " +
+      "(HRM side), fronted by React SPAs (Vite + MUI) and a Flutter mobile client. Docker-based " +
+      "deployments with Cloudflare Tunnel, GitHub-polling auto-update and a partitioned stock " +
+      "ledger. Integrates with the ZKTeco ADMS push protocol and the PPHL accounts ERP for " +
+      "vendor-ledger sync.\n\n" +
+      "### Outcome / Value\n\n" +
+      "One auditable platform replacing the fragmented tooling, with serialized stock traceability " +
+      "and a mobile attendance client — a strong enterprise/ERP case study for manufacturing and " +
+      "agri clients.",
     role: "Senior Software Developer",
     client: "People's Poultry & Hatchery Limited",
     year: null,
@@ -356,18 +374,22 @@ export const PROJECTS: SeedProject[] = [
       "A Web3 platform for wallet-based contact sharing, token swapping and a decentralized NFT marketplace, with a React/Next.js frontend and a Node.js/MongoDB backend.",
     body:
       "### Problem / Context\n\n" +
-      "A decentralized application spanning web and mobile: exchange contact details, swap tokens, and trade NFTs without a central operator.\n\n" +
+      "A decentralized application spanning web and mobile: exchange contact details, swap tokens, and trade NFTs without a central operator. The platform had to support wallet-based identity, on-chain asset ownership and real-time messaging across clients.\n\n" +
       "### What it does\n\n" +
-      "- Wallet-based contact sharing between users\n" +
+      "- Wallet-based contact sharing between users, with Privy wallet authentication\n" +
       "- Token swapping across supported chains\n" +
-      "- A decentralized NFT marketplace with minting and trading\n" +
-      "- Real-time chat and media sharing\n\n" +
+      "- A decentralized NFT marketplace with minting and trading via Metaplex\n" +
+      "- Real-time chat and media sharing over Socket.IO channels\n" +
+      "- XMTP-based decentralized messaging\n" +
+      "- Stripe and Firebase integrations for payments and notifications\n\n" +
       "### Engineering notes\n\n" +
       "React/Next.js web client and a Flutter/React Native mobile client over Node.js/Express services " +
       "with Socket.IO channels, Solana/Ethereum program interaction through Metaplex, Privy wallet auth, " +
-      "XMTP messaging, MongoDB storage, Redis caching, and Stripe/Firebase integrations.\n\n" +
-      "### Stack\n\n" +
-      "React, Next.js, Node.js, Express.js, MongoDB, Redis, Socket.IO, Solana, Ethereum, Metaplex, Privy, XMTP.",
+      "XMTP messaging, MongoDB storage, Redis caching, and Stripe/Firebase integrations. REST + " +
+      "WebSocket hybrid, with Redis for session/cache and Mongo for document state.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A full-stack Web3 product spanning web and mobile — a strong showcase of wallet auth, on-chain " +
+      "marketplace flows and real-time messaging for Web3 clients.",
     role: "Senior Developer Team-Lead",
     client: "Bayshore Communications Ltd",
     year: null,
@@ -397,9 +419,21 @@ export const PROJECTS: SeedProject[] = [
       "Low-latency browser-to-browser chat with presence, built directly on WebRTC.",
     body:
       "A real-time communication product built before hosted chat APIs were the default choice.\n\n" +
+      "### Problem / Context\n\n" +
+      "A business needed low-latency browser-to-browser communication with presence, before hosted " +
+      "chat APIs existed, so the media path and signalling had to be built directly on WebRTC.\n\n" +
+      "### What it does\n\n" +
+      "- Browser-to-browser real-time chat with presence indicators\n" +
+      "- WebRTC media path for peer-to-peer audio/video and data channels\n" +
+      "- Socket.IO signalling and presence broadcast\n" +
+      "- Conversation history and user state persisted to MongoDB\n\n" +
       "### Engineering notes\n\n" +
-      "WebRTC handled the media path while Socket.IO carried signalling and presence; " +
-      "MongoDB stored conversation history and user state on a Node.js backend.",
+      "WebRTC handled the media path while Socket.IO carried signalling and presence; a Node.js " +
+      "backend on Express persisted conversation history and user state to MongoDB. Built as a " +
+      "junior-developer engagement at Alchemy Software Limited.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A working real-time chat product demonstrating WebRTC + Socket.IO signalling — a useful " +
+      "reference for custom real-time features without third-party chat SaaS.",
     role: "Junior Software Developer",
     client: "Alchemy Software Limited",
     year: null,
@@ -416,9 +450,20 @@ export const PROJECTS: SeedProject[] = [
       "A marketplace where many vendors sell through one storefront and one admin.",
     body:
       "A multi-vendor commerce platform covering vendor onboarding, catalog management and order flow.\n\n" +
+      "### Problem / Context\n\n" +
+      "A marketplace needed many vendors selling through one storefront and one admin, with per-vendor " +
+      "product ownership and a shared order pipeline.\n\n" +
+      "### What it does\n\n" +
+      "- Vendor onboarding and per-vendor product ownership\n" +
+      "- Catalog hierarchies and product management through an Ajax-driven admin\n" +
+      "- Order flow across vendors with a shared cart and checkout\n" +
+      "- Admin tooling for catalog and order oversight\n\n" +
       "### Engineering notes\n\n" +
       "Laravel with Ajax-driven admin interfaces on MySQL, including catalog hierarchies and " +
-      "per-vendor product ownership.",
+      "per-vendor product ownership. Built for Anazbd Corporation.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A working multi-vendor marketplace foundation — reusable pattern for marketplace clients " +
+      "needing vendor-scoped catalogs.",
     role: "Full-Stack Laravel Developer",
     client: "Anazbd Corporation",
     year: null,
@@ -436,8 +481,19 @@ export const PROJECTS: SeedProject[] = [
     body:
       "An ERP covering sales and accounting workflows with a React interface and a " +
       "PostgreSQL-backed Laravel API.\n\n" +
+      "### Problem / Context\n\n" +
+      "A business needed sales, ledger and accounts in one system with reporting on top, instead of " +
+      "separate sales spreadsheets and accounting books.\n\n" +
+      "### What it does\n\n" +
+      "- Sales workflows — orders, invoices and customer records\n" +
+      "- Ledger and accounts — double-entry bookkeeping with journals and bank transfers\n" +
+      "- Reporting and dashboards on top of the sales and accounting data\n" +
+      "- Python used for reporting and data work\n\n" +
       "### Engineering notes\n\n" +
-      "React front end, Laravel API, PostgreSQL storage, with Python used for reporting and data work.",
+      "React front end, Laravel API, PostgreSQL storage, with Python used for reporting and data work.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A unified sales + accounting ERP with reporting — a reusable pattern for SME accounting " +
+      "clients.",
     role: null,
     client: null,
     year: null,
@@ -454,12 +510,20 @@ export const PROJECTS: SeedProject[] = [
       "Reads supplier email into structured orders — OCR at the front door of an inventory system.",
     body:
       "An order-profiling and inventory management system that turns incoming email into structured data.\n\n" +
+      "### Problem / Context\n\n" +
+      "A business was receiving supplier orders by email, then re-typing them into an inventory system " +
+      "by hand — slow and error-prone. The fix was to read the email at the door and structure it.\n\n" +
       "### What it does\n\n" +
       "- Pulls orders from Gmail via the Gmail API\n" +
       "- OCRs attachment content into structured line items\n" +
-      "- Profiles and manages the resulting inventory\n\n" +
+      "- Profiles and manages the resulting inventory\n" +
+      "- Order-profiling workflow for incoming supplier mail\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel and jQuery application over the Gmail API with an OCR pipeline for document ingestion.",
+      "Laravel and jQuery application over the Gmail API with an OCR pipeline for document ingestion, " +
+      "delivered as Project Manager at Chittagong Soft Limited.\n\n" +
+      "### Outcome / Value\n\n" +
+      "Automated email-to-inventory ingestion — a strong showcase of OCR + API integration for " +
+      "operations clients.",
     role: "Project Manager",
     client: "Chittagong Soft Limited",
     year: null,
@@ -475,8 +539,19 @@ export const PROJECTS: SeedProject[] = [
     summary: "A food delivery service: menu, orders, delivery flow.",
     body:
       "A food delivery platform built on Laravel with a jQuery front end.\n\n" +
+      "### Problem / Context\n\n" +
+      "A food delivery business needed menu, orders and delivery flow in one platform instead of " +
+      "phone-and-spreadsheet ordering.\n\n" +
+      "### What it does\n\n" +
+      "- Menu and vendor handling\n" +
+      "- Order lifecycle management from placement to delivery\n" +
+      "- Delivery assignment and dispatch\n" +
+      "- Admin oversight of orders and vendors\n\n" +
       "### Engineering notes\n\n" +
-      "Order lifecycle management, menu and vendor handling, and delivery assignment on MySQL.",
+      "Laravel with a jQuery front end on MySQL, with order lifecycle management, menu/vendor " +
+      "handling and delivery assignment. Delivered as Project Manager at Chittagong Soft Limited.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A working food-delivery platform — a reusable pattern for delivery/ordering clients.",
     role: "Project Manager",
     client: "Chittagong Soft Limited",
     year: null,
@@ -493,8 +568,19 @@ export const PROJECTS: SeedProject[] = [
       "A REST-API-driven online shop delivered for an international client.",
     body:
       "A RESTful API based online shop built for a Singapore-based furniture retailer.\n\n" +
+      "### Problem / Context\n\n" +
+      "An international furniture retailer needed an online shop delivered directly with the client, " +
+      "with a REST API backend consumed by an Ajax/jQuery storefront.\n\n" +
+      "### What it does\n\n" +
+      "- Product catalog and browsing\n" +
+      "- REST API endpoints for the storefront\n" +
+      "- Ajax/jQuery-driven client consuming the API\n" +
+      "- Direct delivery with the client\n\n" +
       "### Engineering notes\n\n" +
-      "PHP API endpoints consumed by an Ajax/jQuery storefront, delivered directly with the client.",
+      "PHP API endpoints consumed by an Ajax/jQuery storefront, delivered directly with the client. " +
+      "Delivered as Project Manager at Chittagong Soft Limited.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A delivered international e-commerce site — a reference for REST-API-first shop builds.",
     role: "Project Manager",
     client: "Chittagong Soft Limited",
     year: null,
@@ -511,10 +597,20 @@ export const PROJECTS: SeedProject[] = [
       "PLC control logic paired with a web dashboard for live plant monitoring.",
     body:
       "Industrial automation work combining PLC programming with a web application for monitoring and control.\n\n" +
-      "### Engineering notes\n\n" +
+      "### Problem / Context\n\n" +
+      "An industrial plant needed PLC control logic paired with a web dashboard for live plant " +
+      "monitoring and control.\n\n" +
+      "### What it does\n\n" +
       "- Ladder and SCL logic on a Siemens PLC-1214C\n" +
       "- An OPC-UA bridge exposing plant signals to software\n" +
-      "- A React dashboard fed through Node-RED, with MongoDB for history",
+      "- A React dashboard fed through Node-RED, with MongoDB for history\n" +
+      "- Live plant monitoring and control from the browser\n\n" +
+      "### Engineering notes\n\n" +
+      "Siemens PLC-1214C ladder/SCL logic, an OPC-UA bridge exposing plant signals, a React " +
+      "dashboard fed through Node-RED with MongoDB for history. Delivered as Senior Software & " +
+      "PLC Developer at Syscon Engineering Limited.\n\n" +
+      "### Outcome / Value\n\n" +
+      "A PLC + web-dashboard plant control system — a niche industrial-automation showcase.",
     role: "Senior Software & PLC Developer",
     client: "Syscon Engineering Limited",
     year: null,
@@ -556,15 +652,20 @@ export const PROJECTS: SeedProject[] = [
     summary: "A complete multi-vendor marketplace: Laravel API, React admin, Next.js storefront, Flutter app, and Docker deploy.",
     body:
       "### Problem / Context\n\n" +
-      "A multi-supplier dropshipping business needed one platform spanning catalog, payments, orders, and delivery across web and mobile.\n\n" +
+      "A multi-supplier dropshipping business needed one platform spanning catalog, payments, orders and " +
+      "delivery across web and mobile, with per-supplier restrictions and bilingual admin.\n\n" +
       "### What it does\n\n" +
-      "- Multi-supplier catalog with adapter framework\n" +
-      "- Payments (COD + SSLCommerz) with per-supplier restrictions\n" +
-      "- Orders, offers/coupons, reviews, geo/shipping\n" +
-      "- React admin (RBAC, bilingual EN/BN), Next.js SEO storefront (ISR), Flutter mobile app with OTA updates\n" +
-      "- One-origin Docker deploy + GitHub Actions to VPS\n\n" +
+      "- Multi-supplier catalog with an adapter framework and per-supplier restrictions\n" +
+      "- Payments via COD + SSLCommerz with per-supplier-type restrictions\n" +
+      "- Orders, offers/coupons, reviews, geo/shipping and delivery assignment\n" +
+      "- React admin with RBAC and bilingual EN/BN UI\n" +
+      "- Next.js SEO storefront with ISR\n" +
+      "- Flutter mobile app with OTA updates via rocket launcher\n" +
+      "- One-origin Docker deploy with edge nginx and GitHub Actions to VPS\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel 13 API with permission middleware and cross-domain contracts; React 18 admin; Next.js 16 storefront; Flutter mobile; Docker/edge nginx.\n\n" +
+      "Laravel 13 API with permission middleware and cross-domain contracts; React 18 admin; Next.js 16 " +
+      "storefront; Flutter mobile; Docker/edge nginx. Cross-domain contracts keep checkout independent " +
+      "of payments/offers/shipping implementations.\n\n" +
       "### Outcome / Value\n\n" +
       "End-to-end marketplace delivery reusable as a Fiverr 'full e-commerce suite' gig.",
     role: "Full-Stack Developer",
@@ -582,17 +683,25 @@ export const PROJECTS: SeedProject[] = [
     summary: "Enterprise procurement-to-inventory system: RFQ, PO, GRN, QC, stock ledger with serials, production/BOM, reports.",
     body:
       "### Problem / Context\n\n" +
-      "A poultry/hatchery group needed an auditable supply chain from requisition to payment, with serialized stock.\n\n" +
+      "A poultry and hatchery group needed an auditable supply chain from requisition to payment, with " +
+      "serialized stock traceability across sectors, plus quarantine, repair and scrap handling.\n\n" +
       "### What it does\n\n" +
-      "- Full procurement chain: RFQ, quotation, PO, GRN, QC, supplier invoice, vendor return, payments\n" +
-      "- Partitioned stock ledger with serial registry, custody, issues/returns/reversals\n" +
-      "- Production/BOM/work orders, quarantine/repair/scrap buyers\n" +
-      "- QC departments/standards, stock insights & flow trace\n" +
-      "- RBAC permission catalog, dashboards & financial/production/vendor/inventory reports\n\n" +
+      "- Full procurement chain: RFQ, quotation, PO, GRN (parent/chunk), QC, supplier invoice, vendor return, payments\n" +
+      "- Partitioned stock ledger with serial registry, custody, issues/returns/reversals and stock insights/flow trace\n" +
+      "- Production/BOM/work orders with byproducts, wastage, cost estimation and overhead\n" +
+      "- QC departments/standards with progressive multi-line inspection, chunk logs and challan tracking\n" +
+      "- Quarantine, repair and scrap-buyer workflows with stock posting\n" +
+      "- Material return and vendor return stock ledgers with idempotent source keys\n" +
+      "- RBAC permission catalog, dashboards and financial/production/vendor/inventory reports\n" +
+      "- Transport stock integration endpoints for sector stock issue and vehicle stock issue\n" +
+      "- SCM data-migration tooling and Google Sheets automation for bulk import\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel 12 + PostgreSQL with partitioned stocks/ledgers; React 18/Vite/MUI frontend; 75+ docs.\n\n" +
+      "Laravel 12 API over PostgreSQL with LIST/HASH-partitioned stock and ledger tables, a React " +
+      "18/Vite/MUI frontend, 75+ docs and a deep test suite. Integrates with the PPHL accounts ERP " +
+      "for vendor-ledger sync and the transport app for sector stock issue.\n\n" +
       "### Outcome / Value\n\n" +
-      "Deep, demoable enterprise SCM backend+frontend for manufacturing/logistics clients.",
+      "Deep, demoable enterprise SCM backend+frontend for manufacturing/logistics clients, with " +
+      "serialized stock traceability end to end.",
     role: "Senior Software Developer",
     client: "People's Poultry & Hatchery Limited",
     year: null,
@@ -608,16 +717,20 @@ export const PROJECTS: SeedProject[] = [
     summary: "Multi-tenant poultry farm & hatchery ERP with batch genealogy stock ledger and 9-stage hatchery workflow.",
     body:
       "### Problem / Context\n\n" +
-      "Greenfield ERP for farm and hatchery operations requiring traceable batch genealogy.\n\n" +
+      "A greenfield ERP for farm and hatchery operations requiring traceable batch genealogy across the " +
+      "9-stage hatchery workflow, with hard fail-closed multi-tenancy.\n\n" +
       "### What it does\n\n" +
-      "- Multi-tenant (company/farm) RBAC\n" +
+      "- Multi-tenant (company/farm) RBAC with farm-level row access\n" +
       "- Stock ledger with batch genealogy, master data (farms, sheds, breeds, products, UOM)\n" +
       "- 9-stage hatchery workflow: intake → incubation → hatch → dispatch\n" +
-      "- Performance/lineage reports\n\n" +
+      "- Incubation parameters, egg grading, hatchability norms\n" +
+      "- Hatchery performance and lineage reports\n" +
+      "- Docker staging with auto-update and build-info endpoint\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel 12, PHP 8.2, PostgreSQL, JWT; StockLedgerService sole writer; fail-closed tenancy; 47 tests; Docker staging with auto-update.\n\n" +
+      "Laravel 12, PHP 8.2, PostgreSQL, JWT; StockLedgerService as sole writer; fail-closed tenancy " +
+      "with CompanyScope; 47 tests; Docker staging with GitHub-polling auto-update.\n\n" +
       "### Outcome / Value\n\n" +
-      "Niche agri/poultry vertical with clean, well-documented architecture.",
+      "Niche agri/poultry vertical with clean, well-documented architecture and hard tenancy.",
     role: "Senior Software Developer",
     client: "People's Poultry & Hatchery Limited",
     year: null,
@@ -633,14 +746,18 @@ export const PROJECTS: SeedProject[] = [
     summary: "Full hospital ERP: patients, appointments, billing, procedures, ZKTeco biometrics, Agora telemedicine, AI scribe.",
     body:
       "### Problem / Context\n\n" +
-      "A hospital needed unified clinical, admin, HR, and procurement operations with telemedicine.\n\n" +
+      "A hospital needed unified clinical, admin, HR and procurement operations with telemedicine, " +
+      "replacing fragmented departmental systems.\n\n" +
       "### What it does\n\n" +
       "- Patient records, consent forms, appointments, doctor/nurse modules\n" +
       "- Pharmacy/drug, lab, radiology, OT, CSSD, dental 3D tooth selector\n" +
-      "- ZKTeco biometric attendance, Agora video consultations, OpenAI AI scribe + voice\n" +
-      "- Role/permission system, export v2, automated backups\n\n" +
+      "- ZKTeco biometric attendance for staff\n" +
+      "- Agora video consultations and OpenAI AI scribe with voice\n" +
+      "- Role/permission system, export v2, automated backups\n" +
+      "- HR and procurement modules\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel 12 MVC + Blade; modular routes; custom permission/menu sync; Vite assets; Tailwind/Alpine.\n\n" +
+      "Laravel 12 MVC + Blade; modular routes; custom permission/menu sync; Vite assets; " +
+      "Tailwind/Alpine. Multi-module hospital ERP with telemedicine.\n\n" +
       "### Outcome / Value\n\n" +
       "Healthcare ERP with telemedicine — strong freelance/enterprise value.",
     role: "Senior Software Developer",
@@ -658,14 +775,17 @@ export const PROJECTS: SeedProject[] = [
     summary: "Browser-based SCADA for industrial power & flow meters: RBAC, topology-driven UI, PDF reports, automailing.",
     body:
       "### Problem / Context\n\n" +
-      "An industrial plant needed browser-based monitoring of PM5300 power/flow meters with role-based access.\n\n" +
+      "An industrial plant needed browser-based monitoring of PM5300 power/flow meters with role-based " +
+      "access, replacing desktop-only SCADA.\n\n" +
       "### What it does\n\n" +
       "- RBAC (engineer/operator/superadmin) with OTP for superadmin\n" +
       "- Topology-driven sidebar; 17-measurement meter pages with gauges/charts/grids\n" +
       "- Manual + automated PDF reports with email delivery\n" +
-      "- DB size badge, operational refresh, 5 themes, obfuscated secure build\n\n" +
+      "- DB size badge, operational refresh, 5 themes, obfuscated secure build\n" +
+      "- Simulated telemetry persisted to MySQL; polling only when visible\n\n" +
       "### Engineering notes\n\n" +
-      "Next.js 16 App Router monolith with route handlers; Prisma 7 + MySQL; simulated telemetry persisted; polling only when visible.\n\n" +
+      "Next.js 16 App Router monolith with route handlers; Prisma 7 + MySQL; simulated telemetry " +
+      "persisted; polling only when visible. Secure production build with client bundle obfuscation.\n\n" +
       "### Outcome / Value\n\n" +
       "Enterprise EMS/SCADA dashboard — high-ticket industrial client showcase.",
     role: "Senior Software & PLC Developer",
@@ -683,13 +803,16 @@ export const PROJECTS: SeedProject[] = [
     summary: "Desktop HMI for automated visual inspection: Tauri + React + Python CV sidecar + camera SDK.",
     body:
       "### Problem / Context\n\n" +
-      "A manufacturing line needed a desktop HMI for automated visual inspection of vials/cosmetics.\n\n" +
+      "A manufacturing line needed a desktop HMI for automated visual inspection of vials/cosmetics, " +
+      "running offline with camera SDK and CV sidecar.\n\n" +
       "### What it does\n\n" +
       "- Login, batch management, mechanical/inspection parameter tuning, audit trail\n" +
       "- 4 synthetic inspection stations; Hikrobot camera SDK with graceful demo fallback\n" +
-      "- Camera views, Knapp tests, utility/settings; offline NSIS installer\n\n" +
+      "- Camera views, Knapp tests, utility/settings; offline NSIS installer\n" +
+      "- Multi-defect detection with configurable thresholds\n\n" +
       "### Engineering notes\n\n" +
-      "Tauri 2.0 (Rust) shell + React 19 UI + Python FastAPI sidecar; OpenCV/NumPy; MongoDB; ~5 Hz production loop.\n\n" +
+      "Tauri 2.0 (Rust) shell + React 19 UI + Python FastAPI sidecar; OpenCV/NumPy; MongoDB; ~5 Hz " +
+      "production loop. Runs without physical camera using synthetic demo cameras.\n\n" +
       "### Outcome / Value\n\n" +
       "Industrial desktop app with camera SDK + CV sidecar — niche, high-value manufacturing demo.",
     role: "Senior Software Developer",
@@ -707,13 +830,16 @@ export const PROJECTS: SeedProject[] = [
     summary: "AI-powered accounts-payable automation: LLM invoice OCR, PO matching, discrepancy flagging, approval workflow.",
     body:
       "### Problem / Context\n\n" +
-      "Manufacturers manually matching supplier invoice PDFs/images against purchase orders.\n\n" +
+      "Manufacturers manually matching supplier invoice PDFs/images against purchase orders — slow and " +
+      "error-prone AP work.\n\n" +
       "### What it does\n\n" +
       "- Extracts structured data from invoice PDFs/images via OpenRouter LLM\n" +
       "- Matches against POs, flags discrepancies, routes exceptions for human approval\n" +
-      "- Dashboard, email digest, per-invoice AI cost tracking\n\n" +
+      "- Dashboard, email digest, per-invoice AI cost tracking\n" +
+      "- Demo accounts (admin/approver/viewer) and seeded PO for demo flow\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel 12 API + React/Vite (TS) frontend + n8n orchestration + Mailpit; PostgreSQL 16; Docker Compose.\n\n" +
+      "Laravel 12 API + React/Vite (TS) frontend + n8n orchestration + Mailpit; PostgreSQL 16; Docker " +
+      "Compose. Default model openai/gpt-6-luna-pro (~$0.10/M input tokens), configurable via AI_MODEL.\n\n" +
       "### Outcome / Value\n\n" +
       "AI-powered AP automation showcase for LLM extraction + human-in-the-loop workflows.",
     role: "Full-Stack Developer",
@@ -947,13 +1073,15 @@ export const PROJECTS: SeedProject[] = [
     summary: "Reverse proxy that lazily boots a target Docker stack on first visit and tears down after idle.",
     body:
       "### Problem / Context\n\n" +
-      "Idle Docker stacks waste resources on small VPS; needed lazy boot + teardown.\n\n" +
+      "Idle Docker stacks waste resources on small VPS; needed lazy boot + teardown to cut idle infra cost.\n\n" +
       "### What it does\n\n" +
-      "- Countdown warming page, SSE progress stream\n" +
+      "- Countdown warming page, SSE progress stream during boot\n" +
       "- Admin deploy/teardown endpoints, configurable idle timeout (default 5h)\n" +
-      "- Windows service / scheduled task support\n\n" +
+      "- Windows service / scheduled task support\n" +
+      "- Config-driven (env only); drives docker compose against host daemon\n\n" +
       "### Engineering notes\n\n" +
-      "Node.js config-driven (env only); drives docker compose against host daemon; never modifies target.\n\n" +
+      "Node.js config-driven (env only); drives docker compose against host daemon; never modifies target. " +
+      "Container mode Linux/VPS only (host networking); host mode on Windows/macOS.\n\n" +
       "### Outcome / Value\n\n" +
       "On-demand hosting proxy that cuts idle infra costs.",
     role: "Full-Stack Developer",
@@ -1043,14 +1171,16 @@ export const PROJECTS: SeedProject[] = [
     summary: "Laravel monolith for ZKTeco device automation: ADMS ingestion, reports, multi-app APIs, biometrics.",
     body:
       "### Problem / Context\n\n" +
-      "A plant needed ZKTeco biometric attendance integrated with HR and mobile apps.\n\n" +
+      "A plant needed ZKTeco biometric attendance integrated with HR and mobile apps, with ADMS push protocol.\n\n" +
       "### What it does\n\n" +
       "- iClock/ADMS device ingestion, machine registry, attendance reports\n" +
       "- ZKTeco SenseFace 3A registration, geo trails, farm & dealer marketing\n" +
       "- Mobile public API (attendance, geo, FCM), cross-domain integration API\n" +
-      "- Retention/prune tooling, ERP bridge\n\n" +
+      "- Retention/prune tooling, ERP bridge\n" +
+      "- Multi-app APIs and FCM push\n\n" +
       "### Engineering notes\n\n" +
-      "Laravel 13 monolith, Blade+Livewire, PostgreSQL, Redis, Docker (web/api/queue/scheduler).\n\n" +
+      "Laravel 13 monolith, Blade+Livewire, PostgreSQL, Redis, Docker (web/api/queue/scheduler). " +
+      "Hardware-integrated biometric timekeeping with ADMS protocol.\n\n" +
       "### Outcome / Value\n\n" +
       "Hardware-integrated biometric timekeeping backend with ADMS protocol + multi-app APIs.",
     role: "Senior Software Developer",
