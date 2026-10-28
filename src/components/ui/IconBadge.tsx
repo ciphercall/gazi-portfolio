@@ -13,7 +13,7 @@ export type IconBadgeSize = "sm" | "md" | "lg";
 const SIZES: Record<IconBadgeSize, string> = {
   sm: "h-8 w-8 rounded-[10px]",
   md: "h-10 w-10 rounded-control",
-  lg: "h-12 w-12 rounded-control",
+  lg: "h-11 w-11 rounded-control",
 };
 
 export interface IconBadgeProps {

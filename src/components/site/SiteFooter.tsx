@@ -35,15 +35,15 @@ export function SiteFooter({
   const year = new Date().getFullYear();
 
   return (
-    <footer className="no-print relative mt-24 border-t border-line">
+    <footer className="no-print relative mt-16 border-t border-line">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{ backgroundImage: AURORA_LINE }}
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1.1fr]">
+      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
+        <div className="grid gap-8 md:grid-cols-[1.4fr_1fr_1.1fr]">
           <div>
             <Link href="/" className="font-display text-lg font-semibold text-ink">
               {fullName}
@@ -110,7 +110,7 @@ export function SiteFooter({
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-4 border-t border-line pt-5 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {fullName}. Built with Next.js, Prisma and a lot of dark-mode pixels.
           </p>

@@ -60,14 +60,14 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
   return (
     <header className="no-print sticky top-0 z-40 px-4 pt-3 sm:px-6">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="glass hairline flex items-center gap-2 px-2.5 py-2 sm:gap-3 sm:px-3.5">
+        <div className="glass hairline flex items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-3.5">
           <Link
             href="/"
             className="flex min-w-0 items-center gap-2.5 rounded-control p-1 transition hover:bg-panel"
           >
             <span
               aria-hidden="true"
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-control font-display text-sm font-semibold text-on-accent"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-control font-display text-sm font-semibold text-on-accent"
               style={{ backgroundImage: AURORA_SWEEP }}
             >
               {initialsOf(fullName)}
