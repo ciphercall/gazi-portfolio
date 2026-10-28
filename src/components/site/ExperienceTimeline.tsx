@@ -27,21 +27,21 @@ export function ExperienceTimeline({ groups }: { groups: TimelineGroup[] }) {
   if (visible.length === 0) return null;
 
   return (
-    <div className="mt-12 grid gap-14">
+    <div className="mt-10 grid gap-10">
       {visible.map((group) => (
         <div key={group.key}>
           <div className="flex flex-wrap items-center gap-3">
             <IconBadge size="sm">
               <Briefcase className="h-4 w-4" aria-hidden="true" />
             </IconBadge>
-            <h3 className="font-display text-lg font-semibold text-ink">{group.label}</h3>
+            <h3 className="font-display text-base font-semibold text-ink">{group.label}</h3>
             <span className="label-mono">
               {group.items.length} {group.items.length === 1 ? "role" : "roles"}
             </span>
           </div>
           <p className="mt-2 max-w-2xl text-sm text-faint">{group.blurb}</p>
 
-          <ol className="relative mt-7 grid gap-6 border-l border-line pl-6 sm:pl-8">
+          <ol className="relative mt-5 grid gap-4 border-l border-line pl-5 sm:pl-6">
             {group.items.map((item, index) => (
               <li key={item.slug} className="relative">
                 <span
@@ -57,10 +57,10 @@ export function ExperienceTimeline({ groups }: { groups: TimelineGroup[] }) {
                 />
 
                 <Reveal delay={index * 0.04}>
-                  <article className="glass hairline card-lift p-5 sm:p-6">
+                  <article className="glass hairline card-lift p-4 sm:p-5">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="min-w-0">
-                        <h4 className="font-display text-lg font-semibold text-ink">
+                        <h4 className="font-display text-base font-semibold text-ink">
                           {item.title}
                         </h4>
                         <p className="mt-1 text-sm text-muted">
@@ -95,13 +95,13 @@ export function ExperienceTimeline({ groups }: { groups: TimelineGroup[] }) {
                     </div>
 
                     {item.summary ? (
-                      <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
+                      <p className="mt-4 text-sm leading-relaxed text-muted">
                         {item.summary}
                       </p>
                     ) : null}
 
                     {item.bullets.length > 0 ? (
-                      <ul className="mt-4 grid gap-2.5">
+                      <ul className="mt-4 grid gap-2">
                         {item.bullets.map((bullet) => (
                           <li
                             key={bullet}

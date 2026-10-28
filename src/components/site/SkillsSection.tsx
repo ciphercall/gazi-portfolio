@@ -49,12 +49,12 @@ export function SkillsSection({ groups }: { groups: SkillGroup[] }) {
 
   return (
     <div className="mt-12">
-      <div className="marquee-mask relative overflow-hidden py-2" aria-hidden="true">
+      <div className="marquee-mask relative overflow-hidden py-1" aria-hidden="true">
         <div className="marquee-track hover:[animation-play-state:paused]">
           {track.map((item, index) => (
             <span
               key={`${item}-${index}`}
-              className="mr-3 inline-flex items-center gap-2 rounded-full border border-line bg-panel px-3.5 py-2 text-sm text-muted"
+              className="mr-3 inline-flex items-center gap-2 rounded-full border border-line bg-panel px-3 py-1.5 text-sm text-muted"
             >
               <span
                 className="h-1.5 w-1.5 shrink-0 rounded-sm"
@@ -66,13 +66,13 @@ export function SkillsSection({ groups }: { groups: SkillGroup[] }) {
         </div>
       </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((group, index) => {
           const Icon = categoryIcon(group.category);
           return (
             <Reveal key={group.category} delay={index * 0.05}>
               <section
-                className="glass hairline h-full p-5"
+                className="glass hairline h-full p-4"
                 aria-label={`${group.category} skills`}
               >
                 <div className="flex items-center gap-3">

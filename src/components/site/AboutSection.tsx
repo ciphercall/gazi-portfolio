@@ -35,7 +35,7 @@ export function AboutSection({
   const rest = firstStop > 0 ? summary.slice(firstStop + 2) : "";
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16">
+    <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-12">
       <div className="flex flex-col gap-4">
         <div className="relative">
           <ImageFrame
@@ -49,7 +49,7 @@ export function AboutSection({
           />
         </div>
 
-        <div className="glass-strong hairline flex max-w-full items-center gap-3 p-3 sm:w-64">
+        <div className="glass-strong hairline flex max-w-full items-center gap-3 p-2.5 sm:w-64">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-panel text-teal">
             <MapPin className="h-4 w-4" aria-hidden="true" />
           </span>
@@ -62,24 +62,24 @@ export function AboutSection({
         </div>
       </div>
 
-      <div className="pt-8 lg:pt-0">
+      <div className="pt-4 lg:pt-0">
         <p className="label-mono">About</p>
         <h2 className="mt-3 text-title font-semibold">
           Turning requirements into{" "}
           <span className="text-aurora">systems people rely on</span>.
         </h2>
 
-        <div className="mt-6 space-y-4">
-          <p className="font-display text-xl font-medium leading-snug text-ink sm:text-2xl">
+        <div className="mt-5 space-y-4">
+          <p className="font-display text-lg font-medium leading-snug text-ink sm:text-xl">
             {lead}
           </p>
           {rest ? (
-            <p className="max-w-3xl text-base leading-relaxed text-muted sm:text-lg">{rest}</p>
+            <p className="max-w-3xl text-base leading-relaxed text-muted">{rest}</p>
           ) : null}
         </div>
 
         {focus.length > 0 ? (
-          <div className="mt-7">
+          <div className="mt-6">
             <p className="label-mono">What I do most</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {focus.map((item) => (
@@ -93,7 +93,7 @@ export function AboutSection({
           </div>
         ) : null}
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="mt-7 flex flex-wrap items-center gap-3">
           <ActionLink href="/experience" icon={<Sparkles className="h-4 w-4" />}>
             Read the full experience
           </ActionLink>
