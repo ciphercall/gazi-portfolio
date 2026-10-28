@@ -156,7 +156,7 @@ export default async function ProjectDetailPage({
           </div>
         </header>
 
-        <div className="mt-12">
+        <div className="mt-8">
           <ImageFrame
             src={project.coverPath}
             alt={`${project.title} — cover image`}
@@ -169,7 +169,7 @@ export default async function ProjectDetailPage({
           />
         </div>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1.6fr_0.9fr] lg:gap-14">
+        <div className="mt-8 grid gap-10 lg:grid-cols-[1.6fr_0.9fr] lg:gap-10">
           <article aria-labelledby="case-study-heading">
             <h2 id="case-study-heading" className="label-mono">
               Case study
@@ -187,7 +187,7 @@ export default async function ProjectDetailPage({
           </article>
 
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="glass hairline p-6">
+            <div className="glass hairline p-5">
               <h2 className="font-display text-base font-semibold text-ink">Project details</h2>
 
               <dl className="mt-5 grid gap-4 text-sm">
@@ -255,7 +255,7 @@ export default async function ProjectDetailPage({
                 <Images className="h-5 w-5" />
               </span>
               <div>
-                <h2 id="gallery-heading" className="font-display text-lg font-semibold text-ink">
+                <h2 id="gallery-heading" className="font-display text-base font-semibold text-ink">
                   Gallery
                 </h2>
                 <p className="label-mono">
@@ -275,7 +275,7 @@ export default async function ProjectDetailPage({
           <nav aria-label="Next project" className="mt-16">
             <Link
               href={`/projects/${nextProject.slug}`}
-              className="glass hairline card-lift group flex flex-wrap items-center justify-between gap-4 p-6"
+              className="glass hairline card-lift group flex flex-wrap items-center justify-between gap-4 p-5"
             >
               <span className="min-w-0">
                 <span className="label-mono block">Next case study</span>
