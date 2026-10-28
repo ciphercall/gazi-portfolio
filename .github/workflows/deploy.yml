@@ -19,3 +19,4 @@ jobs:
           port: 22
           script: |
             /opt/deploy-gazi-portfolio.sh
+            cd /opt/github/gazi-portfolio/deploy && docker compose --env-file .env exec -T app npx tsx prisma/seed.ts
