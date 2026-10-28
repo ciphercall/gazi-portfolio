@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { AmbientBackground } from "@/components/site/AmbientBackground";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
 import {
@@ -45,32 +46,35 @@ export default async function PublicLayout({ children }: { children: ReactNode }
 
   return (
     <div id="top" className="relative flex min-h-dvh flex-col">
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:border focus:border-line-strong focus:bg-canvas focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
-      >
-        Skip to content
-      </a>
+      <AmbientBackground />
+      <div className="relative z-10 flex min-h-dvh flex-col">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:border focus:border-line-strong focus:bg-canvas focus:px-4 focus:py-2 focus:text-sm focus:text-ink"
+        >
+          Skip to content
+        </a>
 
-      <SiteNav fullName={fullName} tagline={headline} />
+        <SiteNav fullName={fullName} tagline={headline} />
 
-      {/*
-        A neutral wrapper, not a <main>: each page owns its own main landmark so
-        pages in this group that bring their own (the CV download page does)
-        cannot end up with nested <main> elements. The skip link still lands here.
-      */}
-      <div id="main" className="flex-1">
-        {children}
+        {/*
+          A neutral wrapper, not a <main>: each page owns its own main landmark so
+          pages in this group that bring their own (the CV download page does)
+          cannot end up with nested <main> elements. The skip link still lands here.
+        */}
+        <div id="main" className="flex-1">
+          {children}
+        </div>
+
+        <SiteFooter
+          fullName={fullName}
+          headline={headline}
+          location={profile?.location ?? ""}
+          summary={profile?.summary ?? ""}
+          handles={handles}
+          links={links}
+        />
       </div>
-
-      <SiteFooter
-        fullName={fullName}
-        headline={headline}
-        location={profile?.location ?? ""}
-        summary={profile?.summary ?? ""}
-        handles={handles}
-        links={links}
-      />
     </div>
   );
 }
