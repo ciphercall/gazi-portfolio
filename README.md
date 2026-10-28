@@ -94,7 +94,9 @@ src/
     media/                                      WebP pipeline + storage paths
     pdf/                                        both CV generators + the ATS test
     social/                                     LinkedIn + Facebook adapters, manual share links
-prisma/              schema, migrations, seed
+  prisma/              schema, migrations, seed
+  scripts/build-seed-media.mjs  one-time importer for portfolio-render-lab screenshots
+  seed-media/          303 webp screenshots + manifest.json (baked into the image)
 deploy/              docker-compose.yml, Dockerfile, nginx, env bootstrap scripts
 docs/                the three guides below
 ```
@@ -121,6 +123,11 @@ docs/                the three guides below
   (`verifyGeneratedAssets`), usable from a later scheduled job.
 - Mobile companion: settings validation, settings entry from Home, offline refresh progress bar,
   markdown `##` heading support, and cache-dimension caps.
+- Project gallery: all 32 case studies now ship with their source-faithful screenshots
+  (303 views) imported from `portfolio-render-lab`. `seed-media/` is baked into the image;
+  `prisma/seed.ts` copies missing files into the media volume and populates `coverPath` /
+  `ProjectImage` only when a project has none, so admin edits survive a re-seed. The admin
+  panel's existing cover picker + gallery editor manage these `/media` images.
 
 ## Known limits
 
