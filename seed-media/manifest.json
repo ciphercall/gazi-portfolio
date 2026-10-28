@@ -1,0 +1,2586 @@
+{
+  "peoples-erp": {
+    "cover": "projects/seed/peoples-erp/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/peoples-erp/main.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "employees",
+        "relativePath": "projects/seed/peoples-erp/employees.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — employees",
+        "caption": "Employees",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "employee-facility",
+        "relativePath": "projects/seed/peoples-erp/employee-facility.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — employee-facility",
+        "caption": "Employee Facility",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "attendance",
+        "relativePath": "projects/seed/peoples-erp/attendance.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — attendance",
+        "caption": "Attendance",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "attendance-summary",
+        "relativePath": "projects/seed/peoples-erp/attendance-summary.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — attendance-summary",
+        "caption": "Attendance Summary",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "notice",
+        "relativePath": "projects/seed/peoples-erp/notice.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — notice",
+        "caption": "Notice",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "payroll-summaries",
+        "relativePath": "projects/seed/peoples-erp/payroll-summaries.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — payroll-summaries",
+        "caption": "Payroll Summaries",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "leave-application",
+        "relativePath": "projects/seed/peoples-erp/leave-application.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — leave-application",
+        "caption": "Leave Application",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "leave-policy",
+        "relativePath": "projects/seed/peoples-erp/leave-policy.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — leave-policy",
+        "caption": "Leave Policy",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "leave-stock",
+        "relativePath": "projects/seed/peoples-erp/leave-stock.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — leave-stock",
+        "caption": "Leave Stock",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "bazar",
+        "relativePath": "projects/seed/peoples-erp/bazar.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — bazar",
+        "caption": "Bazar",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "bazar-deposit",
+        "relativePath": "projects/seed/peoples-erp/bazar-deposit.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — bazar-deposit",
+        "caption": "Bazar Deposit",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "meal-cost-report",
+        "relativePath": "projects/seed/peoples-erp/meal-cost-report.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — meal-cost-report",
+        "caption": "Meal Cost Report",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "kpi-questions",
+        "relativePath": "projects/seed/peoples-erp/kpi-questions.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — kpi-questions",
+        "caption": "Kpi Questions",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "kpi-assessments",
+        "relativePath": "projects/seed/peoples-erp/kpi-assessments.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — kpi-assessments",
+        "caption": "Kpi Assessments",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "assessment-results",
+        "relativePath": "projects/seed/peoples-erp/assessment-results.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — assessment-results",
+        "caption": "Assessment Results",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "employee-detail",
+        "relativePath": "projects/seed/peoples-erp/employee-detail.webp",
+        "alt": "Enterprise ERP & Supply Chain Platform — employee-detail",
+        "caption": "Employee Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "swop": {
+    "cover": "projects/seed/swop/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/swop/main.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "feed",
+        "relativePath": "projects/seed/swop/feed.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — feed",
+        "caption": "Feed",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "smartsites",
+        "relativePath": "projects/seed/swop/smartsites.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — smartsites",
+        "caption": "Smartsites",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "qr-code",
+        "relativePath": "projects/seed/swop/qr-code.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — qr-code",
+        "caption": "Qr Code",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "wallet",
+        "relativePath": "projects/seed/swop/wallet.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — wallet",
+        "caption": "Wallet",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "analytics",
+        "relativePath": "projects/seed/swop/analytics.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — analytics",
+        "caption": "Analytics",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "mint",
+        "relativePath": "projects/seed/swop/mint.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — mint",
+        "caption": "Mint",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "orders",
+        "relativePath": "projects/seed/swop/orders.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — orders",
+        "caption": "Orders",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "content",
+        "relativePath": "projects/seed/swop/content.webp",
+        "alt": "SWOP — Web3 Marketplace & NFT Platform — content",
+        "caption": "Content",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "live-chat-application": {
+    "cover": "projects/seed/live-chat-application/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/live-chat-application/main.webp",
+        "alt": "Real-Time Live Chat — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "group-chat",
+        "relativePath": "projects/seed/live-chat-application/group-chat.webp",
+        "alt": "Real-Time Live Chat — group-chat",
+        "caption": "Group Chat",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "video-call",
+        "relativePath": "projects/seed/live-chat-application/video-call.webp",
+        "alt": "Real-Time Live Chat — video-call",
+        "caption": "Video Call",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "anazbd-multivendor-ecommerce": {
+    "cover": "projects/seed/anazbd-multivendor-ecommerce/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/main.webp",
+        "alt": "Multi-Vendor E-Commerce — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "vendors",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/vendors.webp",
+        "alt": "Multi-Vendor E-Commerce — vendors",
+        "caption": "Vendors",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "catalog",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/catalog.webp",
+        "alt": "Multi-Vendor E-Commerce — catalog",
+        "caption": "Catalog",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "products",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/products.webp",
+        "alt": "Multi-Vendor E-Commerce — products",
+        "caption": "Products",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "orders",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/orders.webp",
+        "alt": "Multi-Vendor E-Commerce — orders",
+        "caption": "Orders",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "payouts",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/payouts.webp",
+        "alt": "Multi-Vendor E-Commerce — payouts",
+        "caption": "Payouts",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "reviews",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/reviews.webp",
+        "alt": "Multi-Vendor E-Commerce — reviews",
+        "caption": "Reviews",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "settings",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/settings.webp",
+        "alt": "Multi-Vendor E-Commerce — settings",
+        "caption": "Settings",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "product-detail",
+        "relativePath": "projects/seed/anazbd-multivendor-ecommerce/product-detail.webp",
+        "alt": "Multi-Vendor E-Commerce — product-detail",
+        "caption": "Product Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "sales-accounting-erp": {
+    "cover": "projects/seed/sales-accounting-erp/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/sales-accounting-erp/main.webp",
+        "alt": "Sales & Accounting ERP — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "sales",
+        "relativePath": "projects/seed/sales-accounting-erp/sales.webp",
+        "alt": "Sales & Accounting ERP — sales",
+        "caption": "Sales",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "invoices",
+        "relativePath": "projects/seed/sales-accounting-erp/invoices.webp",
+        "alt": "Sales & Accounting ERP — invoices",
+        "caption": "Invoices",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "customers",
+        "relativePath": "projects/seed/sales-accounting-erp/customers.webp",
+        "alt": "Sales & Accounting ERP — customers",
+        "caption": "Customers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "ledger",
+        "relativePath": "projects/seed/sales-accounting-erp/ledger.webp",
+        "alt": "Sales & Accounting ERP — ledger",
+        "caption": "Ledger",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "journal",
+        "relativePath": "projects/seed/sales-accounting-erp/journal.webp",
+        "alt": "Sales & Accounting ERP — journal",
+        "caption": "Journal",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "bank-transfers",
+        "relativePath": "projects/seed/sales-accounting-erp/bank-transfers.webp",
+        "alt": "Sales & Accounting ERP — bank-transfers",
+        "caption": "Bank Transfers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "reports",
+        "relativePath": "projects/seed/sales-accounting-erp/reports.webp",
+        "alt": "Sales & Accounting ERP — reports",
+        "caption": "Reports",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "settings",
+        "relativePath": "projects/seed/sales-accounting-erp/settings.webp",
+        "alt": "Sales & Accounting ERP — settings",
+        "caption": "Settings",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "invoice-detail",
+        "relativePath": "projects/seed/sales-accounting-erp/invoice-detail.webp",
+        "alt": "Sales & Accounting ERP — invoice-detail",
+        "caption": "Invoice Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "glamourglow-inventory-ocr": {
+    "cover": "projects/seed/glamourglow-inventory-ocr/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/glamourglow-inventory-ocr/main.webp",
+        "alt": "GlamourGlow — OCR Inventory Management — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "inventory",
+        "relativePath": "projects/seed/glamourglow-inventory-ocr/inventory.webp",
+        "alt": "GlamourGlow — OCR Inventory Management — inventory",
+        "caption": "Inventory",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "suppliers",
+        "relativePath": "projects/seed/glamourglow-inventory-ocr/suppliers.webp",
+        "alt": "GlamourGlow — OCR Inventory Management — suppliers",
+        "caption": "Suppliers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "ocr-queue",
+        "relativePath": "projects/seed/glamourglow-inventory-ocr/ocr-queue.webp",
+        "alt": "GlamourGlow — OCR Inventory Management — ocr-queue",
+        "caption": "Ocr Queue",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "reports",
+        "relativePath": "projects/seed/glamourglow-inventory-ocr/reports.webp",
+        "alt": "GlamourGlow — OCR Inventory Management — reports",
+        "caption": "Reports",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "ocr-review",
+        "relativePath": "projects/seed/glamourglow-inventory-ocr/ocr-review.webp",
+        "alt": "GlamourGlow — OCR Inventory Management — ocr-review",
+        "caption": "Ocr Review",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "callbien-food-delivery": {
+    "cover": "projects/seed/callbien-food-delivery/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/callbien-food-delivery/main.webp",
+        "alt": "CallBien — Food Delivery Service — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "offers",
+        "relativePath": "projects/seed/callbien-food-delivery/offers.webp",
+        "alt": "CallBien — Food Delivery Service — offers",
+        "caption": "Offers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "track-order",
+        "relativePath": "projects/seed/callbien-food-delivery/track-order.webp",
+        "alt": "CallBien — Food Delivery Service — track-order",
+        "caption": "Track Order",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "cart",
+        "relativePath": "projects/seed/callbien-food-delivery/cart.webp",
+        "alt": "CallBien — Food Delivery Service — cart",
+        "caption": "Cart",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "checkout",
+        "relativePath": "projects/seed/callbien-food-delivery/checkout.webp",
+        "alt": "CallBien — Food Delivery Service — checkout",
+        "caption": "Checkout",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "restaurant-detail",
+        "relativePath": "projects/seed/callbien-food-delivery/restaurant-detail.webp",
+        "alt": "CallBien — Food Delivery Service — restaurant-detail",
+        "caption": "Restaurant Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "the-furniture-singapore": {
+    "cover": "projects/seed/the-furniture-singapore/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/the-furniture-singapore/main.webp",
+        "alt": "The Furniture Singapore — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "living",
+        "relativePath": "projects/seed/the-furniture-singapore/living.webp",
+        "alt": "The Furniture Singapore — living",
+        "caption": "Living",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "bedroom",
+        "relativePath": "projects/seed/the-furniture-singapore/bedroom.webp",
+        "alt": "The Furniture Singapore — bedroom",
+        "caption": "Bedroom",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dining",
+        "relativePath": "projects/seed/the-furniture-singapore/dining.webp",
+        "alt": "The Furniture Singapore — dining",
+        "caption": "Dining",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "office",
+        "relativePath": "projects/seed/the-furniture-singapore/office.webp",
+        "alt": "The Furniture Singapore — office",
+        "caption": "Office",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "outdoor",
+        "relativePath": "projects/seed/the-furniture-singapore/outdoor.webp",
+        "alt": "The Furniture Singapore — outdoor",
+        "caption": "Outdoor",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "sale",
+        "relativePath": "projects/seed/the-furniture-singapore/sale.webp",
+        "alt": "The Furniture Singapore — sale",
+        "caption": "Sale",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "product-detail",
+        "relativePath": "projects/seed/the-furniture-singapore/product-detail.webp",
+        "alt": "The Furniture Singapore — product-detail",
+        "caption": "Product Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "siemens-plc-1214c": {
+    "cover": "projects/seed/siemens-plc-1214c/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/siemens-plc-1214c/main.webp",
+        "alt": "Siemens PLC-1214C Monitoring & Control — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "tags",
+        "relativePath": "projects/seed/siemens-plc-1214c/tags.webp",
+        "alt": "Siemens PLC-1214C Monitoring & Control — tags",
+        "caption": "Tags",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "trends",
+        "relativePath": "projects/seed/siemens-plc-1214c/trends.webp",
+        "alt": "Siemens PLC-1214C Monitoring & Control — trends",
+        "caption": "Trends",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "alarms",
+        "relativePath": "projects/seed/siemens-plc-1214c/alarms.webp",
+        "alt": "Siemens PLC-1214C Monitoring & Control — alarms",
+        "caption": "Alarms",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "recipes",
+        "relativePath": "projects/seed/siemens-plc-1214c/recipes.webp",
+        "alt": "Siemens PLC-1214C Monitoring & Control — recipes",
+        "caption": "Recipes",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "control",
+        "relativePath": "projects/seed/siemens-plc-1214c/control.webp",
+        "alt": "Siemens PLC-1214C Monitoring & Control — control",
+        "caption": "Control",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "employee-attendance-app": {
+    "cover": "projects/seed/employee-attendance-app/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/employee-attendance-app/main.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — main",
+        "caption": "Main view",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "attendance",
+        "relativePath": "projects/seed/employee-attendance-app/attendance.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — attendance",
+        "caption": "Attendance",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "alerts",
+        "relativePath": "projects/seed/employee-attendance-app/alerts.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — alerts",
+        "caption": "Alerts",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "profile",
+        "relativePath": "projects/seed/employee-attendance-app/profile.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — profile",
+        "caption": "Profile",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "services",
+        "relativePath": "projects/seed/employee-attendance-app/services.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — services",
+        "caption": "Services",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "check-in",
+        "relativePath": "projects/seed/employee-attendance-app/check-in.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — check-in",
+        "caption": "Check In",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "leave",
+        "relativePath": "projects/seed/employee-attendance-app/leave.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — leave",
+        "caption": "Leave",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "payslip",
+        "relativePath": "projects/seed/employee-attendance-app/payslip.webp",
+        "alt": "Biometric Attendance & HR Suite (PPHL) — payslip",
+        "caption": "Payslip",
+        "width": 1170,
+        "height": 2532
+      }
+    ]
+  },
+  "dropship-marketplace": {
+    "cover": "projects/seed/dropship-marketplace/storefront.webp",
+    "images": [
+      {
+        "view": "storefront",
+        "relativePath": "projects/seed/dropship-marketplace/storefront.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — storefront",
+        "caption": "Storefront",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "admin",
+        "relativePath": "projects/seed/dropship-marketplace/admin.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — admin",
+        "caption": "Admin",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "shop",
+        "relativePath": "projects/seed/dropship-marketplace/shop.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — shop",
+        "caption": "Shop",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "offers",
+        "relativePath": "projects/seed/dropship-marketplace/offers.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — offers",
+        "caption": "Offers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "track-order",
+        "relativePath": "projects/seed/dropship-marketplace/track-order.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — track-order",
+        "caption": "Track Order",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "cart",
+        "relativePath": "projects/seed/dropship-marketplace/cart.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — cart",
+        "caption": "Cart",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "product-detail",
+        "relativePath": "projects/seed/dropship-marketplace/product-detail.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — product-detail",
+        "caption": "Product Detail",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "orders",
+        "relativePath": "projects/seed/dropship-marketplace/orders.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — orders",
+        "caption": "Orders",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "products",
+        "relativePath": "projects/seed/dropship-marketplace/products.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — products",
+        "caption": "Products",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "inventory",
+        "relativePath": "projects/seed/dropship-marketplace/inventory.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — inventory",
+        "caption": "Inventory",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "customers",
+        "relativePath": "projects/seed/dropship-marketplace/customers.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — customers",
+        "caption": "Customers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "vendors",
+        "relativePath": "projects/seed/dropship-marketplace/vendors.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — vendors",
+        "caption": "Vendors",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "payouts",
+        "relativePath": "projects/seed/dropship-marketplace/payouts.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — payouts",
+        "caption": "Payouts",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "reviews",
+        "relativePath": "projects/seed/dropship-marketplace/reviews.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — reviews",
+        "caption": "Reviews",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "settings",
+        "relativePath": "projects/seed/dropship-marketplace/settings.webp",
+        "alt": "DropshipBD — Multi-Supplier E-Commerce Marketplace — settings",
+        "caption": "Settings",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "pphl-supply-chain": {
+    "cover": "projects/seed/pphl-supply-chain/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/pphl-supply-chain/main.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-procurement",
+        "relativePath": "projects/seed/pphl-supply-chain/dashboard-procurement.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — dashboard-procurement",
+        "caption": "Dashboard Procurement",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-qc-receiving",
+        "relativePath": "projects/seed/pphl-supply-chain/dashboard-qc-receiving.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — dashboard-qc-receiving",
+        "caption": "Dashboard Qc Receiving",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-inventory-stock",
+        "relativePath": "projects/seed/pphl-supply-chain/dashboard-inventory-stock.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — dashboard-inventory-stock",
+        "caption": "Dashboard Inventory Stock",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-quarantine",
+        "relativePath": "projects/seed/pphl-supply-chain/dashboard-quarantine.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — dashboard-quarantine",
+        "caption": "Dashboard Quarantine",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-recheck",
+        "relativePath": "projects/seed/pphl-supply-chain/dashboard-recheck.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — dashboard-recheck",
+        "caption": "Dashboard Recheck",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "product-requests",
+        "relativePath": "projects/seed/pphl-supply-chain/product-requests.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — product-requests",
+        "caption": "Product Requests",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "purchase-requisitions",
+        "relativePath": "projects/seed/pphl-supply-chain/purchase-requisitions.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — purchase-requisitions",
+        "caption": "Purchase Requisitions",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "rfq-quotations",
+        "relativePath": "projects/seed/pphl-supply-chain/rfq-quotations.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — rfq-quotations",
+        "caption": "Rfq Quotations",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "purchase-orders",
+        "relativePath": "projects/seed/pphl-supply-chain/purchase-orders.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — purchase-orders",
+        "caption": "Purchase Orders",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "grn",
+        "relativePath": "projects/seed/pphl-supply-chain/grn.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — grn",
+        "caption": "Grn",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "qc-inspections",
+        "relativePath": "projects/seed/pphl-supply-chain/qc-inspections.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — qc-inspections",
+        "caption": "Qc Inspections",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "qc-failed-items",
+        "relativePath": "projects/seed/pphl-supply-chain/qc-failed-items.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — qc-failed-items",
+        "caption": "Qc Failed Items",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "current-stock",
+        "relativePath": "projects/seed/pphl-supply-chain/current-stock.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — current-stock",
+        "caption": "Current Stock",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "stock-issue",
+        "relativePath": "projects/seed/pphl-supply-chain/stock-issue.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — stock-issue",
+        "caption": "Stock Issue",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "stock-transfer",
+        "relativePath": "projects/seed/pphl-supply-chain/stock-transfer.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — stock-transfer",
+        "caption": "Stock Transfer",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "quarantine-list",
+        "relativePath": "projects/seed/pphl-supply-chain/quarantine-list.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — quarantine-list",
+        "caption": "Quarantine List",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "quarantine-release",
+        "relativePath": "projects/seed/pphl-supply-chain/quarantine-release.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — quarantine-release",
+        "caption": "Quarantine Release",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "wastage",
+        "relativePath": "projects/seed/pphl-supply-chain/wastage.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — wastage",
+        "caption": "Wastage",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "vendors",
+        "relativePath": "projects/seed/pphl-supply-chain/vendors.webp",
+        "alt": "PPHL Supply Chain Management (SCM) — vendors",
+        "caption": "Vendors",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "pphl-farm-hatchery": {
+    "cover": "projects/seed/pphl-farm-hatchery/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/pphl-farm-hatchery/main.webp",
+        "alt": "Peoples Farm & Hatchery ERP — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "hms-hospital": {
+    "cover": "projects/seed/hms-hospital/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/hms-hospital/main.webp",
+        "alt": "Hospital Management System (HMS) — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-front-office",
+        "relativePath": "projects/seed/hms-hospital/module-front-office.webp",
+        "alt": "Hospital Management System (HMS) — module-front-office",
+        "caption": "Module Front Office",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-nurse",
+        "relativePath": "projects/seed/hms-hospital/module-nurse.webp",
+        "alt": "Hospital Management System (HMS) — module-nurse",
+        "caption": "Module Nurse",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-doctor",
+        "relativePath": "projects/seed/hms-hospital/module-doctor.webp",
+        "alt": "Hospital Management System (HMS) — module-doctor",
+        "caption": "Module Doctor",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-procurement",
+        "relativePath": "projects/seed/hms-hospital/module-procurement.webp",
+        "alt": "Hospital Management System (HMS) — module-procurement",
+        "caption": "Module Procurement",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-radiology",
+        "relativePath": "projects/seed/hms-hospital/module-radiology.webp",
+        "alt": "Hospital Management System (HMS) — module-radiology",
+        "caption": "Module Radiology",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-lab-management",
+        "relativePath": "projects/seed/hms-hospital/module-lab-management.webp",
+        "alt": "Hospital Management System (HMS) — module-lab-management",
+        "caption": "Module Lab Management",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-insurance",
+        "relativePath": "projects/seed/hms-hospital/module-insurance.webp",
+        "alt": "Hospital Management System (HMS) — module-insurance",
+        "caption": "Module Insurance",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-corporate",
+        "relativePath": "projects/seed/hms-hospital/module-corporate.webp",
+        "alt": "Hospital Management System (HMS) — module-corporate",
+        "caption": "Module Corporate",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-accounting",
+        "relativePath": "projects/seed/hms-hospital/module-accounting.webp",
+        "alt": "Hospital Management System (HMS) — module-accounting",
+        "caption": "Module Accounting",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-hr-management",
+        "relativePath": "projects/seed/hms-hospital/module-hr-management.webp",
+        "alt": "Hospital Management System (HMS) — module-hr-management",
+        "caption": "Module Hr Management",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-master-data",
+        "relativePath": "projects/seed/hms-hospital/module-master-data.webp",
+        "alt": "Hospital Management System (HMS) — module-master-data",
+        "caption": "Module Master Data",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-mis-report",
+        "relativePath": "projects/seed/hms-hospital/module-mis-report.webp",
+        "alt": "Hospital Management System (HMS) — module-mis-report",
+        "caption": "Module Mis Report",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-quality-management",
+        "relativePath": "projects/seed/hms-hospital/module-quality-management.webp",
+        "alt": "Hospital Management System (HMS) — module-quality-management",
+        "caption": "Module Quality Management",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-surgery-tracking",
+        "relativePath": "projects/seed/hms-hospital/module-surgery-tracking.webp",
+        "alt": "Hospital Management System (HMS) — module-surgery-tracking",
+        "caption": "Module Surgery Tracking",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-token-management",
+        "relativePath": "projects/seed/hms-hospital/module-token-management.webp",
+        "alt": "Hospital Management System (HMS) — module-token-management",
+        "caption": "Module Token Management",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-ip-management",
+        "relativePath": "projects/seed/hms-hospital/module-ip-management.webp",
+        "alt": "Hospital Management System (HMS) — module-ip-management",
+        "caption": "Module Ip Management",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-housekeeping",
+        "relativePath": "projects/seed/hms-hospital/module-housekeeping.webp",
+        "alt": "Hospital Management System (HMS) — module-housekeeping",
+        "caption": "Module Housekeeping",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-cssd",
+        "relativePath": "projects/seed/hms-hospital/module-cssd.webp",
+        "alt": "Hospital Management System (HMS) — module-cssd",
+        "caption": "Module Cssd",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-dietitian",
+        "relativePath": "projects/seed/hms-hospital/module-dietitian.webp",
+        "alt": "Hospital Management System (HMS) — module-dietitian",
+        "caption": "Module Dietitian",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-laundry",
+        "relativePath": "projects/seed/hms-hospital/module-laundry.webp",
+        "alt": "Hospital Management System (HMS) — module-laundry",
+        "caption": "Module Laundry",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-ambulance",
+        "relativePath": "projects/seed/hms-hospital/module-ambulance.webp",
+        "alt": "Hospital Management System (HMS) — module-ambulance",
+        "caption": "Module Ambulance",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-kitchen",
+        "relativePath": "projects/seed/hms-hospital/module-kitchen.webp",
+        "alt": "Hospital Management System (HMS) — module-kitchen",
+        "caption": "Module Kitchen",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-marketing",
+        "relativePath": "projects/seed/hms-hospital/module-marketing.webp",
+        "alt": "Hospital Management System (HMS) — module-marketing",
+        "caption": "Module Marketing",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-medical-record",
+        "relativePath": "projects/seed/hms-hospital/module-medical-record.webp",
+        "alt": "Hospital Management System (HMS) — module-medical-record",
+        "caption": "Module Medical Record",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-administration",
+        "relativePath": "projects/seed/hms-hospital/module-administration.webp",
+        "alt": "Hospital Management System (HMS) — module-administration",
+        "caption": "Module Administration",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-head-of-department",
+        "relativePath": "projects/seed/hms-hospital/module-head-of-department.webp",
+        "alt": "Hospital Management System (HMS) — module-head-of-department",
+        "caption": "Module Head Of Department",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-drug",
+        "relativePath": "projects/seed/hms-hospital/module-drug.webp",
+        "alt": "Hospital Management System (HMS) — module-drug",
+        "caption": "Module Drug",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-asset-management",
+        "relativePath": "projects/seed/hms-hospital/module-asset-management.webp",
+        "alt": "Hospital Management System (HMS) — module-asset-management",
+        "caption": "Module Asset Management",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-surgical-equipment",
+        "relativePath": "projects/seed/hms-hospital/module-surgical-equipment.webp",
+        "alt": "Hospital Management System (HMS) — module-surgical-equipment",
+        "caption": "Module Surgical Equipment",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-inventory",
+        "relativePath": "projects/seed/hms-hospital/module-inventory.webp",
+        "alt": "Hospital Management System (HMS) — module-inventory",
+        "caption": "Module Inventory",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "module-consumables",
+        "relativePath": "projects/seed/hms-hospital/module-consumables.webp",
+        "alt": "Hospital Management System (HMS) — module-consumables",
+        "caption": "Module Consumables",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "scada-ems": {
+    "cover": "projects/seed/scada-ems/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/scada-ems/main.webp",
+        "alt": "SCADA / EMS Control Center — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "utility-building",
+        "relativePath": "projects/seed/scada-ems/utility-building.webp",
+        "alt": "SCADA / EMS Control Center — utility-building",
+        "caption": "Utility Building",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "boiler-room",
+        "relativePath": "projects/seed/scada-ems/boiler-room.webp",
+        "alt": "SCADA / EMS Control Center — boiler-room",
+        "caption": "Boiler Room",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "distribution-loop",
+        "relativePath": "projects/seed/scada-ems/distribution-loop.webp",
+        "alt": "SCADA / EMS Control Center — distribution-loop",
+        "caption": "Distribution Loop",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-server-pc",
+        "relativePath": "projects/seed/scada-ems/unit-server-pc.webp",
+        "alt": "SCADA / EMS Control Center — unit-server-pc",
+        "caption": "Unit Server Pc",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-monitor-1",
+        "relativePath": "projects/seed/scada-ems/unit-monitor-1.webp",
+        "alt": "SCADA / EMS Control Center — unit-monitor-1",
+        "caption": "Unit Monitor 1",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-monitor-2",
+        "relativePath": "projects/seed/scada-ems/unit-monitor-2.webp",
+        "alt": "SCADA / EMS Control Center — unit-monitor-2",
+        "caption": "Unit Monitor 2",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ethernet-switch",
+        "relativePath": "projects/seed/scada-ems/unit-ethernet-switch.webp",
+        "alt": "SCADA / EMS Control Center — unit-ethernet-switch",
+        "caption": "Unit Ethernet Switch",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-gateway-1-page",
+        "relativePath": "projects/seed/scada-ems/unit-gateway-1-page.webp",
+        "alt": "SCADA / EMS Control Center — unit-gateway-1-page",
+        "caption": "Unit Gateway 1 Page",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-gateway-2-page",
+        "relativePath": "projects/seed/scada-ems/unit-gateway-2-page.webp",
+        "alt": "SCADA / EMS Control Center — unit-gateway-2-page",
+        "caption": "Unit Gateway 2 Page",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-gateway-3-page",
+        "relativePath": "projects/seed/scada-ems/unit-gateway-3-page.webp",
+        "alt": "SCADA / EMS Control Center — unit-gateway-3-page",
+        "caption": "Unit Gateway 3 Page",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-pm5330-utility-a",
+        "relativePath": "projects/seed/scada-ems/unit-pm5330-utility-a.webp",
+        "alt": "SCADA / EMS Control Center — unit-pm5330-utility-a",
+        "caption": "Unit Pm5330 Utility A",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-mfm-383a-utility-a",
+        "relativePath": "projects/seed/scada-ems/unit-mfm-383a-utility-a.webp",
+        "alt": "SCADA / EMS Control Center — unit-mfm-383a-utility-a",
+        "caption": "Unit Mfm 383a Utility A",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-mfm-383a-utility-b",
+        "relativePath": "projects/seed/scada-ems/unit-mfm-383a-utility-b.webp",
+        "alt": "SCADA / EMS Control Center — unit-mfm-383a-utility-b",
+        "caption": "Unit Mfm 383a Utility B",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-elite-440-utility",
+        "relativePath": "projects/seed/scada-ems/unit-elite-440-utility.webp",
+        "alt": "SCADA / EMS Control Center — unit-elite-440-utility",
+        "caption": "Unit Elite 440 Utility",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-pm5330-utility-b",
+        "relativePath": "projects/seed/scada-ems/unit-pm5330-utility-b.webp",
+        "alt": "SCADA / EMS Control Center — unit-pm5330-utility-b",
+        "caption": "Unit Pm5330 Utility B",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-signal-converter-1",
+        "relativePath": "projects/seed/scada-ems/unit-signal-converter-1.webp",
+        "alt": "SCADA / EMS Control Center — unit-signal-converter-1",
+        "caption": "Unit Signal Converter 1",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-signal-converter-2",
+        "relativePath": "projects/seed/scada-ems/unit-signal-converter-2.webp",
+        "alt": "SCADA / EMS Control Center — unit-signal-converter-2",
+        "caption": "Unit Signal Converter 2",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ld-100-boiler",
+        "relativePath": "projects/seed/scada-ems/unit-ld-100-boiler.webp",
+        "alt": "SCADA / EMS Control Center — unit-ld-100-boiler",
+        "caption": "Unit Ld 100 Boiler",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-dn80-line-a",
+        "relativePath": "projects/seed/scada-ems/unit-dn80-line-a.webp",
+        "alt": "SCADA / EMS Control Center — unit-dn80-line-a",
+        "caption": "Unit Dn80 Line A",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-dn80-line-b",
+        "relativePath": "projects/seed/scada-ems/unit-dn80-line-b.webp",
+        "alt": "SCADA / EMS Control Center — unit-dn80-line-b",
+        "caption": "Unit Dn80 Line B",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-lugb-boiler",
+        "relativePath": "projects/seed/scada-ems/unit-lugb-boiler.webp",
+        "alt": "SCADA / EMS Control Center — unit-lugb-boiler",
+        "caption": "Unit Lugb Boiler",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ld-500-boiler",
+        "relativePath": "projects/seed/scada-ems/unit-ld-500-boiler.webp",
+        "alt": "SCADA / EMS Control Center — unit-ld-500-boiler",
+        "caption": "Unit Ld 500 Boiler",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-m1000-distribution",
+        "relativePath": "projects/seed/scada-ems/unit-m1000-distribution.webp",
+        "alt": "SCADA / EMS Control Center — unit-m1000-distribution",
+        "caption": "Unit M1000 Distribution",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-mfm-383a-distribution",
+        "relativePath": "projects/seed/scada-ems/unit-mfm-383a-distribution.webp",
+        "alt": "SCADA / EMS Control Center — unit-mfm-383a-distribution",
+        "caption": "Unit Mfm 383a Distribution",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ld-500-distribution-a",
+        "relativePath": "projects/seed/scada-ems/unit-ld-500-distribution-a.webp",
+        "alt": "SCADA / EMS Control Center — unit-ld-500-distribution-a",
+        "caption": "Unit Ld 500 Distribution A",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ld-500-distribution-b",
+        "relativePath": "projects/seed/scada-ems/unit-ld-500-distribution-b.webp",
+        "alt": "SCADA / EMS Control Center — unit-ld-500-distribution-b",
+        "caption": "Unit Ld 500 Distribution B",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ld-500-distribution-c",
+        "relativePath": "projects/seed/scada-ems/unit-ld-500-distribution-c.webp",
+        "alt": "SCADA / EMS Control Center — unit-ld-500-distribution-c",
+        "caption": "Unit Ld 500 Distribution C",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "nuvista-inspection": {
+    "cover": "projects/seed/nuvista-inspection/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/nuvista-inspection/main.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — main",
+        "caption": "Main view",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "login",
+        "relativePath": "projects/seed/nuvista-inspection/login.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — login",
+        "caption": "Login",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "batch",
+        "relativePath": "projects/seed/nuvista-inspection/batch.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — batch",
+        "caption": "Batch",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "mechanical",
+        "relativePath": "projects/seed/nuvista-inspection/mechanical.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — mechanical",
+        "caption": "Mechanical",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "inspection",
+        "relativePath": "projects/seed/nuvista-inspection/inspection.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — inspection",
+        "caption": "Inspection",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "products",
+        "relativePath": "projects/seed/nuvista-inspection/products.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — products",
+        "caption": "Products",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "users",
+        "relativePath": "projects/seed/nuvista-inspection/users.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — users",
+        "caption": "Users",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "audit-trail",
+        "relativePath": "projects/seed/nuvista-inspection/audit-trail.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — audit-trail",
+        "caption": "Audit Trail",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "utility",
+        "relativePath": "projects/seed/nuvista-inspection/utility.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — utility",
+        "caption": "Utility",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "knapp-test",
+        "relativePath": "projects/seed/nuvista-inspection/knapp-test.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — knapp-test",
+        "caption": "Knapp Test",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "help",
+        "relativePath": "projects/seed/nuvista-inspection/help.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — help",
+        "caption": "Help",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "camera",
+        "relativePath": "projects/seed/nuvista-inspection/camera.webp",
+        "alt": "Nuvista Inspection Desktop (HMI) — camera",
+        "caption": "Camera",
+        "width": 2800,
+        "height": 1800
+      }
+    ]
+  },
+  "ai-invoice-po": {
+    "cover": "projects/seed/ai-invoice-po/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/ai-invoice-po/main.webp",
+        "alt": "AI Invoice-to-PO Matching — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "invoices",
+        "relativePath": "projects/seed/ai-invoice-po/invoices.webp",
+        "alt": "AI Invoice-to-PO Matching — invoices",
+        "caption": "Invoices",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "approvals",
+        "relativePath": "projects/seed/ai-invoice-po/approvals.webp",
+        "alt": "AI Invoice-to-PO Matching — approvals",
+        "caption": "Approvals",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "invoice-detail",
+        "relativePath": "projects/seed/ai-invoice-po/invoice-detail.webp",
+        "alt": "AI Invoice-to-PO Matching — invoice-detail",
+        "caption": "Invoice Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "cinematic-video-engine": {
+    "cover": "projects/seed/cinematic-video-engine/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/cinematic-video-engine/main.webp",
+        "alt": "Cinematic Video Engine — main",
+        "caption": "Main view",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "doctor",
+        "relativePath": "projects/seed/cinematic-video-engine/doctor.webp",
+        "alt": "Cinematic Video Engine — doctor",
+        "caption": "Doctor",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "tts-smoke",
+        "relativePath": "projects/seed/cinematic-video-engine/tts-smoke.webp",
+        "alt": "Cinematic Video Engine — tts-smoke",
+        "caption": "Tts Smoke",
+        "width": 2560,
+        "height": 1600
+      }
+    ]
+  },
+  "workflow-video-studio": {
+    "cover": "projects/seed/workflow-video-studio/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/workflow-video-studio/main.webp",
+        "alt": "Workflow Video Studio — main",
+        "caption": "Main view",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "record",
+        "relativePath": "projects/seed/workflow-video-studio/record.webp",
+        "alt": "Workflow Video Studio — record",
+        "caption": "Record",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "narrate",
+        "relativePath": "projects/seed/workflow-video-studio/narrate.webp",
+        "alt": "Workflow Video Studio — narrate",
+        "caption": "Narrate",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "compose",
+        "relativePath": "projects/seed/workflow-video-studio/compose.webp",
+        "alt": "Workflow Video Studio — compose",
+        "caption": "Compose",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "verify-output",
+        "relativePath": "projects/seed/workflow-video-studio/verify-output.webp",
+        "alt": "Workflow Video Studio — verify-output",
+        "caption": "Verify Output",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "doctor",
+        "relativePath": "projects/seed/workflow-video-studio/doctor.webp",
+        "alt": "Workflow Video Studio — doctor",
+        "caption": "Doctor",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "stack-refresh",
+        "relativePath": "projects/seed/workflow-video-studio/stack-refresh.webp",
+        "alt": "Workflow Video Studio — stack-refresh",
+        "caption": "Stack Refresh",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "tts-smoke",
+        "relativePath": "projects/seed/workflow-video-studio/tts-smoke.webp",
+        "alt": "Workflow Video Studio — tts-smoke",
+        "caption": "Tts Smoke",
+        "width": 2560,
+        "height": 1600
+      }
+    ]
+  },
+  "weight-scale-connector": {
+    "cover": "projects/seed/weight-scale-connector/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/weight-scale-connector/main.webp",
+        "alt": "Weight Scale Connector (Desktop) — main",
+        "caption": "Main view",
+        "width": 2560,
+        "height": 1800
+      },
+      {
+        "view": "web-admin",
+        "relativePath": "projects/seed/weight-scale-connector/web-admin.webp",
+        "alt": "Weight Scale Connector (Desktop) — web-admin",
+        "caption": "Web Admin",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "settings",
+        "relativePath": "projects/seed/weight-scale-connector/settings.webp",
+        "alt": "Weight Scale Connector (Desktop) — settings",
+        "caption": "Settings",
+        "width": 2560,
+        "height": 1800
+      },
+      {
+        "view": "camera-preview",
+        "relativePath": "projects/seed/weight-scale-connector/camera-preview.webp",
+        "alt": "Weight Scale Connector (Desktop) — camera-preview",
+        "caption": "Camera Preview",
+        "width": 2560,
+        "height": 1800
+      },
+      {
+        "view": "search-print",
+        "relativePath": "projects/seed/weight-scale-connector/search-print.webp",
+        "alt": "Weight Scale Connector (Desktop) — search-print",
+        "caption": "Search Print",
+        "width": 2560,
+        "height": 1800
+      },
+      {
+        "view": "completed-popup",
+        "relativePath": "projects/seed/weight-scale-connector/completed-popup.webp",
+        "alt": "Weight Scale Connector (Desktop) — completed-popup",
+        "caption": "Completed Popup",
+        "width": 2560,
+        "height": 1800
+      },
+      {
+        "view": "database-popup",
+        "relativePath": "projects/seed/weight-scale-connector/database-popup.webp",
+        "alt": "Weight Scale Connector (Desktop) — database-popup",
+        "caption": "Database Popup",
+        "width": 2560,
+        "height": 1800
+      },
+      {
+        "view": "weight-table",
+        "relativePath": "projects/seed/weight-scale-connector/weight-table.webp",
+        "alt": "Weight Scale Connector (Desktop) — weight-table",
+        "caption": "Weight Table",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "weight-transactions",
+        "relativePath": "projects/seed/weight-scale-connector/weight-transactions.webp",
+        "alt": "Weight Scale Connector (Desktop) — weight-transactions",
+        "caption": "Weight Transactions",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "vendors",
+        "relativePath": "projects/seed/weight-scale-connector/vendors.webp",
+        "alt": "Weight Scale Connector (Desktop) — vendors",
+        "caption": "Vendors",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "customers",
+        "relativePath": "projects/seed/weight-scale-connector/customers.webp",
+        "alt": "Weight Scale Connector (Desktop) — customers",
+        "caption": "Customers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "materials",
+        "relativePath": "projects/seed/weight-scale-connector/materials.webp",
+        "alt": "Weight Scale Connector (Desktop) — materials",
+        "caption": "Materials",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "pharma-qc-inspector": {
+    "cover": "projects/seed/pharma-qc-inspector/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/pharma-qc-inspector/main.webp",
+        "alt": "Pharma Vial QC Desktop Inspector — main",
+        "caption": "Main view",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "inspection-detail",
+        "relativePath": "projects/seed/pharma-qc-inspector/inspection-detail.webp",
+        "alt": "Pharma Vial QC Desktop Inspector — inspection-detail",
+        "caption": "Inspection Detail",
+        "width": 2800,
+        "height": 1800
+      },
+      {
+        "view": "detailed-view",
+        "relativePath": "projects/seed/pharma-qc-inspector/detailed-view.webp",
+        "alt": "Pharma Vial QC Desktop Inspector — detailed-view",
+        "caption": "Detailed View",
+        "width": 2800,
+        "height": 1800
+      }
+    ]
+  },
+  "hvac-bms": {
+    "cover": "projects/seed/hvac-bms/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/hvac-bms/main.webp",
+        "alt": "HVAC / BMS Control Center — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "reports",
+        "relativePath": "projects/seed/hvac-bms/reports.webp",
+        "alt": "HVAC / BMS Control Center — reports",
+        "caption": "Reports",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "settings",
+        "relativePath": "projects/seed/hvac-bms/settings.webp",
+        "alt": "HVAC / BMS Control Center — settings",
+        "caption": "Settings",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a01",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a01.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a01",
+        "caption": "Unit Ahu 1a01",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a02",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a02.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a02",
+        "caption": "Unit Ahu 1a02",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a03",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a03.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a03",
+        "caption": "Unit Ahu 1a03",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a04",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a04.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a04",
+        "caption": "Unit Ahu 1a04",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a05",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a05.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a05",
+        "caption": "Unit Ahu 1a05",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a06",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a06.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a06",
+        "caption": "Unit Ahu 1a06",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-ahu-1a07",
+        "relativePath": "projects/seed/hvac-bms/unit-ahu-1a07.webp",
+        "alt": "HVAC / BMS Control Center — unit-ahu-1a07",
+        "caption": "Unit Ahu 1a07",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-chiller-01",
+        "relativePath": "projects/seed/hvac-bms/unit-chiller-01.webp",
+        "alt": "HVAC / BMS Control Center — unit-chiller-01",
+        "caption": "Unit Chiller 01",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-chiller-02",
+        "relativePath": "projects/seed/hvac-bms/unit-chiller-02.webp",
+        "alt": "HVAC / BMS Control Center — unit-chiller-02",
+        "caption": "Unit Chiller 02",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "unit-cooling-tower-01",
+        "relativePath": "projects/seed/hvac-bms/unit-cooling-tower-01.webp",
+        "alt": "HVAC / BMS Control Center — unit-cooling-tower-01",
+        "caption": "Unit Cooling Tower 01",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "dental-tooth-segmenter": {
+    "cover": "projects/seed/dental-tooth-segmenter/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/dental-tooth-segmenter/main.webp",
+        "alt": "3D Dental Tooth Region Segmenter — main",
+        "caption": "Main view",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "view": "select-faces-dialog",
+        "relativePath": "projects/seed/dental-tooth-segmenter/select-faces-dialog.webp",
+        "alt": "3D Dental Tooth Region Segmenter — select-faces-dialog",
+        "caption": "Select Faces Dialog",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "view": "viewer-full",
+        "relativePath": "projects/seed/dental-tooth-segmenter/viewer-full.webp",
+        "alt": "3D Dental Tooth Region Segmenter — viewer-full",
+        "caption": "Viewer Full",
+        "width": 2880,
+        "height": 1800
+      }
+    ]
+  },
+  "fishmeaqua": {
+    "cover": "projects/seed/fishmeaqua/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/fishmeaqua/main.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "shop",
+        "relativePath": "projects/seed/fishmeaqua/shop.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — shop",
+        "caption": "Shop",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "categories",
+        "relativePath": "projects/seed/fishmeaqua/categories.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — categories",
+        "caption": "Categories",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "blog",
+        "relativePath": "projects/seed/fishmeaqua/blog.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — blog",
+        "caption": "Blog",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "about",
+        "relativePath": "projects/seed/fishmeaqua/about.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — about",
+        "caption": "About",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "contact",
+        "relativePath": "projects/seed/fishmeaqua/contact.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — contact",
+        "caption": "Contact",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "cart",
+        "relativePath": "projects/seed/fishmeaqua/cart.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — cart",
+        "caption": "Cart",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "checkout",
+        "relativePath": "projects/seed/fishmeaqua/checkout.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — checkout",
+        "caption": "Checkout",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "product-detail",
+        "relativePath": "projects/seed/fishmeaqua/product-detail.webp",
+        "alt": "FishMeAqua — Aquaculture E-Commerce — product-detail",
+        "caption": "Product Detail",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "floating-print": {
+    "cover": "projects/seed/floating-print/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/floating-print/main.webp",
+        "alt": "Floating Print Capture Utility — main",
+        "caption": "Main view",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "view": "completed-pdf",
+        "relativePath": "projects/seed/floating-print/completed-pdf.webp",
+        "alt": "Floating Print Capture Utility — completed-pdf",
+        "caption": "Completed Pdf",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "view": "completed-print",
+        "relativePath": "projects/seed/floating-print/completed-print.webp",
+        "alt": "Floating Print Capture Utility — completed-print",
+        "caption": "Completed Print",
+        "width": 2880,
+        "height": 1800
+      },
+      {
+        "view": "error",
+        "relativePath": "projects/seed/floating-print/error.webp",
+        "alt": "Floating Print Capture Utility — error",
+        "caption": "Error",
+        "width": 2880,
+        "height": 1800
+      }
+    ]
+  },
+  "dxg-agency": {
+    "cover": "projects/seed/dxg-agency/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/dxg-agency/main.webp",
+        "alt": "DXG Digital Agency Website — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "triple-e-experience",
+        "relativePath": "projects/seed/dxg-agency/triple-e-experience.webp",
+        "alt": "DXG Digital Agency Website — triple-e-experience",
+        "caption": "Triple E Experience",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "who-we-are",
+        "relativePath": "projects/seed/dxg-agency/who-we-are.webp",
+        "alt": "DXG Digital Agency Website — who-we-are",
+        "caption": "Who We Are",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "services",
+        "relativePath": "projects/seed/dxg-agency/services.webp",
+        "alt": "DXG Digital Agency Website — services",
+        "caption": "Services",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "why-dxg",
+        "relativePath": "projects/seed/dxg-agency/why-dxg.webp",
+        "alt": "DXG Digital Agency Website — why-dxg",
+        "caption": "Why Dxg",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "blog",
+        "relativePath": "projects/seed/dxg-agency/blog.webp",
+        "alt": "DXG Digital Agency Website — blog",
+        "caption": "Blog",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "contact",
+        "relativePath": "projects/seed/dxg-agency/contact.webp",
+        "alt": "DXG Digital Agency Website — contact",
+        "caption": "Contact",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "on-demand-gatekeeper": {
+    "cover": "projects/seed/on-demand-gatekeeper/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/on-demand-gatekeeper/main.webp",
+        "alt": "On-Demand Gatekeeper (Cost-Saving Proxy) — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "ready",
+        "relativePath": "projects/seed/on-demand-gatekeeper/ready.webp",
+        "alt": "On-Demand Gatekeeper (Cost-Saving Proxy) — ready",
+        "caption": "Ready",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "error",
+        "relativePath": "projects/seed/on-demand-gatekeeper/error.webp",
+        "alt": "On-Demand Gatekeeper (Cost-Saving Proxy) — error",
+        "caption": "Error",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "status",
+        "relativePath": "projects/seed/on-demand-gatekeeper/status.webp",
+        "alt": "On-Demand Gatekeeper (Cost-Saving Proxy) — status",
+        "caption": "Status",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "rocket-launcher-ota": {
+    "cover": "projects/seed/rocket-launcher-ota/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/rocket-launcher-ota/main.webp",
+        "alt": "Rocket Launcher (OTA Release Pipeline) — main",
+        "caption": "Main view",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "apk-only",
+        "relativePath": "projects/seed/rocket-launcher-ota/apk-only.webp",
+        "alt": "Rocket Launcher (OTA Release Pipeline) — apk-only",
+        "caption": "Apk Only",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "failure",
+        "relativePath": "projects/seed/rocket-launcher-ota/failure.webp",
+        "alt": "Rocket Launcher (OTA Release Pipeline) — failure",
+        "caption": "Failure",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "complete",
+        "relativePath": "projects/seed/rocket-launcher-ota/complete.webp",
+        "alt": "Rocket Launcher (OTA Release Pipeline) — complete",
+        "caption": "Complete",
+        "width": 2560,
+        "height": 1600
+      }
+    ]
+  },
+  "pphl-accounts-erp": {
+    "cover": "projects/seed/pphl-accounts-erp/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/pphl-accounts-erp/main.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-live-cull-bird",
+        "relativePath": "projects/seed/pphl-accounts-erp/dashboard-live-cull-bird.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — dashboard-live-cull-bird",
+        "caption": "Dashboard Live Cull Bird",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-feed-fertilizer",
+        "relativePath": "projects/seed/pphl-accounts-erp/dashboard-feed-fertilizer.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — dashboard-feed-fertilizer",
+        "caption": "Dashboard Feed Fertilizer",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-egg",
+        "relativePath": "projects/seed/pphl-accounts-erp/dashboard-egg.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — dashboard-egg",
+        "caption": "Dashboard Egg",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dashboard-account",
+        "relativePath": "projects/seed/pphl-accounts-erp/dashboard-account.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — dashboard-account",
+        "caption": "Dashboard Account",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "bank-list",
+        "relativePath": "projects/seed/pphl-accounts-erp/bank-list.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — bank-list",
+        "caption": "Bank List",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "payment-received",
+        "relativePath": "projects/seed/pphl-accounts-erp/payment-received.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — payment-received",
+        "caption": "Payment Received",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "payment-payable",
+        "relativePath": "projects/seed/pphl-accounts-erp/payment-payable.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — payment-payable",
+        "caption": "Payment Payable",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "journal-entry",
+        "relativePath": "projects/seed/pphl-accounts-erp/journal-entry.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — journal-entry",
+        "caption": "Journal Entry",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "vendor-ledger",
+        "relativePath": "projects/seed/pphl-accounts-erp/vendor-ledger.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — vendor-ledger",
+        "caption": "Vendor Ledger",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "vendor-closing-balance",
+        "relativePath": "projects/seed/pphl-accounts-erp/vendor-closing-balance.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — vendor-closing-balance",
+        "caption": "Vendor Closing Balance",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "daily-price",
+        "relativePath": "projects/seed/pphl-accounts-erp/daily-price.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — daily-price",
+        "caption": "Daily Price",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "daily-price-history",
+        "relativePath": "projects/seed/pphl-accounts-erp/daily-price-history.webp",
+        "alt": "PPHL Accounts ERP (Backend + Client) — daily-price-history",
+        "caption": "Daily Price History",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "scm-data-migration": {
+    "cover": "projects/seed/scm-data-migration/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/scm-data-migration/main.webp",
+        "alt": "SCM Data-Migration Tooling — main",
+        "caption": "Main view",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "seed-restore",
+        "relativePath": "projects/seed/scm-data-migration/seed-restore.webp",
+        "alt": "SCM Data-Migration Tooling — seed-restore",
+        "caption": "Seed Restore",
+        "width": 2560,
+        "height": 1600
+      },
+      {
+        "view": "migrate-logs",
+        "relativePath": "projects/seed/scm-data-migration/migrate-logs.webp",
+        "alt": "SCM Data-Migration Tooling — migrate-logs",
+        "caption": "Migrate Logs",
+        "width": 2560,
+        "height": 1600
+      }
+    ]
+  },
+  "zkteco-attendance": {
+    "cover": "projects/seed/zkteco-attendance/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/zkteco-attendance/main.webp",
+        "alt": "ZKTeco Attendance Automation — main",
+        "caption": "Main view",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "access-events",
+        "relativePath": "projects/seed/zkteco-attendance/access-events.webp",
+        "alt": "ZKTeco Attendance Automation — access-events",
+        "caption": "Access Events",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "door-status",
+        "relativePath": "projects/seed/zkteco-attendance/door-status.webp",
+        "alt": "ZKTeco Attendance Automation — door-status",
+        "caption": "Door Status",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "users",
+        "relativePath": "projects/seed/zkteco-attendance/users.webp",
+        "alt": "ZKTeco Attendance Automation — users",
+        "caption": "Users",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "raw-logs",
+        "relativePath": "projects/seed/zkteco-attendance/raw-logs.webp",
+        "alt": "ZKTeco Attendance Automation — raw-logs",
+        "caption": "Raw Logs",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "devices",
+        "relativePath": "projects/seed/zkteco-attendance/devices.webp",
+        "alt": "ZKTeco Attendance Automation — devices",
+        "caption": "Devices",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "sync-users",
+        "relativePath": "projects/seed/zkteco-attendance/sync-users.webp",
+        "alt": "ZKTeco Attendance Automation — sync-users",
+        "caption": "Sync Users",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "heartbeats",
+        "relativePath": "projects/seed/zkteco-attendance/heartbeats.webp",
+        "alt": "ZKTeco Attendance Automation — heartbeats",
+        "caption": "Heartbeats",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "companies",
+        "relativePath": "projects/seed/zkteco-attendance/companies.webp",
+        "alt": "ZKTeco Attendance Automation — companies",
+        "caption": "Companies",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "dealers",
+        "relativePath": "projects/seed/zkteco-attendance/dealers.webp",
+        "alt": "ZKTeco Attendance Automation — dealers",
+        "caption": "Dealers",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "farms",
+        "relativePath": "projects/seed/zkteco-attendance/farms.webp",
+        "alt": "ZKTeco Attendance Automation — farms",
+        "caption": "Farms",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "privileges",
+        "relativePath": "projects/seed/zkteco-attendance/privileges.webp",
+        "alt": "ZKTeco Attendance Automation — privileges",
+        "caption": "Privileges",
+        "width": 3200,
+        "height": 2000
+      },
+      {
+        "view": "theme",
+        "relativePath": "projects/seed/zkteco-attendance/theme.webp",
+        "alt": "ZKTeco Attendance Automation — theme",
+        "caption": "Theme",
+        "width": 3200,
+        "height": 2000
+      }
+    ]
+  },
+  "gazi-portfolio-companion-app": {
+    "cover": "projects/seed/gazi-portfolio-companion-app/main.webp",
+    "images": [
+      {
+        "view": "main",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/main.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — main",
+        "caption": "Main view",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "career",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/career.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — career",
+        "caption": "Career",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "work",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/work.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — work",
+        "caption": "Work",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "cv",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/cv.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — cv",
+        "caption": "Cv",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "contact",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/contact.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — contact",
+        "caption": "Contact",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "project-detail",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/project-detail.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — project-detail",
+        "caption": "Project Detail",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "experience-detail",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/experience-detail.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — experience-detail",
+        "caption": "Experience Detail",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "settings",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/settings.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — settings",
+        "caption": "Settings",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "skills",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/skills.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — skills",
+        "caption": "Skills",
+        "width": 1170,
+        "height": 2532
+      },
+      {
+        "view": "about",
+        "relativePath": "projects/seed/gazi-portfolio-companion-app/about.webp",
+        "alt": "Gazi Portfolio Companion App (Flutter) — about",
+        "caption": "About",
+        "width": 1170,
+        "height": 2532
+      }
+    ]
+  }
+}
