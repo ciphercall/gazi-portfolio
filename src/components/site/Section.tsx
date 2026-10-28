@@ -26,7 +26,7 @@ export function Section({
     <section
       id={id}
       className={`relative isolate px-4 ${
-        tight ? "py-14 sm:py-16" : "py-20 sm:py-28"
+        tight ? "py-10 sm:py-14" : "py-16 sm:py-20"
       } sm:px-6 ${className}`}
     >
       {grid ? <div className="grid-overlay" aria-hidden="true" /> : null}

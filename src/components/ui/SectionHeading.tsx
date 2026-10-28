@@ -52,7 +52,7 @@ export function SectionHeading({
         {title}
       </Heading>
 
-      {lead ? <p className="mt-4 text-lg leading-relaxed text-muted">{lead}</p> : null}
+      {lead ? <p className="mt-3 text-base sm:text-lg leading-relaxed text-muted">{lead}</p> : null}
     </div>
   );
 }

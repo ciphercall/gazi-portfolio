@@ -44,16 +44,16 @@ export function Hero({
   const hasRoles = currentRoles.length > 0;
 
   return (
-    <section className="relative isolate flex min-h-[88svh] items-center overflow-hidden px-4 pb-16 pt-10 sm:px-6 sm:pb-24">
+    <section className="relative isolate flex min-h-[72svh] items-center overflow-hidden px-4 pb-16 pt-10 sm:px-6 sm:pb-24">
       <div className="aurora-mesh" aria-hidden="true" />
       <div className="grid-overlay" aria-hidden="true" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
         style={{ backgroundImage: "linear-gradient(to bottom, transparent, var(--c-canvas))" }}
       />
 
-      <div className={`relative z-10 mx-auto grid w-full max-w-6xl gap-14 ${hasRoles ? "lg:grid-cols-[1.45fr_0.75fr] lg:items-center" : "lg:grid-cols-1"}`}>
+      <div className={`relative z-10 mx-auto grid w-full max-w-6xl gap-10 ${hasRoles ? "lg:grid-cols-[1.45fr_0.75fr] lg:items-center" : "lg:grid-cols-1"}`}>
         <div>
           <div className="animate-rise" style={rise(40)}>
             <AvailabilityChip />
@@ -68,7 +68,7 @@ export function Hero({
           </h1>
 
           <p
-            className="animate-rise mt-6 max-w-2xl font-display text-xl font-medium leading-snug text-ink/90 sm:text-2xl"
+            className="animate-rise mt-6 max-w-2xl font-display text-lg font-medium leading-snug text-ink/90 sm:text-xl"
             style={rise(200)}
           >
             {headline}
@@ -76,7 +76,7 @@ export function Hero({
 
           {subheadline ? (
             <p
-              className="animate-rise mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg"
+              className="animate-rise mt-5 max-w-2xl text-base leading-relaxed text-muted"
               style={rise(260)}
             >
               {subheadline}
@@ -92,7 +92,7 @@ export function Hero({
           ) : null}
 
           <div
-            className="animate-rise mt-9 flex flex-wrap items-center gap-3"
+            className="animate-rise mt-7 flex flex-wrap items-center gap-3"
             style={rise(380)}
           >
             <ActionLink
@@ -110,7 +110,7 @@ export function Hero({
             </ActionLink>
           </div>
 
-          <div className="animate-rise mt-12" style={rise(460)}>
+          <div className="animate-rise mt-8" style={rise(460)}>
             <a
               href="#about"
               className="inline-flex items-center gap-2 text-xs font-medium text-faint transition hover:text-ink"
@@ -123,12 +123,12 @@ export function Hero({
 
         {currentRoles.length > 0 ? (
           <aside
-            className="animate-rise glass hairline p-6"
+            className="animate-rise glass hairline p-5"
             style={rise(300)}
             aria-label="Current roles"
           >
             <p className="label-mono">Currently</p>
-            <ul className="mt-4 grid gap-4">
+            <ul className="mt-3 grid gap-3">
               {currentRoles.map((role) => (
                 <li key={role.slug} className="border-b border-line pb-4 last:border-b-0 last:pb-0">
                   <p className="font-display text-base font-semibold text-ink">{role.title}</p>
