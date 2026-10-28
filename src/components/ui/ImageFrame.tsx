@@ -100,7 +100,7 @@ export function ImageFrame({
       <div className="absolute inset-0" style={{ backgroundImage: AURORA_VIGNETTE }} aria-hidden />
 
       <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
-        <span className="font-display text-5xl font-semibold tracking-tight text-ink/85 drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)] sm:text-6xl">
+        <span className="font-display text-3xl font-semibold tracking-tight text-ink/85 drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)] sm:text-3xl">
           {monogram}
         </span>
       </div>

@@ -44,16 +44,16 @@ export function ContactGrid({ channels }: { channels: ContactChannel[] }) {
   if (channels.length === 0) return null;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {channels.map((channel, index) => (
         <Reveal key={channel.key} delay={index * 0.04} className="h-full">
           <a
             href={channel.href}
             {...(channel.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="glass hairline card-lift group flex h-full flex-col gap-4 p-5 sm:p-6"
+            className="glass hairline card-lift group flex h-full flex-col gap-3 p-4 sm:p-5"
           >
             <div className="flex items-start justify-between gap-3">
-              <IconBadge size="lg">
+              <IconBadge size="md">
                 <ChannelIcon channel={channel} />
               </IconBadge>
               {channel.external ? (
@@ -62,7 +62,7 @@ export function ContactGrid({ channels }: { channels: ContactChannel[] }) {
             </div>
 
             <div className="min-w-0">
-              <p className="font-display text-lg font-semibold text-ink">{channel.label}</p>
+              <p className="font-display text-base font-semibold text-ink">{channel.label}</p>
               <p className="mt-1 text-sm leading-relaxed text-muted">{channel.hint}</p>
               <p className="mt-3 truncate text-xs text-faint">{channel.display}</p>
             </div>

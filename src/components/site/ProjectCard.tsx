@@ -45,7 +45,7 @@ export function ProjectCard({
         priority={priority}
       />
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
         {project.featured ? (
           <div className="mb-3">
             <Chip tone="violet" icon={<Star className="h-3.5 w-3.5" />}>
@@ -54,7 +54,7 @@ export function ProjectCard({
           </div>
         ) : null}
 
-        <h3 className="font-display text-xl font-semibold text-ink">
+        <h3 className="font-display text-lg font-semibold text-ink">
           <Link
             href={`/projects/${project.slug}`}
             className="after:absolute after:inset-0 after:rounded-card"
@@ -80,7 +80,7 @@ export function ProjectCard({
           </ul>
         ) : null}
 
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-5">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4">
           <div className="flex flex-wrap items-center gap-3 text-xs text-faint">
             {project.role ? (
               <span className="inline-flex items-center gap-1.5">

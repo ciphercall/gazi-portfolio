@@ -177,9 +177,9 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
               role="dialog"
               aria-modal="true"
               aria-label={`${projectTitle} — image gallery`}
-              className="glass-strong hairline relative z-10 flex max-h-full w-full max-w-5xl flex-col overflow-hidden"
+              className="glass-strong hairline relative z-10 flex max-h-full w-full max-w-4xl flex-col overflow-hidden"
             >
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-3 py-2.5">
                 <p className="flex min-w-0 items-center gap-2 text-sm text-muted">
                   <ImageIcon className="h-4 w-4 text-teal" aria-hidden="true" />
                   <span className="truncate">{captionFor(active, activeIndex)}</span>
@@ -221,7 +221,7 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
 
               <motion.div
                 key={active.path}
-                className="relative h-[52svh] w-full sm:h-[64svh]"
+                 className="relative h-[44svh] w-full sm:h-[56svh]"
                 initial={reduceMotion ? false : { opacity: 0, x: direction * 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.35, ease: EASE_AURORA }}
@@ -239,12 +239,12 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
                   fill
                   sizes="(min-width: 1024px) 1024px, 100vw"
                   unoptimized={active.path.startsWith("/media/")}
-                  className="pointer-events-none object-contain p-3 sm:p-5"
+                   className="pointer-events-none object-contain p-2 sm:p-4"
                 />
               </motion.div>
 
               {active.caption ? (
-                <p className="border-t border-line px-4 py-3 text-sm text-muted">
+                <p className="border-t border-line px-3 py-2.5 text-sm text-muted">
                   {active.caption}
                 </p>
               ) : null}
