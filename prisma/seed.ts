@@ -13,6 +13,8 @@
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
+import fs from "node:fs";
+import path from "node:path";
 
 import { PrismaClient } from "../src/generated/prisma/client";
 import {
@@ -207,6 +209,47 @@ async function seedCertifications(): Promise<number> {
 }
 
 async function seedProjects(): Promise<number> {
+  const mediaRoot = process.env.MEDIA_ROOT || "/srv/media";
+
+  function resolveMediaAbsolute(relativePath: string): string {
+    const cleaned = relativePath.replace(/\\/g, "/").replace(/^\/+/, "");
+    if (cleaned.includes("\0") || cleaned.includes("..")) {
+      throw new Error(`Refusing unsafe media path: ${relativePath}`);
+    }
+    const absolute = path.resolve(mediaRoot, cleaned);
+    const relativeToRoot = path.relative(mediaRoot, absolute);
+    if (
+      relativeToRoot === "" ||
+      relativeToRoot.startsWith("..") ||
+      path.isAbsolute(relativeToRoot)
+    ) {
+      throw new Error(`Refusing to write outside MEDIA_ROOT: ${relativePath}`);
+    }
+    return absolute;
+  }
+
+  function ensureMediaFile(relativePath: string, sourcePath: string): void {
+    const absolute = resolveMediaAbsolute(relativePath);
+    if (fs.existsSync(absolute)) return;
+    fs.mkdirSync(path.dirname(absolute), { recursive: true });
+    fs.copyFileSync(sourcePath, absolute);
+  }
+
+  // Load the bundled screenshot manifest (optional — seed still works without it).
+  const manifestPath = path.resolve(process.cwd(), "seed-media", "manifest.json");
+  let manifest: Record<
+    string,
+    { cover: string; images: { view: string; relativePath: string; alt: string; caption: string; width: number; height: number }[] }
+  > = {};
+  const seedMediaRoot = path.resolve(process.cwd(), "seed-media");
+  if (fs.existsSync(manifestPath)) {
+    try {
+      manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    } catch (error) {
+      console.warn("  could not parse seed-media/manifest.json:", error);
+    }
+  }
+
   let order = 0;
   for (const item of PROJECTS) {
     const data = {
@@ -229,11 +272,53 @@ async function seedProjects(): Promise<number> {
       }),
     };
 
-    await prisma.project.upsert({
+    const saved = await prisma.project.upsert({
       where: { slug: item.slug },
       create: { slug: item.slug, ...data },
       update: data,
     });
+
+    const media = manifest[item.slug];
+    if (media) {
+      // Make sure every file is on the media volume (idempotent copy).
+      for (const image of media.images) {
+        const source = path.join(seedMediaRoot, item.slug, path.basename(image.relativePath));
+        try {
+          if (fs.existsSync(source)) {
+            ensureMediaFile(image.relativePath, source);
+          } else {
+            console.warn(`  missing source file for ${item.slug}/${image.view}`);
+          }
+        } catch (error) {
+          console.warn(`  could not ensure media file ${image.relativePath}:`, error);
+        }
+      }
+
+      // Only populate the DB rows when the project has none yet, so admin edits
+      // (reorder / delete / replace) survive a re-seed.
+      const existingCount = await prisma.projectImage.count({
+        where: { projectId: saved.id },
+      });
+      if (existingCount === 0) {
+        await prisma.project.update({
+          where: { id: saved.id },
+          data: { coverPath: `/media/${media.cover}` },
+        });
+        if (media.images.length > 0) {
+          await prisma.projectImage.createMany({
+            data: media.images.map((image, index) => ({
+              projectId: saved.id,
+              path: `/media/${image.relativePath}`,
+              alt: image.alt,
+              caption: image.caption,
+              width: image.width,
+              height: image.height,
+              order: index,
+            })),
+          });
+        }
+      }
+    }
   }
   return PROJECTS.length;
 }
