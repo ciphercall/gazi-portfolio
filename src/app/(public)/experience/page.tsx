@@ -115,7 +115,7 @@ export default async function ExperiencePage() {
         ])}
       />
 
-      <Section className="pt-14 sm:pt-20" grid>
+      <Section className="pt-12 sm:pt-16" grid>
         <SectionHeading
           as="h1"
           eyebrow="Experience"

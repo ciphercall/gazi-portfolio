@@ -105,7 +105,7 @@ export default async function ProjectsPage({
         </p>
 
         {projects.length > 0 ? (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {projects.map((project, index) => (
               <Reveal key={project.slug} delay={index * 0.04} className="h-full">
                 <ProjectCard
@@ -117,7 +117,7 @@ export default async function ProjectsPage({
             ))}
           </div>
         ) : (
-          <div className="glass hairline mt-8 flex flex-col items-start gap-4 p-8">
+          <div className="glass hairline mt-8 flex flex-col items-start gap-4 p-6">
             <span className="inline-flex items-center gap-3 text-ink">
               <SearchX className="h-5 w-5 text-teal" aria-hidden="true" />
               <span className="font-display text-lg font-semibold">
@@ -134,7 +134,7 @@ export default async function ProjectsPage({
           </div>
         )}
 
-        <div className="mt-12 flex flex-wrap items-center gap-3 border-t border-line pt-8">
+        <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-line pt-6">
           <ActionLink href="/contact" icon={<ArrowRight className="h-4 w-4" />}>
             Talk about a project like these
           </ActionLink>

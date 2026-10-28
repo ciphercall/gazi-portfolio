@@ -107,16 +107,16 @@ export default async function ContactPage() {
 
       <Section id="how-to-reach" tight>
         <div className="grid gap-6 lg:grid-cols-3">
-          <section className="glass hairline p-6" aria-labelledby="brief-heading">
+          <section className="glass hairline p-5" aria-labelledby="brief-heading">
             <div className="flex items-center gap-3">
               <IconBadge>
                 <ListChecks className="h-5 w-5" aria-hidden="true" />
               </IconBadge>
-              <h2 id="brief-heading" className="font-display text-lg font-semibold text-ink">
+              <h2 id="brief-heading" className="font-display text-base font-semibold text-ink">
                 What to include
               </h2>
             </div>
-            <ul className="mt-5 grid gap-3">
+            <ul className="mt-4 grid gap-3">
               {BRIEF_CHECKLIST.map((item) => (
                 <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted">
                   <span
@@ -132,16 +132,16 @@ export default async function ContactPage() {
             </ul>
           </section>
 
-          <section className="glass hairline p-6" aria-labelledby="reply-heading">
+          <section className="glass hairline p-5" aria-labelledby="reply-heading">
             <div className="flex items-center gap-3">
               <IconBadge toneClassName="text-violet">
                 <Clock className="h-5 w-5" aria-hidden="true" />
               </IconBadge>
-              <h2 id="reply-heading" className="font-display text-lg font-semibold text-ink">
+              <h2 id="reply-heading" className="font-display text-base font-semibold text-ink">
                 How I reply
               </h2>
             </div>
-            <ul className="mt-5 grid gap-4 text-sm leading-relaxed text-muted">
+            <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-muted">
               <li>
                 <span className="block font-medium text-ink">Within business hours</span>
                 Most messages get an answer the same working day, Bangladesh time (GMT+6).
@@ -158,16 +158,16 @@ export default async function ContactPage() {
             </ul>
           </section>
 
-          <section className="glass hairline p-6" aria-labelledby="cv-heading">
+          <section className="glass hairline p-5" aria-labelledby="cv-heading">
             <div className="flex items-center gap-3">
               <IconBadge toneClassName="text-cyan">
                 <Sparkles className="h-5 w-5" aria-hidden="true" />
               </IconBadge>
-              <h2 id="cv-heading" className="font-display text-lg font-semibold text-ink">
+              <h2 id="cv-heading" className="font-display text-base font-semibold text-ink">
                 In a hurry?
               </h2>
             </div>
-            <p className="mt-5 text-sm leading-relaxed text-muted">
+            <p className="mt-4 text-sm leading-relaxed text-muted">
               The CV has the same story in one document: roles, dates, stack and education. Useful
               if you are passing this on to someone else.
             </p>

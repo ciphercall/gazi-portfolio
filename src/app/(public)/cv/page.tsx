@@ -115,10 +115,10 @@ function VariantCard({
   accent: string;
 }) {
   return (
-    <article className="glass hairline flex flex-col p-7">
+    <article className="glass hairline flex flex-col p-5">
       <div className="flex items-center gap-3">
         <span
-          className={`grid size-11 place-items-center rounded-control border border-line ${accent}`}
+          className={`grid size-10 place-items-center rounded-control border border-line ${accent}`}
           aria-hidden
         >
           {icon}
@@ -126,10 +126,10 @@ function VariantCard({
         <p className="label-mono">{eyebrow}</p>
       </div>
 
-      <h2 className="mt-5 text-2xl font-semibold text-ink">{title}</h2>
+      <h2 className="mt-4 text-xl font-semibold text-ink">{title}</h2>
       <p className="mt-3 text-sm leading-relaxed text-muted">{body}</p>
 
-      <ul className="mt-6 space-y-2.5">
+      <ul className="mt-5 space-y-2.5">
         {features.map((feature) => (
           <li key={feature} className="flex gap-2.5 text-sm text-muted">
             <CircleCheck className="mt-0.5 size-4 shrink-0 text-teal" aria-hidden />
@@ -169,7 +169,7 @@ export default async function CvDownloadPage() {
   const profile = source?.profile;
 
   return (
-    <main className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-28 sm:px-6">
+    <main className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-20 sm:px-6">
       <div className="aurora-mesh" aria-hidden />
 
       <div className="relative">
@@ -208,9 +208,9 @@ export default async function CvDownloadPage() {
         </div>
 
         {profile ? (
-          <section className="mt-20">
+          <section className="mt-14">
             <h2 className="text-title font-semibold text-ink">The short version</h2>
-            <div className="glass hairline mt-8 p-7">
+            <div className="glass hairline mt-8 p-5">
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                 <h3 className="text-2xl font-semibold text-ink">{profile.fullName}</h3>
                 <p className="text-sm text-teal">{profile.headline}</p>
@@ -238,16 +238,16 @@ export default async function CvDownloadPage() {
           </section>
         ) : null}
 
-        <section className="mt-20">
+        <section className="mt-14">
           <h2 className="text-title font-semibold text-ink">Why two versions exist</h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-muted">
             Most CVs that never reach a human are not rejected — they are misread. A design
             that is lovely in a browser can extract as interleaved nonsense, so this site
             ships both and lets you choose.
           </p>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {EXPLAINER.map((item) => (
-              <article key={item.title} className="glass p-6">
+              <article key={item.title} className="glass p-5">
                 <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted">{item.body}</p>
               </article>
