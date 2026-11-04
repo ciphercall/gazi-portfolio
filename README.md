@@ -11,7 +11,8 @@ Runs entirely as a local Docker stack. Nothing is deployed to a third-party host
 
 | Surface | Route | Purpose |
 |---------|-------|---------|
-| Public site | `/` | Hero, stats, about, experience timeline, skills, featured work, education, contact |
+| Public site | `/` | Hero, stats, about, experience graph, skills, featured work, education, contact |
+| Experience | `/experience` | Time-scaled career graph — concurrent roles on parallel lanes — plus per-role detail |
 | Projects | `/projects`, `/projects/[slug]` | Filterable grid and case studies with image galleries |
 | CV | `/cv` | Explains and offers both PDF variants |
 | Admin panel | `/admin` | Create and edit every piece of content |
@@ -85,12 +86,13 @@ src/
     api/cv/          the two PDF download endpoints
     api/social/      OAuth connect + callback
     render/cv/       internal print surfaces, token-gated
-  components/        site/ · ui/ · admin/
+  components/        site/ · ui/ · admin/ · timeline/
   data/cv-seed.ts    the extracted CV content
   lib/
     db.ts env.ts crypto.ts session.ts auth.ts   foundation
     queries.ts                                  the ONLY content reader
     cache.ts                                    the single mutation choke point
+    timeline.ts                                 career-graph lane geometry (site + admin preview)
     media/                                      WebP pipeline + storage paths
     pdf/                                        both CV generators + the ATS test
     social/                                     LinkedIn + Facebook adapters, manual share links
