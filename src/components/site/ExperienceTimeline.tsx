@@ -43,7 +43,7 @@ export function ExperienceTimeline({ groups }: { groups: TimelineGroup[] }) {
 
           <ol className="relative mt-5 grid gap-4 border-l border-line pl-5 sm:pl-6">
             {group.items.map((item, index) => (
-              <li key={item.slug} className="relative">
+              <li key={item.slug} id={item.slug} className="relative scroll-mt-24">
                 <span
                   aria-hidden="true"
                   className={`absolute -left-6 top-8 h-3 w-3 -translate-x-1/2 rounded-full sm:-left-8 ${

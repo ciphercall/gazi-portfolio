@@ -3,6 +3,7 @@ import { ArrowRight, Briefcase, Building2, Clock, TrendingUp } from "lucide-reac
 
 import { ActionLink } from "@/components/ui/ActionLink";
 import { EducationSection } from "@/components/site/EducationSection";
+import { ExperienceGraph } from "@/components/site/ExperienceGraph";
 import { ExperienceTimeline, type TimelineGroup } from "@/components/site/ExperienceTimeline";
 import { JsonLd } from "@/components/site/JsonLd";
 import { Section } from "@/components/site/Section";
@@ -125,14 +126,28 @@ export default async function ExperiencePage() {
               <span className="text-aurora">one system at a time</span>
             </>
           }
-          lead={`From junior developer on real-time chat to senior developer and team lead on enterprise ERP. Everything ${profile.fullName} has shipped, newest first within each group.`}
+          lead={`From junior developer on real-time chat to senior developer and team lead on enterprise ERP. Every role ${profile.fullName} has held sits on the timeline below at its real dates, so concurrent work shows side by side.`}
         />
 
         <div className="mt-10">
           <StatsStrip items={stats} />
         </div>
 
-        <ExperienceTimeline groups={groups} />
+        <ExperienceGraph entries={experiences} />
+
+        <div className="mt-14">
+          <SectionHeading
+            as="h2"
+            eyebrow="Role details"
+            title={
+              <>
+                Each role, <span className="text-aurora">in full</span>
+              </>
+            }
+            lead="The same roles with the summary, achievements and stack the CV prints — grouped by employment type."
+          />
+          <ExperienceTimeline groups={groups} />
+        </div>
 
         <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-line pt-8">
           <ActionLink href="/contact" variant="primary" icon={<ArrowRight className="h-4 w-4" />}>

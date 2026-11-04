@@ -4,7 +4,7 @@ import { Briefcase, Boxes, Layers, TrendingUp } from "lucide-react";
 import { AboutSection } from "@/components/site/AboutSection";
 import { ContactGrid } from "@/components/site/ContactGrid";
 import { EducationSection } from "@/components/site/EducationSection";
-import { ExperienceTimeline, type TimelineGroup } from "@/components/site/ExperienceTimeline";
+import { ExperienceGraph } from "@/components/site/ExperienceGraph";
 import { Hero } from "@/components/site/Hero";
 import { JsonLd } from "@/components/site/JsonLd";
 import { ProjectsSection } from "@/components/site/ProjectsSection";
@@ -126,23 +126,6 @@ export default async function HomePage() {
     },
   ];
 
-  const timelineGroups: TimelineGroup[] = [
-    {
-      key: "full-time",
-      label: "Full-time roles",
-      blurb:
-        "Roles where the work was a single company's product — engineering, ownership and production support.",
-      items: experienceGroups.fullTime,
-    },
-    {
-      key: "part-time",
-      label: "Part-time & contract",
-      blurb:
-        "Client-facing engagements run alongside a full-time role: scope, delivery and hands-on development.",
-      items: experienceGroups.partTime,
-    },
-  ];
-
   return (
     <main>
       <JsonLd data={profilePageJsonLd(profile, links)} />
@@ -178,9 +161,9 @@ export default async function HomePage() {
               Every role, in order — <span className="text-aurora">no gaps glossed over</span>
             </>
           }
-          lead={`${years}+ years across enterprise ERP, industrial automation and product teams — grouped the way the CV presents the work.`}
+          lead={`${years}+ years across enterprise ERP, industrial automation and product teams — laid out to scale, with concurrent roles side by side.`}
         />
-        <ExperienceTimeline groups={timelineGroups} />
+        <ExperienceGraph entries={experienceGroups.all} variant="compact" />
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <ActionLink href="/experience" icon={<Briefcase className="h-4 w-4" />}>
             The full timeline, with detail
