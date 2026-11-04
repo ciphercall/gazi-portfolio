@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { FolderKanban, Plus, SquarePen, Star } from "lucide-react";
 
-import { ActionLink } from "@/components/admin/action-button";
+import { ActionLink } from "@/components/admin/action-link";
 import { AdminEmptyState, AdminPageFrame, AdminPageHeader } from "@/components/admin/page-frame";
 import { DeleteEntityButton, PublishToggle, ReorderControls } from "@/components/admin/row-actions";
 import { deleteProject, setProjectPublished } from "@/lib/admin/actions/projects";

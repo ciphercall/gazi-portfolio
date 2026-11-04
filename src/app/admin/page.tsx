@@ -10,7 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { ActionLink } from "@/components/admin/action-button";
+import { ActionLink } from "@/components/admin/action-link";
 import { StatusChip } from "@/components/admin/fields";
 import { AdminEmptyState, AdminSection } from "@/components/admin/page-frame";
 import { requireAdmin } from "@/lib/auth";

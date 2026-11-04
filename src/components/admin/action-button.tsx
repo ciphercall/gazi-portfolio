@@ -2,8 +2,13 @@
 
 import { clsx } from "clsx";
 import { Loader2, type LucideIcon } from "lucide-react";
-import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ReactNode } from "react";
+
+import {
+  ACTION_SIZES as SIZES,
+  ACTION_VARIANTS as VARIANTS,
+  type ActionVariant,
+} from "@/components/admin/action-link";
 
 /**
  * The panel's one button.
@@ -13,25 +18,14 @@ import type { ComponentProps, ReactNode } from "react";
  *     is not expressible (the owner asked for this explicitly).
  *   - `pending` swaps the icon for a spinner and disables the control, so a slow
  *     mutation cannot be double-submitted.
+ *
+ * `ActionLink` lives in `action-link.tsx` (no "use client") and is re-exported
+ * here so existing client imports keep working; server pages import it from
+ * there directly, because an icon component cannot cross the RSC boundary.
  */
 
-export type ActionVariant = "primary" | "secondary" | "danger" | "ghost" | "success";
-
-const VARIANTS: Record<ActionVariant, string> = {
-  primary:
-    "border border-transparent bg-teal text-on-accent hover:brightness-110 active:brightness-95",
-  success:
-    "border border-teal/40 bg-teal/10 text-teal hover:bg-teal/20 hover:border-teal/70",
-  secondary:
-    "border border-line-strong bg-panel text-ink hover:border-teal/60 hover:bg-teal/10",
-  danger: "border border-rose/40 bg-rose/10 text-rose hover:bg-rose/20 hover:border-rose/70",
-  ghost: "border border-transparent text-muted hover:text-ink hover:bg-panel",
-};
-
-const SIZES = {
-  sm: "gap-1.5 px-3 py-1.5 text-xs",
-  md: "gap-2 px-3.5 py-2 text-sm",
-} as const;
+export { ActionLink } from "@/components/admin/action-link";
+export type { ActionLinkProps, ActionVariant } from "@/components/admin/action-link";
 
 export interface ActionButtonProps {
   /** Always rendered. There is no icon-only mode. */
@@ -84,47 +78,5 @@ export function ActionButton({
       )}
       <span className="whitespace-nowrap">{pending && pendingLabel ? pendingLabel : label}</span>
     </button>
-  );
-}
-
-export interface ActionLinkProps extends Pick<ComponentProps<typeof Link>, "href" | "prefetch"> {
-  label: ReactNode;
-  icon: LucideIcon;
-  variant?: ActionVariant;
-  size?: keyof typeof SIZES;
-  className?: string;
-  title?: string;
-  target?: string;
-  download?: boolean;
-}
-
-/** Same visual language as `ActionButton`, for navigation. */
-export function ActionLink({
-  label,
-  icon: Icon,
-  href,
-  variant = "secondary",
-  size = "md",
-  className,
-  title,
-  target,
-  prefetch,
-}: ActionLinkProps) {
-  return (
-    <Link
-      href={href}
-      title={title}
-      target={target}
-      prefetch={prefetch}
-      className={clsx(
-        "inline-flex shrink-0 items-center justify-center rounded-control font-medium leading-none transition",
-        SIZES[size],
-        VARIANTS[variant],
-        className,
-      )}
-    >
-      <Icon aria-hidden className="size-4" />
-      <span className="whitespace-nowrap">{label}</span>
-    </Link>
   );
 }
