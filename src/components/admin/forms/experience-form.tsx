@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ActionButton, ActionLink } from "@/components/admin/action-button";
 import { BulletListEditor } from "@/components/admin/bullet-list-editor";
 import { ChipInput } from "@/components/admin/chip-input";
+import { ExperienceTimelinePreview } from "@/components/admin/experience-timeline-preview";
 import { SelectField, TextAreaField, TextField, ToggleField } from "@/components/admin/fields";
 import { GenerateButton } from "@/components/admin/generate-button";
 import {
@@ -85,10 +86,16 @@ function toDraft(row: ExperienceRow): ExperienceInput {
 export function ExperienceForm({
   initial,
   suggestedOrder,
+  siblings,
+  today,
 }: {
   initial: ExperienceRow | null;
   /** Next free `order`, so a new role lands at the end of the list. */
   suggestedOrder: number;
+  /** Every other row, used for the live timeline-placement preview. */
+  siblings: ExperienceRow[];
+  /** `YYYY-MM-DD` from the server, so the preview renders deterministically. */
+  today: string;
 }) {
   const router = useRouter();
   const isNew = initial === null;
@@ -279,6 +286,14 @@ export function ExperienceForm({
               />
             </FieldRow>
           </FieldGrid>
+        </AdminSection>
+
+        <AdminSection
+          title="Timeline placement"
+          description="How this role sits against the others on the public career graph."
+          tone="sunk"
+        >
+          <ExperienceTimelinePreview siblings={siblings} draft={draft} today={today} />
         </AdminSection>
 
         <AdminSection title="Content" description="Summary, achievement bullets and tags.">

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Briefcase, Plus, SquarePen } from "lucide-react";
 
-import { ActionLink } from "@/components/admin/action-button";
+import { ActionLink } from "@/components/admin/action-link";
 import { AdminEmptyState, AdminPageFrame, AdminPageHeader } from "@/components/admin/page-frame";
 import { DeleteEntityButton, PublishToggle, ReorderControls } from "@/components/admin/row-actions";
 import { deleteExperience, setExperiencePublished } from "@/lib/admin/actions/experiences";
 import { requireAdmin } from "@/lib/auth";
 import { listExperiences } from "@/lib/admin/data";
 import { formatDateRange, truncate } from "@/lib/admin/format";
+import { overlapSummary } from "@/lib/timeline";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,7 @@ export default async function AdminExperiencesPage() {
 
   const rows = await listExperiences();
   const ids = rows.map((row) => row.id);
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <AdminPageFrame
@@ -58,7 +60,10 @@ export default async function AdminExperiencesPage() {
         />
       ) : (
         <ul className="flex flex-col gap-2.5">
-          {rows.map((row, index) => (
+          {rows.map((row, index) => {
+            const overlaps = overlapSummary(rows, row.slug, { today });
+
+            return (
             <li
               key={row.id}
               className="rounded-card border border-line bg-panel px-3.5 py-3 transition hover:border-line-strong"
@@ -79,6 +84,15 @@ export default async function AdminExperiencesPage() {
                     <p className="mt-1 font-mono text-[11px] text-faint">
                       /{row.slug} · order {row.order} · {row.tags.length} tag
                       {row.tags.length === 1 ? "" : "s"}
+                      {overlaps.length > 0 ? (
+                        <>
+                          {" · "}
+                          <span title={overlaps.map((item) => item.company).join(", ")}>
+                            overlaps {overlaps.length} role
+                            {overlaps.length === 1 ? "" : "s"}
+                          </span>
+                        </>
+                      ) : null}
                     </p>
                   </div>
                 </div>
@@ -101,7 +115,8 @@ export default async function AdminExperiencesPage() {
                 </div>
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </AdminPageFrame>

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ExperienceForm } from "@/components/admin/forms/experience-form";
 import { requireAdmin } from "@/lib/auth";
-import { getExperience, nextExperienceOrder } from "@/lib/admin/data";
+import { getExperience, listExperiences, nextExperienceOrder } from "@/lib/admin/data";
 
 export const dynamic = "force-dynamic";
 
@@ -34,14 +34,25 @@ export default async function AdminExperienceEditorPage({
   await requireAdmin();
 
   const { id } = await params;
+  const rows = await listExperiences();
+  const today = new Date().toISOString().slice(0, 10);
 
   if (id === "new") {
     const suggestedOrder = await nextExperienceOrder();
-    return <ExperienceForm initial={null} suggestedOrder={suggestedOrder} />;
+    return (
+      <ExperienceForm
+        initial={null}
+        suggestedOrder={suggestedOrder}
+        siblings={rows}
+        today={today}
+      />
+    );
   }
 
   const row = await getExperience(id);
   if (!row) notFound();
 
-  return <ExperienceForm initial={row} suggestedOrder={row.order} />;
+  return (
+    <ExperienceForm initial={row} suggestedOrder={row.order} siblings={rows} today={today} />
+  );
 }
