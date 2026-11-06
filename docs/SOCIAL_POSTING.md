@@ -1,121 +1,172 @@
-# Social publishing — what the APIs actually allow
+# LinkedIn auto-publishing
 
-This is the one area where the original requirement could not be met literally, so the limits are
-documented first and the mechanism second.
+Every published project in the portfolio gets a prepared LinkedIn post, placed one per day, and
+published automatically to your LinkedIn profile at its scheduled time. This document is the
+reference for how that works, what it cannot do, and how to operate it.
 
 ---
 
-## Two facts that shape everything
+## The two facts that shape everything
 
 **1. No API can edit your LinkedIn profile's "Experience" section.**
 LinkedIn's self-serve APIs let an application *publish posts* on behalf of a member. They do not
 expose profile sections. Nothing in this project writes to your experience list on LinkedIn, and no
-amount of credential setup would change that.
+amount of credential setup would change that. "Publishing your work" therefore always means
+*posting about it*.
 
 **2. Meta does not allow posting to a personal Facebook profile.**
-The Graph API publishes to a Facebook **Page** (`/<page-id>/feed`). Personal-profile feed posting
-was removed years ago. If you do not have a Page, Facebook publishing is simply unavailable — the
-manual share links still work.
+The Graph API publishes to a Facebook **Page**. Personal-profile feed posting was removed years ago.
+The Facebook path exists for a Page you administer; LinkedIn is the profile path.
 
-So "update the relevant parts of my social accounts" is delivered as **publish a post about it**,
-with a manual fallback that works today with zero credentials.
+---
 
-## The three paths, in order of reliability
+## The pieces
 
-| Path | Credentials needed | Works today? |
-|------|-------------------|--------------|
-| **Prefilled manual share links** | none | **yes** |
-| LinkedIn API posting | your own LinkedIn app + *Share on LinkedIn* approval | after you set it up |
-| Facebook Page posting | a Meta app + a Facebook Page | after you set it up |
+| Piece | Where | What it does |
+|---|---|---|
+| Planner | `src/lib/social/planner.ts` | Gives every published project exactly one prepared post, on the next free day, one post per day. |
+| Cards | `src/lib/social/card.ts` + `src/app/render/social/[slug]/page.tsx` | Renders a 1200×627 branded card with headless Chromium (already in the image) and stores it on the media volume. |
+| Scheduler | `src/scheduler/main.ts` (container `scheduler`) | One tick a minute: plan, then publish everything due. |
+| Publisher | `src/lib/social/publish.ts` | Takes the lease, publishes, records the outcome and the permalink. |
+| LinkedIn adapter | `src/lib/social/linkedin.ts` | OAuth, image upload (`/rest/images`), post creation (`/rest/posts`). |
+| Credentials | `src/lib/social/credentials.ts` + `/admin/social/settings` | Provider keys stored encrypted in Postgres, env as fallback. |
+| Admin UI | `/admin/social` | Schedule planner, LinkedIn-accurate preview, and the Posted / Prepared lists. |
+| Public API | `GET /api/v1/social` | Published posts for the Android app's Updates feed. |
 
-### Manual share links (always available)
+## Scheduling rules
 
-Every experience and project in the admin panel has a **Manual share** panel. It builds post copy
-from the record and gives you:
+- **Every published project is selected by default.** Unchecking one deletes its prepared post.
+- **One post per day, never two.** Enforced in the planner (a readable error) *and* by a unique
+  index on `(provider, scheduledDay)` — the database is the final word, so two browser tabs cannot
+  race past it.
+- **Default slot:** 10:00 `Asia/Dhaka`, starting the day after the plan is first built. Both are
+  editable in `/admin/social/settings`; per-post date and time are editable in the planner.
+- **Order:** featured projects first, then manual `order`, then newest.
+- **Posted history is immutable.** A published row keeps its date, cannot be unscheduled, and is
+  never deleted.
+- **Hand-edited copy wins.** Saving post text sets `manualEdit`, and the planner then leaves that
+  row's text alone (it still refreshes untouched copy when the project changes).
 
-- a copy-to-clipboard block of the text
-- **Share on LinkedIn** → `https://www.linkedin.com/feed/?shareActive=true&text=…`
-- **Share on Facebook** → `https://www.facebook.com/sharer/sharer.php?u=…&quote=…`
+## How a post is composed
 
-You click the link, the composer opens prefilled, you press Post. These are plain links, so they
-work with JavaScript disabled and with nothing configured. Implementation:
-`src/lib/social/manual.ts`.
+1. **Copy** — the project's `shareText` if you wrote one, otherwise generated from title, role,
+   client, summary, tech stack and five hashtags (clamped well below LinkedIn's 3000-character
+   limit). Editable per post in the admin panel.
+2. **Card** — `1200×627` PNG rendered by Chromium from `/render/social/<slug>`, which is token-gated
+   like the CV print routes. It shows the author, the project title, the summary, the first five
+   technologies and the cover screenshot, in the site's own visual language. Cached by a content
+   hash, so it is only re-rendered when the project actually changed.
+3. **Send** — the image is uploaded through LinkedIn's Images API
+   (`initializeUpload` → PUT the bytes → use the returned asset URN), then the post is created with
+   `feedshare-image` content plus the project URL appended to the commentary.
 
-### LinkedIn API posting
+A card that fails to render never blocks a post: the adapter falls back to text-only and logs why.
 
-Set in `deploy/.env`:
+## Credentials — entered in the admin panel
 
+`/admin/social/settings` is the supported way to supply the API keys once your LinkedIn app is
+approved:
+
+1. Create an app at the LinkedIn Developer Portal.
+2. Add the **Share on LinkedIn** product (this grants `w_member_social`).
+3. Register the redirect URI shown on the settings page:
+   `{SITE_URL}/api/social/linkedin/callback`.
+4. Paste the client ID and client secret into the settings page and save.
+5. Press **Connect LinkedIn** and approve.
+
+Storage rules:
+
+- Credentials live in `app_settings`, AES-256-GCM encrypted with `SOCIAL_TOKEN_KEY`, and are never
+  rendered back to the browser — a blank field means "keep what is stored", `__clear__` removes it.
+- `SOCIAL_TOKEN_KEY` itself is an *encryption key*, generated by `-Action env`; it is not something
+  you type into the page. Without it, the panel refuses to store anything rather than writing a
+  secret in the clear.
+- Environment variables (`LINKEDIN_CLIENT_ID`, …) still work and act as the fallback when no
+  database value exists.
+- Access tokens last ~60 days. A 401 marks the account **Needs reconnect**; the panel warns before
+  expiry and offers **Test connection**.
+
+## The two lists
+
+**Prepared — not posted yet** shows `QUEUED`, `DRAFT`, `FAILED` and `NEEDS_RECONNECT` rows, soonest
+first, each with its scheduled slot, the provider's own error text, and the actions that apply
+(Post now, Retry, Edit & preview, Remove).
+
+**Posted** shows everything live on LinkedIn with the permalink the provider returned. These rows
+are history: they cannot be re-sent or deleted, so a retry can never create a duplicate.
+
+## The scheduler
+
+- Runs as the `scheduler` service in the compose stack, reusing the `app` image.
+- Every 60 seconds: `planProjectPosts()` then `publishDueDispatches()`.
+- **Catch-up on start:** overdue rows are published on the first tick, so a stack that was asleep
+  is self-correcting rather than silently skipping a day.
+- **Lease:** a single row in `app_settings` (`social.scheduler.lease`, two-minute expiry) means one
+  process publishes at a time; a crashed scheduler's lease simply expires.
+- **Wake file:** each tick writes `deploy/.runtime/next-post.json`. On the VPS the stack is stopped
+  when idle, so `deploy/vps-wake.sh` (installed as a five-minute cron) wakes it only when a post is
+  due within ten minutes.
+- `SOCIAL_AUTO_PUBLISH=false`, or turning the switch off on the settings page, keeps everything
+  prepared but unsent.
+
+Manual runs, inside the stack:
+
+```powershell
+.\portfolio-deploy.ps1 -Action plan             # prepare missing posts
+.\portfolio-deploy.ps1 -Action publish-due      # run one tick now
+.\portfolio-deploy.ps1 -Action publish-status   # counts + next slot
+.\portfolio-deploy.ps1 -Action selftest         # plan, encryption, card render — no LinkedIn needed
+.\portfolio-deploy.ps1 -Action scheduler-logs
 ```
-LINKEDIN_CLIENT_ID=
-LINKEDIN_CLIENT_SECRET=
-```
 
-Register `{SITE_URL}/api/social/linkedin/callback` as a redirect URI in your LinkedIn app, and
-request the **Share on LinkedIn** product (this is what grants the `w_member_social` scope). Then
-**Admin → Social → Connect LinkedIn**.
-
-What is implemented, verified against LinkedIn's live documentation:
-
-- 3-legged authorization-code flow (`/oauth/v2/authorization`, `/oauth/v2/accessToken`)
-- member identity via `GET https://api.linkedin.com/v2/userinfo` → `sub`
-- publishing via `POST https://api.linkedin.com/rest/posts` with `w_member_social`
-- a dated API version pin, `Linkedin-Version: 202610`, with the reasoning recorded in
-  `src/lib/social/linkedin.ts` — LinkedIn supports each version for at least a year, so this is a
-  deliberate pin rather than a moving target
-
-Access tokens last ~60 days. When a call returns 401 the dispatch is marked **Needs reconnect**
-rather than retried silently.
-
-### Facebook Page posting
-
-Set in `deploy/.env`:
-
-```
-FACEBOOK_APP_ID=
-FACEBOOK_APP_SECRET=
-```
-
-Permissions: `pages_manage_posts`, `pages_read_engagement`, `pages_show_list`. Redirect URI:
-`{SITE_URL}/api/social/facebook/callback`. Then **Admin → Social → Connect Facebook**.
-
-Implemented flow: code exchange → short-lived token → long-lived user token
-(`grant_type=fb_exchange_token`) → `GET /<user-id>/accounts` → the Page's own token →
-`POST /<page-id>/feed`. Long-lived Page tokens do not expire, which is why the Page token is what
-gets stored.
-
-## Token handling
-
-- Tokens are encrypted with **AES-256-GCM** before they touch the database
-  (`encryptSecret` in `src/lib/crypto.ts`), keyed by `SOCIAL_TOKEN_KEY`.
-- If `SOCIAL_TOKEN_KEY` is missing, `encryptSecret` **throws**. The connect flow therefore fails
-  closed: it refuses to run rather than storing a token in plaintext. The admin panel shows the
-  provider as "not configured" in that state.
-- Tokens are never logged, never returned in a response body and never rendered into HTML.
-- OAuth `state` is a random nonce bound to the provider with an HMAC and verified before the code
-  is exchanged, so a callback cannot be replayed against a different session.
-- Every route under `/api/social/**` calls `requireAdminApi()` and returns 401 JSON without a
-  session.
-
-## The dispatch log
-
-Each publish attempt is a `SocialDispatch` row with a status:
+## Dispatch states
 
 | Status | Meaning |
 |--------|---------|
-| `DRAFT` | Copy prepared, not sent |
-| `QUEUED` | Scheduled; publishing runs in `after()` |
-| `POSTED` | Succeeded — external id and permalink recorded |
+| `DRAFT` | Copy prepared, not scheduled |
+| `QUEUED` | Scheduled — the scheduler sends it at its slot |
+| `POSTED` | Succeeded; external id and permalink recorded |
 | `FAILED` | Rejected; the error is stored and **Retry** is offered |
 | `NEEDS_RECONNECT` | The token is no longer accepted; reconnect the account |
 
-There is no cron. A failed dispatch is retried when you press **Retry**, which is the honest
-trade for not running a scheduler container.
+## Manual share (the zero-credential fallback)
 
-## Honest gaps
+`src/lib/social/manual.ts` builds the copy and prefilled composer links for every experience and
+project. They are ordinary `<a href>` elements, so they work with JavaScript disabled, with no
+OAuth app, and before anything is connected. That fallback stays even once API publishing works.
 
-- Nothing here is verified against the live LinkedIn or Meta APIs end to end, because that needs
-  approved applications and a real Page. The request shapes were checked against current
-  documentation on 2026-10-15 and are recorded in the adapter files, but the round trip is unproven
-  until you connect an account.
-- Automatic posting is triggered manually per record. There is no "post every new thing
-  automatically" switch.
+## The public API
+
+`GET /api/v1/social` returns published posts only:
+
+```json
+{ "posts": [ { "id": "...", "subjectType": "PROJECT", "subjectSlug": "pphl-supply-chain",
+               "title": "...", "summary": "...", "imageUrl": "/media/social/2026/11/....png",
+               "permalink": "https://www.linkedin.com/feed/update/urn:li:share:.../",
+               "postedAt": "2026-11-08T04:00:12.000Z" } ] }
+```
+
+`/api/v1/projects` also carries `linkedinUrl` for each project, so the Android app can show a
+"Posted on LinkedIn" button on the case study.
+
+## Verification without a LinkedIn account
+
+Everything except the final provider call can be proven locally:
+
+```powershell
+.\portfolio-deploy.ps1 -Action selftest
+```
+
+It asserts: one post per distinct day, planner idempotency, credential encryption round-trip, and a
+real card PNG on the media volume. With no account connected, a due post lands on
+`NEEDS_RECONNECT` — which proves the tick → publish path without pretending a post was made.
+
+## Honest limits
+
+- The provider round trip is unverified until your LinkedIn app is approved and connected; the
+  request shapes are checked against LinkedIn's documentation (Posts API `202610`, Images API
+  initialize-upload) and recorded in `src/lib/social/linkedin.ts`.
+- Images are uploaded per post; LinkedIn may reject an image for size or moderation, in which case
+  the post still goes out as text.
+- Scheduled posting depends on the scheduler container running. On the VPS that means either the
+  wake cron described above, or accepting that posts go out when the stack is next awake.

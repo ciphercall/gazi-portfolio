@@ -1,7 +1,8 @@
 # Gazi Portfolio
 
 Personal portfolio platform for **Gazi Monir-Uz-Zaman** — a public site, a self-service admin
-panel, two generated CV PDFs, a read-only API for the Android app, and optional social publishing.
+panel, two generated CV PDFs, a read-only API for the Android app, and scheduled LinkedIn
+publishing.
 
 Runs entirely as a local Docker stack. Nothing is deployed to a third-party host.
 
@@ -16,6 +17,7 @@ Runs entirely as a local Docker stack. Nothing is deployed to a third-party host
 | Projects | `/projects`, `/projects/[slug]` | Filterable grid and case studies with image galleries |
 | CV | `/cv` | Explains and offers both PDF variants |
 | Admin panel | `/admin` | Create and edit every piece of content |
+| LinkedIn publishing | `/admin/social`, `/admin/social/settings` | Schedule, preview, publish and review posts about the projects |
 | Public API v1 | `/api/v1/*` | Read-only JSON for the Flutter Android app |
 | CV PDFs | `/api/cv/designed`, `/api/cv/ats` | The two downloadable CVs |
 
@@ -35,6 +37,25 @@ matches, the PDF is regenerated automatically.
 
 The ATS variant has a test (`src/lib/pdf/ats.test.ts`) that extracts the PDF's own text layer and
 asserts the sections, ordering and absence of images — parseability is verified, not assumed.
+
+## LinkedIn auto-publishing
+
+Every published project gets one prepared post, placed **one per day** (10:00 `Asia/Dhaka` by
+default), and published automatically to the owner's LinkedIn profile by the `scheduler`
+container — the same image as the app, one tick a minute.
+
+- `src/lib/social/planner.ts` owns the invariant: one post per project, one post per day, enforced
+  by a unique index on `(provider, scheduledDay)` as well as by the planner.
+- Each post carries a **1200×627 card** rendered by the Chromium already in the image,
+  uploaded through LinkedIn's Images API.
+- `/admin/social` shows **Posted** and **Prepared** as two distinct lists, a schedule planner with
+  per-post date and time, and an editor with a LinkedIn-accurate preview of the post.
+- `/admin/social/settings` is where the LinkedIn API keys are entered — encrypted at rest with
+  `SOCIAL_TOKEN_KEY`, applied without a restart, never rendered back.
+- The scheduler also writes `deploy/.runtime/next-post.json`, which lets the VPS wake the stack
+  shortly before a post is due instead of keeping it running 24/7.
+
+Full details, limits and operations: [`docs/SOCIAL_POSTING.md`](docs/SOCIAL_POSTING.md).
 
 ## Stack
 
@@ -95,7 +116,9 @@ src/
     timeline.ts                                 career-graph lane geometry (site + admin preview)
     media/                                      WebP pipeline + storage paths
     pdf/                                        both CV generators + the ATS test
-    social/                                     LinkedIn + Facebook adapters, manual share links
+    social/                                     planner, scheduler-facing publisher, LinkedIn +
+                                                Facebook adapters, card renderer, credentials
+  scheduler/           main.ts (tick loop) + once.ts (plan/publish-due/status/selftest)
   prisma/              schema, migrations, seed
   scripts/build-seed-media.mjs  one-time importer for portfolio-render-lab screenshots
   seed-media/          303 webp screenshots + manifest.json (baked into the image)
@@ -111,6 +134,14 @@ docs/                the three guides below
 
 ## Recent hardening (latest pass)
 
+- **LinkedIn auto-publishing**: a `scheduler` container plans one post per published project per
+  day, renders a 1200×627 card per post, publishes at the scheduled instant with catch-up after a
+  sleeping stack, and records every outcome. Admin credentials are stored encrypted in
+  `app_settings` and applied without a restart. New actions: `-Action plan | publish-due |
+  publish-status | selftest | scheduler-logs`. Migration `20261106090000_social_scheduling` adds
+  `app_settings` and the scheduling/image columns on `social_dispatches`.
+- `GET /api/v1/social` exposes published posts to the Android app; `/api/v1/projects` now carries
+  `linkedinUrl`.
 - Web layout containers now share one max-width/padding contract (`max-w-6xl`, `px-4 sm:px-6`)
   across the sticky header, footer and public routes (home, cv, projects, experience). Hero and
   education grids collapse instead of leaving empty tracks when the related data set is partial.
@@ -136,7 +167,9 @@ docs/                the three guides below
 - **No API can edit a LinkedIn profile's "Experience" section**, and Meta does not allow posting to
   a personal Facebook profile. This project publishes *posts* to LinkedIn and to a Facebook **Page**.
   The admin panel always offers prefilled manual share links, which need no credentials at all.
-- LinkedIn and Facebook publishing require apps the owner has to create and get approved; until
-  then the manual share path is the working one.
+- LinkedIn publishing needs an approved LinkedIn app; enter its keys on `/admin/social/settings`
+  and connect the account. Until then posts stay prepared and the manual share path works.
+- Scheduled posting needs the `scheduler` container running. On the on-demand VPS the host cron
+  runs `deploy/vps-wake.sh`, which wakes the stack only when a post is due.
 - The stack is designed for local use. Exposing it publicly needs a tunnel or a reverse proxy and a
   real `SITE_URL`; see the deployment guide.

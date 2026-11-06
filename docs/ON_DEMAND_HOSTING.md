@@ -175,6 +175,35 @@ curl -X POST "http://169.58.90.13:8023/_ondemand/teardown?token=vps-admin-token-
 curl -X POST "http://169.58.90.13:8023/_ondemand/deploy?token=vps-admin-token-change-me"
 ```
 
+## Scheduled LinkedIn posts while the stack sleeps
+
+The target stack now includes a `scheduler` container, and the gatekeeper stops the whole stack
+when idle — scheduler included. A scheduled post would then wait for the next visitor instead of
+going out at its slot.
+
+`deploy/vps-wake.sh` fixes that without giving up on-demand hosting. The scheduler writes
+`deploy/.runtime/next-post.json` on every tick; the script reads it and touches the public URL
+**only** when a post is due within ten minutes. Outside that window it does nothing, so the stack
+still sleeps.
+
+Install once, as root on the VPS:
+
+```bash
+chmod +x /opt/github/gazi-portfolio/deploy/vps-wake.sh
+( crontab -l 2>/dev/null; echo '*/5 * * * * /opt/github/gazi-portfolio/deploy/vps-wake.sh' ) | crontab -
+```
+
+Verify:
+
+```bash
+cat /opt/github/gazi-portfolio/deploy/.runtime/next-post.json
+/opt/github/gazi-portfolio/deploy/vps-wake.sh   # silent no-op unless a post is due
+tail -20 /opt/github/gazi-portfolio/deploy/.runtime/wake.log
+```
+
+If a wake is ever missed, the scheduler's catch-up on the next start publishes the overdue post —
+late, but not lost.
+
 ## Troubleshooting
 
 | Symptom | Cause and fix |

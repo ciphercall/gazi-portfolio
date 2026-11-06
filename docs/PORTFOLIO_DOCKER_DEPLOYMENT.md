@@ -1,6 +1,6 @@
 # Gazi Portfolio — Docker deployment guide
 
-Everything runs locally as a three-container stack driven by `portfolio-deploy.ps1` at the
+Everything runs locally as a four-container stack driven by `portfolio-deploy.ps1` at the
 workspace root. The shape deliberately mirrors `scm-deploy.ps1` / `pfh-deploy.ps1` so operating
 this project is the same muscle memory as every other one in the workspace.
 
@@ -12,26 +12,38 @@ this project is the same muscle memory as every other one in the workspace.
 |---------|-------|-----------|------|
 | `web` | `nginx:1.27-alpine` | `${WEB_BIND}:${WEB_PORT}` (**0.0.0.0:8023**) → :80 | Single origin. Proxies to the app; serves `/media/*` off the shared volume. |
 | `app` | built from `deploy/docker/app/Dockerfile` | internal :3000 | Next.js site + admin + API + headless Chromium. |
+| `scheduler` | **the same built image** | none | `npm run scheduler` — plans LinkedIn posts every minute and publishes the ones whose slot has arrived. |
 | `postgres` | `postgres:16-alpine` | **5436** → :5432 | Data. Private to the stack, published only for inspection. |
 
-Named volumes: `gazi-portfolio-postgres-data`, `gazi-portfolio-media`.
+Named volumes: `gazi-portfolio-postgres-data`, `gazi-portfolio-media`. The scheduler also bind-mounts
+`deploy/.runtime/` (git-ignored) to write `next-post.json`, which the VPS wake script reads.
 
-There is deliberately **no queue or scheduler container**. PDF regeneration and social publishing
-run from Next's `after()` — after the HTTP response has been flushed — so a content save returns
-immediately and nothing needs a timer.
+**Why a scheduler container exists.** PDF regeneration still runs from Next's `after()`, but a
+*scheduled* LinkedIn post needs a clock that outlives a request — `after()` only runs while a
+request is in flight, which is no use at 10:00 the next morning. The scheduler is that clock: one
+process, one tick a minute, `plan → publish due`. It reuses the app image, so it adds no build and
+no new dependency, and it takes a lease row in `app_settings` so two schedulers can never post the
+same thing twice.
 
 ## The action surface
 
 ```powershell
-.\portfolio-deploy.ps1 -Action env          # first-time setup; generates every secret
-.\portfolio-deploy.ps1 -Action build        # build images (-NoCache to force)
-.\portfolio-deploy.ps1 -Action up -Build    # build then start
-.\portfolio-deploy.ps1 -Action migrate      # prisma migrate deploy
-.\portfolio-deploy.ps1 -Action seed         # load the CV content (idempotent)
-.\portfolio-deploy.ps1 -Action verify       # the close-out gate
-.\portfolio-deploy.ps1 -Action status       # containers + endpoint probe
+.\portfolio-deploy.ps1 -Action env             # first-time setup; generates every secret
+.\portfolio-deploy.ps1 -Action build           # build images (-NoCache to force)
+.\portfolio-deploy.ps1 -Action up -Build       # build then start
+.\portfolio-deploy.ps1 -Action migrate         # prisma migrate deploy
+.\portfolio-deploy.ps1 -Action seed            # load the CV content (idempotent)
+.\portfolio-deploy.ps1 -Action verify          # the close-out gate
+.\portfolio-deploy.ps1 -Action status          # containers + endpoint probe
 .\portfolio-deploy.ps1 -Action logs -Service app
 .\portfolio-deploy.ps1 -Action restart | down | shell | psql
+
+# LinkedIn publishing
+.\portfolio-deploy.ps1 -Action plan            # prepare a post per published project
+.\portfolio-deploy.ps1 -Action publish-due     # run one scheduler tick now
+.\portfolio-deploy.ps1 -Action publish-status  # prepared/posted counts + next slot
+.\portfolio-deploy.ps1 -Action selftest        # prove plan/encryption/card without LinkedIn
+.\portfolio-deploy.ps1 -Action scheduler-logs  # follow the scheduler container
 ```
 
 Always invoke it as `powershell -ExecutionPolicy Bypass -File .\portfolio-deploy.ps1 ...` —
@@ -78,9 +90,10 @@ arrangement is documented in `ON_DEMAND_HOSTING.md`.
 It is not a health check — it is the evidence gate, and it fails the command with a non-zero exit
 code if anything is wrong:
 
-1. **Containers** — every service is `running` and not `unhealthy`
+1. **Containers** — every service is `running` and not `unhealthy`, and the `scheduler` service is
+   present (if it is missing, nothing will ever post)
 2. **HTTP** — `/`, `/api/health`, `/api/v1/profile`, `/api/v1/experiences`, `/api/v1/projects`,
-   `/sitemap.xml`, `/admin` all answer 200
+   `/api/v1/social`, `/sitemap.xml`, `/admin` all answer 200
 3. **Both CV PDFs** — `/api/cv/designed` and `/api/cv/ats` return 200, with the byte size reported
 4. **Provenance** — reads `GIT_SHA` from `deploy/.env`, compares it against what `/api/health`
    reports, then greps the **running container's** built bundle for the SHA. This is the check that
@@ -195,7 +208,7 @@ ss -tlnp | grep 8026
 ```
 
 ### Notes
-- Image is ~3.2 GB (includes Chromium for PDF rendering)
+- Image is ~3.4 GB (includes Chromium for PDF rendering and post cards)
 - `SITE_URL` set to `http://169.58.90.13:8023` (update to domain when available)
 - Ports: 8023 public (gatekeeper), 8026 internal loopback only, 5436 (postgres published for
   inspection)
@@ -205,4 +218,31 @@ ss -tlnp | grep 8026
   `docker compose --env-file .env exec -T app npx tsx prisma/seed.ts`
 - Full on-demand runbook (gatekeeper env, PUBLIC_PORT/INTERNAL_PORT/WEB_BIND, manual deploy and
   teardown endpoints): `ON_DEMAND_HOSTING.md`
+
+### Scheduled LinkedIn posts while the stack sleeps
+
+The gatekeeper stops the whole compose stack — scheduler included — after five hours of
+inactivity. That is the point of on-demand hosting, but it would leave a 10:00 post unsent until
+someone visited the site. `deploy/vps-wake.sh` closes that gap:
+
+```bash
+# one-time install, as root on the VPS
+chmod +x /opt/github/gazi-portfolio/deploy/vps-wake.sh
+( crontab -l 2>/dev/null; echo '*/5 * * * * /opt/github/gazi-portfolio/deploy/vps-wake.sh' ) | crontab -
+```
+
+The script reads `deploy/.runtime/next-post.json` (written by the scheduler on every tick) and
+touches the gatekeeper **only** when the next post is due within ten minutes. Outside that window
+it does nothing, so the stack still sleeps; inside it, the stack wakes, the scheduler catches up,
+and the post goes out. If the wake fails, the scheduler's catch-up on the next start still
+publishes it — late, but not lost.
+
+Verify on the VPS:
+
+```bash
+docker ps --format '{{.Names}} {{.Status}}'          # postgres, app, web, scheduler
+curl -s http://127.0.0.1:8026/api/v1/social          # 200 with {"posts":[...]}
+docker compose -f /opt/github/gazi-portfolio/deploy/docker-compose.yml logs --tail 40 scheduler
+cat /opt/github/gazi-portfolio/deploy/.runtime/next-post.json
+```
 
