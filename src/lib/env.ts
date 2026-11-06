@@ -38,6 +38,14 @@ const schema = z.object({
   /** Meta — posting to a Facebook Page. Optional. */
   FACEBOOK_APP_ID: z.string().optional(),
   FACEBOOK_APP_SECRET: z.string().optional(),
+
+  /** Scheduling defaults, also editable from the admin panel. */
+  SOCIAL_TIMEZONE: z.string().default("Asia/Dhaka"),
+  SOCIAL_POST_TIME: z.string().default("10:00"),
+  SOCIAL_AUTO_PUBLISH: z.string().default("true"),
+
+  /** Origin the scheduler uses to reach the app for card rendering. */
+  SOCIAL_RENDER_ORIGIN: z.string().optional(),
 });
 
 export type Env = z.infer<typeof schema>;

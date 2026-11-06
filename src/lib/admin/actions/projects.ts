@@ -17,6 +17,7 @@ import {
   zodFail,
 } from "@/lib/admin/schemas";
 import { isManagedMediaUrl } from "@/lib/media/storage";
+import { refreshPreparedCopy } from "@/lib/social/planner";
 import type { ActionResult, ProjectInput } from "@/lib/admin/types";
 
 /**
@@ -116,6 +117,10 @@ export async function saveProject(
     touchContent();
     revalidatePath(LIST_PATH);
     revalidatePath(`${LIST_PATH}/${saved.id}`);
+
+    // Keep a prepared LinkedIn post in step with the project it describes —
+    // unless the admin wrote that copy by hand, which the planner always respects.
+    await refreshPreparedCopy(saved.id).catch(() => undefined);
 
     return {
       ok: true,
