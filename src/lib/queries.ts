@@ -44,6 +44,8 @@ export interface ProjectDto {
   techStack: string[];
   coverPath: string | null;
   featured: boolean;
+  /** Permalink of the most recent published LinkedIn post about this project. */
+  linkedinUrl: string | null;
   images: ProjectImageDto[];
 }
 
@@ -126,6 +128,7 @@ function toProjectDto(row: {
   coverPath: string | null;
   featured: boolean;
   images: { path: string; alt: string; caption: string | null; width: number; height: number }[];
+  dispatches?: { permalink: string | null }[];
 }): ProjectDto {
   return {
     slug: row.slug,
@@ -140,6 +143,7 @@ function toProjectDto(row: {
     techStack: row.techStack,
     coverPath: row.coverPath,
     featured: row.featured,
+    linkedinUrl: row.dispatches?.[0]?.permalink ?? null,
     images: row.images.map((image) => ({
       path: image.path,
       alt: image.alt,
@@ -150,11 +154,19 @@ function toProjectDto(row: {
   };
 }
 
+const postedLinkedIn = {
+  where: { provider: "LINKEDIN" as const, status: "POSTED" as const },
+  orderBy: { postedAt: "desc" as const },
+  take: 1,
+  select: { permalink: true },
+} as const;
+
 const projectInclude = {
   images: {
     orderBy: { order: "asc" },
     select: { path: true, alt: true, caption: true, width: true, height: true },
   },
+  dispatches: postedLinkedIn,
 } as const;
 
 const PROJECT_SUMMARY_SELECT = {
@@ -173,6 +185,7 @@ const PROJECT_SUMMARY_SELECT = {
     orderBy: { order: "asc" },
     select: { path: true, alt: true, caption: true, width: true, height: true },
   },
+  dispatches: postedLinkedIn,
 } as const;
 
 export async function getProjects(options?: { featuredOnly?: boolean; tech?: string }) {
@@ -369,6 +382,56 @@ export async function saveGeneratedAsset(input: {
 }
 
 /* ------------------------------------------------------------- API meta --- */
+
+/**
+ * Posts this app has published to LinkedIn, for the companion app's Updates feed.
+ *
+ * Deliberately returns only what is already public on LinkedIn: title, summary,
+ * the card image, the permalink and when it went out. Prepared-but-unpublished
+ * posts are admin material and never appear here.
+ */
+export interface PostedSocialItem {
+  id: string;
+  subjectType: "EXPERIENCE" | "PROJECT";
+  subjectSlug: string | null;
+  title: string;
+  summary: string;
+  imageUrl: string | null;
+  permalink: string;
+  postedAt: string;
+}
+
+export async function getPostedSocialPosts(limit = 60): Promise<PostedSocialItem[]> {
+  const rows = await prisma.socialDispatch.findMany({
+    where: { provider: "LINKEDIN", status: "POSTED", permalink: { not: null } },
+    orderBy: { postedAt: "desc" },
+    take: Math.min(Math.max(limit, 1), 200),
+    include: {
+      project: { select: { slug: true, title: true, summary: true } },
+      experience: { select: { slug: true, title: true, company: true, summary: true } },
+    },
+  });
+
+  return rows.flatMap((row) => {
+    const title = row.project?.title ?? row.experience?.title;
+    const summary = row.project?.summary ?? row.experience?.summary ?? "";
+    const slug = row.project?.slug ?? row.experience?.slug ?? null;
+    if (!title || !row.permalink) return [];
+
+    return [
+      {
+        id: row.id,
+        subjectType: row.subjectType,
+        subjectSlug: slug,
+        title,
+        summary,
+        imageUrl: row.imagePath,
+        permalink: row.permalink,
+        postedAt: (row.postedAt ?? row.createdAt).toISOString(),
+      },
+    ];
+  });
+}
 
 /**
  * Cheap change-detection for the mobile client: one hash covering all published
