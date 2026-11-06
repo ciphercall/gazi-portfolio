@@ -54,7 +54,7 @@ export async function GET(
   // `missingConfig()` also reports SOCIAL_TOKEN_KEY: without it the callback
   // could not encrypt the token, so connecting would fail closed halfway
   // through. Better to say so before the browser leaves this site.
-  const missing = adapter.missingConfig();
+  const missing = await adapter.missingConfig();
   if (missing.length > 0) {
     return NextResponse.json(
       {
@@ -63,8 +63,8 @@ export async function GET(
         missing,
         message:
           `Social publishing for ${provider === "linkedin" ? "LinkedIn" : "Facebook"} is not configured. ` +
-          `Missing environment ${missing.length === 1 ? "variable" : "variables"}: ${missing.join(", ")}. ` +
-          "Add them to deploy/.env (the shapes are documented in deploy/.env.example) and restart the stack, " +
+          `Missing: ${missing.join(", ")}. ` +
+          "Add them on /admin/social/settings (they are encrypted at rest), or in deploy/.env, " +
           "or use the manual share links on /admin/social, which need no credentials at all.",
       },
       { status: 400, headers: { "Cache-Control": "no-store" } },
@@ -75,7 +75,7 @@ export async function GET(
   const returnTo = isSafeAdminReturnPath(returnToParam) ? returnToParam : DEFAULT_RETURN_PATH;
 
   const started = beginOAuthState({ provider, returnTo });
-  const authorizeUrl = adapter.authorizeUrl(started.state);
+  const authorizeUrl = await adapter.authorizeUrl(started.state);
 
   // Unreachable while `missingConfig()` is empty, but `authorizeUrl()` returning
   // null is a contract on the adapter interface, so it is honoured rather than

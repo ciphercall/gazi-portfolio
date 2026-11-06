@@ -97,6 +97,7 @@ function fixtureSource(): CvSource {
       techStack: project.techStack,
       coverPath: null,
       featured: project.featured,
+      linkedinUrl: null,
       images: [],
     })),
   };

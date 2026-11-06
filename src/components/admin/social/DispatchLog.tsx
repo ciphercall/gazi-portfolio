@@ -55,6 +55,9 @@ export interface DispatchRow {
   externalId: string | null;
   error: string | null;
   attempts: number;
+  /** Scheduled send time (ISO), null when the row has no schedule. */
+  scheduledFor: string | null;
+  imagePath: string | null;
   postedAt: string | null;
   createdAt: string;
 }
@@ -72,6 +75,10 @@ export interface DispatchLogProps {
     linkedin: ProviderReadiness;
     facebook: ProviderReadiness;
   };
+  /** Panel heading. The page renders one log for Posted and one for Prepared. */
+  title?: string;
+  description?: React.ReactNode;
+  emptyMessage?: string;
 }
 
 function formatTimestamp(iso: string | null): string {
@@ -91,7 +98,13 @@ function labelFor(provider: "LINKEDIN" | "FACEBOOK"): { label: string; slug: "li
     : { label: "Facebook", slug: "facebook" };
 }
 
-export function DispatchLog({ rows, readiness }: DispatchLogProps) {
+export function DispatchLog({
+  rows,
+  readiness,
+  title = "Dispatch log",
+  description,
+  emptyMessage = "Nothing has been queued yet. Saving an experience or a project queues a post when publishing is switched on; the manual share panels below always work.",
+}: DispatchLogProps) {
   const router = useRouter();
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [results, setResults] = useState<Record<string, DispatchActionResult>>({});
@@ -122,12 +135,14 @@ export function DispatchLog({ rows, readiness }: DispatchLogProps) {
 
   return (
     <Panel
-      title="Dispatch log"
+      title={title}
       description={
-        <p>
-          Every post this app has queued or sent, newest first. Failures keep the provider&rsquo;s
-          own error text so nothing has to be guessed at.
-        </p>
+        description ?? (
+          <p>
+            Every post this app has queued or sent, newest first. Failures keep the provider&rsquo;s
+            own error text so nothing has to be guessed at.
+          </p>
+        )
       }
       aside={
         <span className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-panel px-2.5 py-1 text-xs font-medium text-muted">
@@ -143,10 +158,7 @@ export function DispatchLog({ rows, readiness }: DispatchLogProps) {
       {rows.length === 0 ? (
         <div className="px-5 py-10 text-center sm:px-6">
           <ScrollText className="mx-auto h-6 w-6 text-faint" aria-hidden="true" />
-          <p className="mt-3 text-sm text-muted">
-            Nothing has been queued yet. Saving an experience or a project queues a post when
-            publishing is switched on; the manual share panels below always work.
-          </p>
+          <p className="mt-3 text-sm text-muted">{emptyMessage}</p>
         </div>
       ) : (
         /* Scroll region. The sticky action bar below is a sibling, not a child. */
@@ -266,6 +278,11 @@ export function DispatchLog({ rows, readiness }: DispatchLogProps) {
                     </td>
 
                     <td className="px-4 py-3 text-xs whitespace-nowrap text-muted">
+                      {row.scheduledFor ? (
+                        <span className="block text-cyan">
+                          scheduled {formatTimestamp(row.scheduledFor)}
+                        </span>
+                      ) : null}
                       <span className="block">{formatTimestamp(row.createdAt)}</span>
                       {row.postedAt ? (
                         <span className="mt-0.5 block text-faint">
