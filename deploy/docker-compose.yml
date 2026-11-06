@@ -1,11 +1,13 @@
 # ============================================================================
 #  Gazi Portfolio — local Docker stack
 #
-#    postgres :16-alpine   private, published on 5436 for inspection
-#    app      :Next.js     the site, the admin panel, the PDF renderer, the API
-#    web      :nginx       single origin on ${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8023},
-#                          serves /media off the volume. In on-demand mode the
-#                          gatekeeper sets WEB_BIND=127.0.0.1 and WEB_PORT=INTERNAL_PORT.
+#    postgres  :16-alpine   private, published on 5436 for inspection
+#    app       :Next.js     the site, the admin panel, the PDF renderer, the API
+#    scheduler :Next.js     same image, `npm run scheduler` — plans and publishes
+#                           LinkedIn posts on a one-minute tick
+#    web       :nginx       single origin on ${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8023},
+#                           serves /media off the volume. In on-demand mode the
+#                           gatekeeper sets WEB_BIND=127.0.0.1 and WEB_PORT=INTERNAL_PORT.
 #
 #  Driven by  portfolio-deploy.ps1  at the workspace root.
 # ============================================================================
@@ -64,6 +66,12 @@ services:
       LINKEDIN_CLIENT_SECRET: ${LINKEDIN_CLIENT_SECRET:-}
       FACEBOOK_APP_ID: ${FACEBOOK_APP_ID:-}
       FACEBOOK_APP_SECRET: ${FACEBOOK_APP_SECRET:-}
+      # Scheduling defaults. Also editable from /admin/social/settings, which
+      # wins over these values.
+      SOCIAL_TIMEZONE: ${SOCIAL_TIMEZONE:-Asia/Dhaka}
+      SOCIAL_POST_TIME: ${SOCIAL_POST_TIME:-10:00}
+      SOCIAL_AUTO_PUBLISH: ${SOCIAL_AUTO_PUBLISH:-true}
+      TZ: ${SOCIAL_TIMEZONE:-Asia/Dhaka}
     volumes:
       - portfolio-media:/srv/media
     expose:
@@ -74,6 +82,44 @@ services:
       timeout: 5s
       retries: 12
       start_period: 30s
+
+  # One-minute tick: plan a post for every published project, publish the ones
+  # whose slot has arrived. Same image as `app` — no second build, no new base,
+  # and Chromium for the card renderer is already inside it.
+  scheduler:
+    image: gazi-portfolio/app:latest
+    restart: unless-stopped
+    command: ["npm", "run", "scheduler"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      app:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required — run -Action env}
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET is required — run -Action env}
+      SITE_URL: ${SITE_URL:-http://localhost:8023}
+      SITE_NAME: ${SITE_NAME:-Gazi Monir-Uz-Zaman}
+      MEDIA_ROOT: ${MEDIA_ROOT:-/srv/media}
+      GIT_SHA: ${GIT_SHA:-unknown}
+      SOCIAL_TOKEN_KEY: ${SOCIAL_TOKEN_KEY:-}
+      LINKEDIN_CLIENT_ID: ${LINKEDIN_CLIENT_ID:-}
+      LINKEDIN_CLIENT_SECRET: ${LINKEDIN_CLIENT_SECRET:-}
+      FACEBOOK_APP_ID: ${FACEBOOK_APP_ID:-}
+      FACEBOOK_APP_SECRET: ${FACEBOOK_APP_SECRET:-}
+      SOCIAL_TIMEZONE: ${SOCIAL_TIMEZONE:-Asia/Dhaka}
+      SOCIAL_POST_TIME: ${SOCIAL_POST_TIME:-10:00}
+      SOCIAL_AUTO_PUBLISH: ${SOCIAL_AUTO_PUBLISH:-true}
+      # The scheduler has no Next server of its own, so the card renderer has to
+      # reach the app container by service name rather than 127.0.0.1.
+      SOCIAL_RENDER_ORIGIN: http://app:3000
+      TZ: ${SOCIAL_TIMEZONE:-Asia/Dhaka}
+    volumes:
+      - portfolio-media:/srv/media
+      # next-post.json lands here so the VPS host cron can wake the stack only
+      # when a post is actually due. Gitignored (deploy/.runtime/).
+      - ./.runtime:/app/.runtime
 
   web:
     image: nginx:1.27-alpine

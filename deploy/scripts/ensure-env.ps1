@@ -97,6 +97,23 @@ if ([string]::IsNullOrWhiteSpace($dbPassword) -or $dbPassword -like 'change-me*'
     $changes += 'DATABASE_URL'
 }
 
+# ------------------------------------------------------------- scheduling ---
+# Defaults for the LinkedIn scheduler. Appended to an existing .env when absent,
+# so an older deployment picks them up on the next `-Action env` without losing
+# anything already set.
+$scheduleDefaults = [ordered]@{
+    'SOCIAL_TIMEZONE'     = 'Asia/Dhaka'
+    'SOCIAL_POST_TIME'    = '10:00'
+    'SOCIAL_AUTO_PUBLISH' = 'true'
+}
+foreach ($key in $scheduleDefaults.Keys) {
+    $current = Get-EnvValue $content $key
+    if ([string]::IsNullOrWhiteSpace($current)) {
+        $content = Set-EnvValue $content $key $scheduleDefaults[$key]
+        $changes += $key
+    }
+}
+
 # ------------------------------------------------------------------ admin ---
 $adminPassword = Get-EnvValue $content 'ADMIN_PASSWORD'
 if ([string]::IsNullOrWhiteSpace($adminPassword) -or $adminPassword -like 'change-me*') {
