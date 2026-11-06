@@ -1,7 +1,8 @@
 import { createHmac } from "node:crypto";
 
 import { encryptSecret } from "@/lib/crypto";
-import { getEnv, isFacebookConfigured } from "@/lib/env";
+import { getEnv } from "@/lib/env";
+import { getSocialCredentials, missingProviderConfig } from "@/lib/social/credentials";
 
 import type {
   ConnectResult,
@@ -109,10 +110,8 @@ interface FacebookCredentials {
   appSecret: string;
 }
 
-function credentials(): FacebookCredentials | null {
-  const env = getEnv();
-  if (!env.FACEBOOK_APP_ID || !env.FACEBOOK_APP_SECRET) return null;
-  return { appId: env.FACEBOOK_APP_ID, appSecret: env.FACEBOOK_APP_SECRET };
+function credentials(): Promise<FacebookCredentials | null> {
+  return getSocialCredentials().then((creds) => creds.facebook);
 }
 
 /**
@@ -246,9 +245,8 @@ export const facebookAdapter: SocialProviderAdapter = {
    * Returns null when the app is not configured, so the panel can explain what
    * is missing instead of offering a button that cannot work.
    */
-  authorizeUrl(state: string): string | null {
-    if (!isFacebookConfigured()) return null;
-    const creds = credentials();
+  async authorizeUrl(state: string): Promise<string | null> {
+    const creds = await credentials();
     if (!creds) return null;
 
     const url = new URL(`https://www.facebook.com/${GRAPH_API_VERSION}/dialog/oauth`);
@@ -261,7 +259,7 @@ export const facebookAdapter: SocialProviderAdapter = {
   },
 
   async exchangeCode(code: string): Promise<ConnectResult> {
-    const creds = credentials();
+    const creds = await credentials();
     if (!creds) {
       throw new Error(
         "Facebook is not configured — set FACEBOOK_APP_ID and FACEBOOK_APP_SECRET.",
@@ -340,8 +338,14 @@ export const facebookAdapter: SocialProviderAdapter = {
     };
   },
 
-  async publish(account: DecryptedAccount, message: string, link?: string): Promise<PublishResult> {
-    const creds = credentials();
+  async publish(
+    account: DecryptedAccount,
+    message: string,
+    link?: string,
+    // Facebook posts this feature only ever writes are text+link; the rendered
+    // card is a LinkedIn affordance and is deliberately unused here.
+  ): Promise<PublishResult> {
+    const creds = await credentials();
     if (!creds) {
       return { ok: false, error: "Facebook credentials were removed from the environment." };
     }
@@ -405,12 +409,7 @@ export const facebookAdapter: SocialProviderAdapter = {
     };
   },
 
-  missingConfig(): string[] {
-    const env = getEnv();
-    const missing: string[] = [];
-    if (!env.FACEBOOK_APP_ID) missing.push("FACEBOOK_APP_ID");
-    if (!env.FACEBOOK_APP_SECRET) missing.push("FACEBOOK_APP_SECRET");
-    if (!env.SOCIAL_TOKEN_KEY || env.SOCIAL_TOKEN_KEY.length < 32) missing.push("SOCIAL_TOKEN_KEY");
-    return missing;
+  missingConfig(): Promise<string[]> {
+    return missingProviderConfig("facebook");
   },
 };

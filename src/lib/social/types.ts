@@ -119,6 +119,15 @@ export interface DecryptedAccount {
   displayName: string;
 }
 
+/** Image bytes handed to an adapter for one publish call. */
+export interface PublishImage {
+  data: Buffer;
+  /** `image/png`, `image/jpeg`, `image/webp`. */
+  mime: string;
+  /** Alt text, used by providers that accept it. */
+  alt?: string;
+}
+
 export interface SocialProviderAdapter {
   readonly slug: ProviderSlug;
   readonly provider: Provider;
@@ -126,12 +135,20 @@ export interface SocialProviderAdapter {
    * The provider's consent URL, or `null` when this provider has no client id
    * and secret configured. Callers must surface "not configured" rather than
    * attempting a request, so a dead button never appears in the UI.
+   *
+   * Async because the credentials may live in the database (entered in the admin
+   * panel) rather than in the process environment.
    */
-  authorizeUrl(state: string): string | null;
+  authorizeUrl(state: string): Promise<string | null>;
   /** Exchange an authorization code. Encrypts before returning. */
   exchangeCode(code: string): Promise<ConnectResult>;
   /** Create one post on behalf of the connected account. */
-  publish(account: DecryptedAccount, message: string, link?: string): Promise<PublishResult>;
-  /** Env var names this provider still needs. Empty when fully configured. */
-  missingConfig(): string[];
+  publish(
+    account: DecryptedAccount,
+    message: string,
+    link?: string,
+    image?: PublishImage,
+  ): Promise<PublishResult>;
+  /** Credentials this provider still needs. Empty when fully configured. */
+  missingConfig(): Promise<string[]>;
 }

@@ -1,12 +1,17 @@
-import { after } from "next/server";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 import { decryptSecret } from "@/lib/crypto";
 import { prisma } from "@/lib/db";
 import { isSocialPublishingConfigured } from "@/lib/env";
+import { resolveMediaAbsolutePath } from "@/lib/media/storage";
 import { adapterForProvider } from "@/lib/social/adapters";
+import { ensureCardForDispatch } from "@/lib/social/card";
+import { readSetting } from "@/lib/social/credentials";
 import { publicUrlFor } from "@/lib/social/manual";
+import { dayBucket, isAutoPublishEnabled } from "@/lib/social/time";
 
-import type { Provider, PublishResult, SubjectType } from "@/lib/social/types";
+import type { Provider, PublishImage, PublishResult, SubjectType } from "@/lib/social/types";
 
 /**
  * Provider-agnostic dispatch: queue a post, then send it without making the
@@ -49,6 +54,9 @@ export interface DispatchLogEntry {
   permalink: string | null;
   error: string | null;
   attempts: number;
+  scheduledFor: Date | null;
+  imagePath: string | null;
+  manualEdit: boolean;
   postedAt: Date | null;
   createdAt: Date;
 }
@@ -86,6 +94,9 @@ export async function listDispatches(limit = 50): Promise<DispatchLogEntry[]> {
       permalink: row.permalink,
       error: row.error,
       attempts: row.attempts,
+      scheduledFor: row.scheduledFor,
+      imagePath: row.imagePath,
+      manualEdit: row.manualEdit,
       postedAt: row.postedAt,
       createdAt: row.createdAt,
     };
@@ -102,6 +113,8 @@ export interface QueueDispatchInput {
   message: string;
   /** Schedule the send now (default). Pass false to leave the row QUEUED. */
   publishNow?: boolean;
+  /** When set, the row is scheduled instead of sent immediately. */
+  scheduledFor?: Date | null;
 }
 
 export type QueueDispatchOutcome =
@@ -146,6 +159,8 @@ export async function queueDispatch(input: QueueDispatchInput): Promise<QueueDis
       provider: input.provider,
       status: "QUEUED",
       message,
+      scheduledFor: input.scheduledFor ?? null,
+      scheduledDay: input.scheduledFor ? dayBucket(input.scheduledFor) : null,
       // The convenience relations are what let the log show a readable subject
       // and survive without a separate lookup.
       experienceId: input.subjectType === "EXPERIENCE" ? input.subjectId : null,
@@ -154,7 +169,8 @@ export async function queueDispatch(input: QueueDispatchInput): Promise<QueueDis
     select: { id: true },
   });
 
-  if (input.publishNow !== false) scheduleDispatchPublish(row.id);
+  // A scheduled post must not be sent the moment it is created.
+  if (input.publishNow !== false && !input.scheduledFor) scheduleDispatchPublish(row.id);
 
   return { queued: true, id: row.id, created: true };
 }
@@ -170,25 +186,35 @@ export async function queueDispatch(input: QueueDispatchInput): Promise<QueueDis
  * caller, and once so nothing can escape the callback itself.
  */
 export function scheduleDispatchPublish(id: string): void {
-  try {
-    after(async () => {
-      try {
-        await publishDispatch(id);
-      } catch (error) {
-        // Logging the message is safe here — see the file header: on this path a
-        // credential is never in a URL, so it cannot be inside the message.
-        console.error(
-          `[social] background publish failed for dispatch ${id}:`,
-          error instanceof Error ? error.message : "unknown error",
-        );
-      }
-    });
-  } catch (error) {
-    console.error(
-      "[social] could not schedule publishing:",
-      error instanceof Error ? error.message : "unknown error",
-    );
-  }
+  const task = async () => {
+    try {
+      await publishDispatch(id);
+    } catch (error) {
+      // Logging the message is safe here — see the file header: on this path a
+      // credential is never in a URL, so it cannot be inside the message.
+      console.error(
+        `[social] background publish failed for dispatch ${id}:`,
+        error instanceof Error ? error.message : "unknown error",
+      );
+    }
+  };
+
+  // `next/server` is imported lazily so this module can also be loaded by the
+  // scheduler, which is a plain Node process with no request scope. There,
+  // `after()` does not exist and running the task now is the correct behaviour —
+  // the scheduler is not serving a response it could block.
+  void (async () => {
+    try {
+      const { after } = await import("next/server");
+      after(task);
+    } catch (error) {
+      console.error(
+        "[social] could not schedule publishing with after(), running it directly:",
+        error instanceof Error ? error.message : "unknown error",
+      );
+      void task();
+    }
+  })();
 }
 
 /* --------------------------------------------------------------- publishing --- */
@@ -208,6 +234,38 @@ async function recordFailure(
     },
   });
   return { ok: false, error: message, needsReconnect };
+}
+
+const IMAGE_MIME: Record<string, string> = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+};
+
+/**
+ * The rendered card for one dispatch, as bytes ready to upload.
+ *
+ * Rendering is best-effort by design: a card that cannot be produced must not
+ * stop a scheduled post, so every failure path here returns `undefined` and the
+ * adapter falls back to a text post.
+ */
+async function loadCardImage(dispatchId: string): Promise<PublishImage | undefined> {
+  const stored = await ensureCardForDispatch(dispatchId);
+  if (!stored) return undefined;
+
+  try {
+    const absolute = resolveMediaAbsolutePath(stored);
+    const data = await readFile(absolute);
+    const mime = IMAGE_MIME[path.extname(absolute).toLowerCase()] ?? "image/png";
+    return { data, mime, alt: "" };
+  } catch (error) {
+    console.error(
+      `[social] card bytes unreadable for dispatch ${dispatchId}:`,
+      error instanceof Error ? error.message : "unknown error",
+    );
+    return undefined;
+  }
 }
 
 async function runDispatch(id: string): Promise<PublishResult> {
@@ -279,6 +337,7 @@ async function runDispatch(id: string): Promise<PublishResult> {
   const link = subject.isPublished ? publicUrlFor({ type: dispatch.subjectType, slug: subject.slug }) : undefined;
 
   const adapter = adapterForProvider(dispatch.provider);
+  const image = await loadCardImage(dispatch.id);
 
   const result = await adapter.publish(
     {
@@ -289,6 +348,7 @@ async function runDispatch(id: string): Promise<PublishResult> {
     },
     dispatch.message,
     link,
+    image,
   );
 
   if (result.ok) {
@@ -360,3 +420,183 @@ export async function retryDispatch(id: string): Promise<PublishResult> {
 export function isPublishing(id: string): boolean {
   return inFlight.has(id);
 }
+
+/* ------------------------------------------------------------- the two lists --- */
+
+/** Everything already live on LinkedIn, newest first. */
+export async function listPostedDispatches(limit = 100): Promise<DispatchLogEntry[]> {
+  return listByStatus(["POSTED"], limit);
+}
+
+/** Everything prepared or scheduled but not yet published. */
+export async function listPreparedDispatches(limit = 200): Promise<DispatchLogEntry[]> {
+  return listByStatus(["QUEUED", "DRAFT", "FAILED", "NEEDS_RECONNECT"], limit);
+}
+
+async function listByStatus(
+  statuses: ("POSTED" | "QUEUED" | "DRAFT" | "FAILED" | "NEEDS_RECONNECT")[],
+  limit: number,
+): Promise<DispatchLogEntry[]> {
+  const rows = await prisma.socialDispatch.findMany({
+    where: { status: { in: statuses }, provider: "LINKEDIN" },
+    orderBy: [{ scheduledFor: "asc" }, { createdAt: "desc" }],
+    take: Math.min(Math.max(limit, 1), 500),
+    include: {
+      experience: { select: { title: true, company: true, slug: true } },
+      project: { select: { title: true, slug: true } },
+    },
+  });
+
+  return rows.map((row) => {
+    const slug = row.experience?.slug ?? row.project?.slug ?? null;
+    return {
+      id: row.id,
+      subjectType: row.subjectType,
+      subjectId: row.subjectId,
+      subjectLabel: row.experience
+        ? `${row.experience.title} — ${row.experience.company}`
+        : (row.project?.title ?? "Deleted content"),
+      subjectUrl: slug ? publicUrlFor({ type: row.subjectType, slug }) : null,
+      provider: row.provider,
+      status: row.status,
+      message: row.message,
+      externalId: row.externalId,
+      permalink: row.permalink,
+      error: row.error,
+      attempts: row.attempts,
+      scheduledFor: row.scheduledFor,
+      imagePath: row.imagePath,
+      manualEdit: row.manualEdit,
+      postedAt: row.postedAt,
+      createdAt: row.createdAt,
+    };
+  });
+}
+
+/* --------------------------------------------------------------- editing --- */
+
+/** Save hand-written copy. Marks the row so the planner never overwrites it. */
+export async function setDispatchMessage(
+  id: string,
+  message: string,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const trimmed = message.trim();
+  if (!trimmed) return { ok: false, message: "The post cannot be empty." };
+  if (trimmed.length > 3000) {
+    return { ok: false, message: "LinkedIn posts are limited to 3000 characters." };
+  }
+
+  const row = await prisma.socialDispatch.findUnique({ where: { id }, select: { status: true } });
+  if (!row) return { ok: false, message: "That post no longer exists." };
+  if (row.status === "POSTED") {
+    return { ok: false, message: "That post is already published; its text is history." };
+  }
+
+  await prisma.socialDispatch.update({
+    where: { id },
+    data: { message: trimmed, manualEdit: true },
+  });
+  return { ok: true };
+}
+
+/** Drop a prepared post. A published one is never deleted. */
+export async function cancelDispatch(
+  id: string,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const row = await prisma.socialDispatch.findUnique({ where: { id }, select: { status: true } });
+  if (!row) return { ok: false, message: "That post no longer exists." };
+  if (row.status === "POSTED") {
+    return { ok: false, message: "Posted content cannot be removed from the log." };
+  }
+  await prisma.socialDispatch.delete({ where: { id } });
+  return { ok: true };
+}
+
+/* ---------------------------------------------------------------- the tick --- */
+
+/** Lease key in `app_settings`; the value is the instant the lease expires. */
+const SCHEDULER_LEASE_KEY = "social.scheduler.lease";
+const LEASE_MS = 2 * 60_000;
+
+/**
+ * Take the scheduler lease.
+ *
+ * Only one process may publish at a time. A row-level advisory lock would be the
+ * obvious tool, but Prisma's pg adapter pools connections, so a session advisory
+ * lock can be acquired on one connection and released on another — which is how
+ * a lock leaks for the life of the pool. A leased row in the database it already
+ * writes to is boring, portable and correct: an expired lease is always
+ * recoverable, and a crashed scheduler does not wedge the queue.
+ */
+async function acquireLease(): Promise<boolean> {
+  const now = new Date();
+  const expires = new Date(now.getTime() + LEASE_MS);
+
+  const affected = await prisma.$executeRaw`
+    INSERT INTO "app_settings" ("key", "value", "isSecret", "updatedAt")
+    VALUES (${SCHEDULER_LEASE_KEY}, ${expires.toISOString()}, false, now())
+    ON CONFLICT ("key") DO UPDATE
+      SET "value" = ${expires.toISOString()}, "updatedAt" = now()
+      WHERE "app_settings"."value" < ${now.toISOString()}
+  `;
+
+  return affected > 0;
+}
+
+async function releaseLease(): Promise<void> {
+  const past = new Date(Date.now() - 60_000).toISOString();
+  await prisma.$executeRaw`
+    UPDATE "app_settings" SET "value" = ${past}, "updatedAt" = now()
+    WHERE "key" = ${SCHEDULER_LEASE_KEY}
+  `;
+}
+
+export interface DueTickResult {
+  attempted: number;
+  published: number;
+  failed: number;
+  skipped: boolean;
+}
+
+/**
+ * Publish everything that is due, oldest first.
+ *
+ * This is the whole scheduler: one call a minute. Overdue rows are included, so a
+ * stack that was asleep (the VPS gatekeeper stops it when idle) still publishes
+ * the moment it is woken rather than silently skipping the day.
+ */
+export async function publishDueDispatches(limit = 3): Promise<DueTickResult> {
+  // The panel's switch wins over the environment: an admin who turned automatic
+  // publishing off must not be overridden by a leftover `.env` default.
+  const storedToggle = await readSetting("social.autoPublish");
+  if (storedToggle === "false" || !isAutoPublishEnabled()) {
+    return { attempted: 0, published: 0, failed: 0, skipped: true };
+  }
+
+  if (!(await acquireLease())) {
+    return { attempted: 0, published: 0, failed: 0, skipped: true };
+  }
+
+  try {
+    const due = await prisma.socialDispatch.findMany({
+      where: { status: "QUEUED", scheduledFor: { not: null, lte: new Date() } },
+      orderBy: [{ scheduledFor: "asc" }],
+      take: Math.min(Math.max(limit, 1), 10),
+      select: { id: true },
+    });
+
+    let published = 0;
+    let failed = 0;
+
+    for (const row of due) {
+      const result = await publishDispatch(row.id);
+      if (result.ok) published += 1;
+      else failed += 1;
+    }
+
+    return { attempted: due.length, published, failed, skipped: false };
+  } finally {
+    await releaseLease().catch(() => undefined);
+  }
+}
+

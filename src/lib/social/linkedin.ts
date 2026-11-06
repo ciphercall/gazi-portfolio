@@ -1,10 +1,12 @@
 import { encryptSecret } from "@/lib/crypto";
-import { getEnv, isLinkedInConfigured } from "@/lib/env";
+import { getEnv } from "@/lib/env";
+import { getSocialCredentials, missingProviderConfig } from "@/lib/social/credentials";
 
 import type {
   ConnectResult,
   DecryptedAccount,
   ProviderSlug,
+  PublishImage,
   PublishResult,
   SocialProviderAdapter,
 } from "@/lib/social/types";
@@ -76,6 +78,7 @@ const AUTHORIZE_ENDPOINT = "https://www.linkedin.com/oauth/v2/authorization";
 const TOKEN_ENDPOINT = "https://www.linkedin.com/oauth/v2/accessToken";
 const USERINFO_ENDPOINT = "https://api.linkedin.com/v2/userinfo";
 const POSTS_ENDPOINT = "https://api.linkedin.com/rest/posts";
+const IMAGES_ENDPOINT = "https://api.linkedin.com/rest/images";
 
 /** Pinned 2026-10-15 — see the versioning note above. */
 const LINKEDIN_VERSION = "202610";
@@ -86,10 +89,8 @@ export const LINKEDIN_SCOPE = "w_member_social";
 
 const REQUEST_TIMEOUT_MS = 20_000;
 
-function credentials(): { clientId: string; clientSecret: string } | null {
-  const env = getEnv();
-  if (!env.LINKEDIN_CLIENT_ID || !env.LINKEDIN_CLIENT_SECRET) return null;
-  return { clientId: env.LINKEDIN_CLIENT_ID, clientSecret: env.LINKEDIN_CLIENT_SECRET };
+function credentials(): Promise<{ clientId: string; clientSecret: string } | null> {
+  return getSocialCredentials().then((creds) => creds.linkedin);
 }
 
 /**
@@ -169,6 +170,60 @@ async function postForm(
   return { status: response.status, payload: await readJson(response) };
 }
 
+/**
+ * Upload one image and return its asset URN.
+ *
+ * Two calls, as the Images API defines them: `initializeUpload` reserves the
+ * asset and hands back a pre-authorised upload URL, then the bytes go to that
+ * URL. `w_member_social` covers both — no second scope to request.
+ *
+ * A failure here is reported, not thrown: publishing text without the card is a
+ * worse post but still a post, and a permission problem with images must not turn
+ * every scheduled dispatch into a failure.
+ */
+async function uploadImage(
+  account: DecryptedAccount,
+  image: PublishImage,
+): Promise<{ ok: true; urn: string } | { ok: false; error: string }> {
+  const init = await fetch(`${IMAGES_ENDPOINT}?action=initializeUpload`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${account.accessToken}`,
+      "Content-Type": "application/json",
+      "Linkedin-Version": LINKEDIN_VERSION,
+      "X-Restli-Protocol-Version": RESTLI_PROTOCOL_VERSION,
+    },
+    body: JSON.stringify({ initializeUploadRequest: { owner: account.accountRef } }),
+    cache: "no-store",
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+
+  const payload = await readJson(init);
+  const value = (payload.value ?? {}) as Record<string, unknown>;
+  const uploadUrl = asString(value.uploadUrl);
+  const imageUrn = asString(value.image);
+
+  if (!init.ok || !uploadUrl || !imageUrn) {
+    return { ok: false, error: describeFailure(init.status, payload) };
+  }
+
+  // The upload URL is pre-authorised by LinkedIn; sending our bearer token to it
+  // would hand a credential to a storage host that does not need one.
+  const upload = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: { "Content-Type": image.mime },
+    body: new Uint8Array(image.data),
+    cache: "no-store",
+    signal: AbortSignal.timeout(60_000),
+  });
+
+  if (!upload.ok) {
+    return { ok: false, error: `LinkedIn rejected the image upload (HTTP ${upload.status}).` };
+  }
+
+  return { ok: true, urn: imageUrn };
+}
+
 export const linkedInAdapter: SocialProviderAdapter = {
   slug: "linkedin" satisfies ProviderSlug,
   provider: "LINKEDIN",
@@ -178,9 +233,8 @@ export const linkedInAdapter: SocialProviderAdapter = {
    * "not configured" explanation instead of sending the admin to a broken
    * consent page.
    */
-  authorizeUrl(state: string): string | null {
-    if (!isLinkedInConfigured()) return null;
-    const creds = credentials();
+  async authorizeUrl(state: string): Promise<string | null> {
+    const creds = await credentials();
     if (!creds) return null;
 
     const url = new URL(AUTHORIZE_ENDPOINT);
@@ -193,7 +247,7 @@ export const linkedInAdapter: SocialProviderAdapter = {
   },
 
   async exchangeCode(code: string): Promise<ConnectResult> {
-    const creds = credentials();
+    const creds = await credentials();
     if (!creds) {
       throw new Error("LinkedIn is not configured — set LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET.");
     }
@@ -255,12 +309,36 @@ export const linkedInAdapter: SocialProviderAdapter = {
     };
   },
 
-  async publish(account: DecryptedAccount, message: string, link?: string): Promise<PublishResult> {
-    // The Posts API "does not support URL scraping for article post creation",
-    // and creating a real article post needs an uploaded image URN. Appending the
-    // link to the commentary is the honest, always-available option: the post is
-    // text plus a link, which is exactly what it claims to be.
+  async publish(
+    account: DecryptedAccount,
+    message: string,
+    link?: string,
+    image?: PublishImage,
+  ): Promise<PublishResult> {
+    // The commentary carries the link. The Posts API "does not support URL
+    // scraping for article post creation", so the post is text plus a link —
+    // which is exactly what it claims to be.
     const commentary = link ? `${message}\n\n${link}` : message;
+
+    let mediaUrn: string | null = null;
+    if (image) {
+      try {
+        const uploaded = await uploadImage(account, image);
+        if (uploaded.ok) {
+          mediaUrn = uploaded.urn;
+        } else {
+          console.warn(
+            "[linkedin] image upload failed, posting text only:",
+            uploaded.error.slice(0, 200),
+          );
+        }
+      } catch (error) {
+        console.warn(
+          "[linkedin] image upload threw, posting text only:",
+          error instanceof Error ? error.message : "unknown error",
+        );
+      }
+    }
 
     let response: Response;
     try {
@@ -278,6 +356,9 @@ export const linkedInAdapter: SocialProviderAdapter = {
           author: account.accountRef,
           commentary,
           visibility: "PUBLIC",
+          ...(mediaUrn
+            ? { content: { media: { id: mediaUrn, altText: image?.alt ?? "" } } }
+            : {}),
           distribution: {
             feedDistribution: "MAIN_FEED",
             targetEntities: [],
@@ -323,12 +404,7 @@ export const linkedInAdapter: SocialProviderAdapter = {
     };
   },
 
-  missingConfig(): string[] {
-    const env = getEnv();
-    const missing: string[] = [];
-    if (!env.LINKEDIN_CLIENT_ID) missing.push("LINKEDIN_CLIENT_ID");
-    if (!env.LINKEDIN_CLIENT_SECRET) missing.push("LINKEDIN_CLIENT_SECRET");
-    if (!env.SOCIAL_TOKEN_KEY || env.SOCIAL_TOKEN_KEY.length < 32) missing.push("SOCIAL_TOKEN_KEY");
-    return missing;
+  missingConfig(): Promise<string[]> {
+    return missingProviderConfig("linkedin");
   },
 };
