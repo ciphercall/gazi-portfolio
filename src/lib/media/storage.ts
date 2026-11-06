@@ -19,7 +19,7 @@ import { getEnv } from "@/lib/env";
 
 export const MEDIA_URL_PREFIX = "/media";
 
-export const MEDIA_SUBFOLDERS = ["projects", "profile", "gallery"] as const;
+export const MEDIA_SUBFOLDERS = ["projects", "profile", "gallery", "social"] as const;
 export type MediaSubfolder = (typeof MEDIA_SUBFOLDERS)[number];
 
 export function isMediaSubfolder(value: string): value is MediaSubfolder {

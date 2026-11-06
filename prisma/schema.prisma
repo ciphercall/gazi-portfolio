@@ -252,6 +252,22 @@ model SocialDispatch {
   status   SocialStatus   @default(DRAFT)
   message  String         @db.Text
 
+  /// Exact send time (UTC). Null means "no schedule" — post only when asked.
+  scheduledFor DateTime?
+  /// Local calendar day of `scheduledFor`, as a DATE. The unique index below is
+  /// what makes "never two posts on one day" a database guarantee rather than a
+  /// form validation that a second tab can race past.
+  scheduledDay DateTime? @db.Date
+
+  /// Rendered 1200x627 card served from the media volume, and the content hash
+  /// it was rendered from — the card is re-rendered only when the project changed.
+  imagePath String?
+  imageHash String?
+
+  /// True once an admin edited the copy by hand. The planner never overwrites
+  /// those rows, so a deliberate rewrite survives a re-plan.
+  manualEdit Boolean @default(false)
+
   externalId String?
   permalink  String?
   error      String?  @db.Text
@@ -261,13 +277,32 @@ model SocialDispatch {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([provider, scheduledDay])
   @@index([experienceId])
   @@index([projectId])
   @@index([experienceId, provider])
   @@index([projectId, provider])
   @@index([subjectType, subjectId])
   @@index([status])
+  @@index([status, scheduledFor])
   @@map("social_dispatches")
+}
+
+/* ---------------------------------------------------------------- settings --- */
+
+/// Admin-editable settings, written from the admin panel instead of `deploy/.env`
+/// so a credential can be supplied after the stack is already running.
+///
+/// `value` holds AES-256-GCM ciphertext when `isSecret` is true — the key is
+/// SOCIAL_TOKEN_KEY, exactly as for social tokens. Nothing here is ever rendered
+/// back to a client.
+model AppSetting {
+  key       String   @id
+  value     String   @db.Text
+  isSecret  Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@map("app_settings")
 }
 
 /* ------------------------------------------------------- generated assets --- */
