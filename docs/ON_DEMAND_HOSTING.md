@@ -1,4 +1,4 @@
-# On-Demand Hosting for Gazi Portfolio
+﻿# On-Demand Hosting for Gazi Portfolio
 
 This documents how to run the Gazi Portfolio **on demand** (sideload) instead of 24/7, using the
 reusable `on-demand-gatekeeper` service. No application code (`src/`, `prisma/`, application
@@ -12,7 +12,7 @@ ports:
 
 `WEB_BIND` is the host interface the `web` container publishes on, `WEB_PORT` is the host port.
 `deploy/.env.example` ships `WEB_BIND=0.0.0.0`, so always-on is unchanged by default. On-demand is
-then a question of **who owns the public port** — not of editing compose.
+then a question of **who owns the public port** â€” not of editing compose.
 
 ## Two modes
 
@@ -21,23 +21,23 @@ then a question of **who owns the public port** — not of editing compose.
 | Always-on | `0.0.0.0` | `8023` | the `web` container (nginx) |
 | On-demand | `127.0.0.1` | `8024` local / `8026` VPS | the gatekeeper |
 
-- **Always-on** — `WEB_BIND=0.0.0.0`, `WEB_PORT=8023`: the site answers directly on
+- **Always-on** â€” `WEB_BIND=0.0.0.0`, `WEB_PORT=8023`: the site answers directly on
   `http://localhost:8023`, or `http://<vps-ip>:8023` once `ufw allow 8023/tcp` is in place.
-- **On-demand** — the gatekeeper owns the **public** port; the real stack binds the **internal**
+- **On-demand** â€” the gatekeeper owns the **public** port; the real stack binds the **internal**
   port on **127.0.0.1 only**, so there is no second way in from outside. Put
   `WEB_BIND=127.0.0.1` in the *gatekeeper's* env: it passes `WEB_BIND` through to `docker compose`
   (which publishes the target on `INTERNAL_PORT`), so `deploy/.env` keeps its always-on value.
 
 > **Do not use a compose override file.** `TARGET_COMPOSE_OVERRIDE_FILE` is not the supported way to
 > move the port. Appending a `ports:` list in an override *adds* a second publish next to the base
-> one, which ends as a duplicate bind — and the half-created `web` container is left with no
+> one, which ends as a duplicate bind â€” and the half-created `web` container is left with no
 > network. `WEB_BIND` / `WEB_PORT` is the single knob; there is nothing to override.
 
 ## Ports
 
-- Public (clients): `8023` — the gatekeeper in on-demand mode, `web`/nginx in always-on mode.
-- Internal (gatekeeper → stack): `8024` locally, `8026` on the VPS (8024 is taken by DropshipBD
-  there). **Loopback only** — never allowed through UFW.
+- Public (clients): `8023` â€” the gatekeeper in on-demand mode, `web`/nginx in always-on mode.
+- Internal (gatekeeper â†’ stack): `8024` locally, `8026` on the VPS (8024 is taken by DropshipBD
+  there). **Loopback only** â€” never allowed through UFW.
 - Postgres: `5436` (unchanged).
 
 ## Health endpoint used for readiness
@@ -45,10 +45,10 @@ then a question of **who owns the public port** — not of editing compose.
 - Local: `http://127.0.0.1:8024/api/health`
 - VPS: `http://127.0.0.1:8026/api/health`
 
-Both return 200 only when Postgres is reachable — exactly the moment the gatekeeper stops showing a
+Both return 200 only when Postgres is reachable â€” exactly the moment the gatekeeper stops showing a
 warming page and sends the visitor through.
 
-## Gatekeeper env — local
+## Gatekeeper env â€” local
 
 ```
 PUBLIC_PORT=8023
@@ -69,7 +69,7 @@ DEPLOY_BUILD=false
 ADMIN_TOKEN=local-dev-token
 ```
 
-## Gatekeeper env — VPS
+## Gatekeeper env â€” VPS
 
 ```
 PUBLIC_PORT=8023
@@ -86,11 +86,11 @@ ADMIN_TOKEN=vps-admin-token-change-me
 
 Use absolute paths matching your machine (local: `C:/Users/.../gazi-portfolio/...`; VPS:
 `/opt/github/gazi-portfolio/...`). Neither file sets `TARGET_COMPOSE_OVERRIDE_FILE`; leave it
-unset — see the warning above.
+unset â€” see the warning above.
 
 ## Startup sequence
 
-1. Build the images once — the gatekeeper starts containers, it does not build them
+1. Build the images once â€” the gatekeeper starts containers, it does not build them
    (`DEPLOY_BUILD=false`):
    `powershell -ExecutionPolicy Bypass -File .\portfolio-deploy.ps1 -Action build`
 2. Stop the always-on stack so the public port is free:
@@ -101,10 +101,10 @@ unset — see the warning above.
    copy .env.example .env   # then edit paths and the values listed above, WEB_BIND included
    node src/server.js
    ```
-4. First request to `http://localhost:8023` → countdown page → warms the stack → auto-redirect
+4. First request to `http://localhost:8023` â†’ countdown page â†’ warms the stack â†’ auto-redirect
    into the portfolio.
-5. Verify (next section), then browse `/`, `/admin`, `/api/health`, `/media/*` — all proxied.
-6. Idle test: set `IDLE_TIMEOUT_MS=60000`, wait 1 min → teardown; revisit → warming page.
+5. Verify (next section), then browse `/`, `/admin`, `/api/health`, `/media/*` â€” all proxied.
+6. Idle test: set `IDLE_TIMEOUT_MS=60000`, wait 1 min â†’ teardown; revisit â†’ warming page.
 
 ## Verification
 
@@ -127,14 +127,14 @@ one:
 
 ```bash
 curl http://127.0.0.1:8026/api/health
-curl http://169.58.90.13:8023/healthz
-curl http://169.58.90.13:8023/api/v1/projects
+curl https://gazi.ciphercall.dev/healthz
+curl https://gazi.ciphercall.dev/api/v1/projects
 ss -tlnp | grep 8026
 ```
 
 ## Migrations and seed
 
-The gatekeeper only starts and stops containers — it never migrates. After an image update, with
+The gatekeeper only starts and stops containers â€” it never migrates. After an image update, with
 the stack up (hit the public URL first so the gatekeeper warms it), run from the target deploy
 directory:
 
@@ -161,24 +161,24 @@ curl -Method POST "http://localhost:8023/_ondemand/deploy?token=local-dev-token"
 
 ## VPS manual control (URL-based)
 
-Base URL: `http://169.58.90.13:8023` — admin token: `vps-admin-token-change-me` (change in
+Base URL: `https://gazi.ciphercall.dev` â€” admin token: `vps-admin-token-change-me` (change in
 `/opt/github/on-demand-gatekeeper/.env`).
 
 ```bash
 # Check status
-curl http://169.58.90.13:8023/_ondemand/status
+curl https://gazi.ciphercall.dev/_ondemand/status
 
 # Force teardown
-curl -X POST "http://169.58.90.13:8023/_ondemand/teardown?token=vps-admin-token-change-me"
+curl -X POST "https://gazi.ciphercall.dev/_ondemand/teardown?token=vps-admin-token-change-me"
 
 # Force deploy
-curl -X POST "http://169.58.90.13:8023/_ondemand/deploy?token=vps-admin-token-change-me"
+curl -X POST "https://gazi.ciphercall.dev/_ondemand/deploy?token=vps-admin-token-change-me"
 ```
 
 ## Scheduled LinkedIn posts while the stack sleeps
 
 The target stack now includes a `scheduler` container, and the gatekeeper stops the whole stack
-when idle — scheduler included. A scheduled post would then wait for the next visitor instead of
+when idle â€” scheduler included. A scheduled post would then wait for the next visitor instead of
 going out at its slot.
 
 `deploy/vps-wake.sh` fixes that without giving up on-demand hosting. The scheduler writes
@@ -201,14 +201,14 @@ cat /opt/github/gazi-portfolio/deploy/.runtime/next-post.json
 tail -20 /opt/github/gazi-portfolio/deploy/.runtime/wake.log
 ```
 
-If a wake is ever missed, the scheduler's catch-up on the next start publishes the overdue post —
+If a wake is ever missed, the scheduler's catch-up on the next start publishes the overdue post â€”
 late, but not lost.
 
 ## Troubleshooting
 
 | Symptom | Cause and fix |
 |---------|---------------|
-| `web` container restarting; logs say `host not found in upstream "app:3000"` | The `web` container never actually started — usually a port bind conflict — so it has no network and nginx cannot resolve `app`. Find the real error in `docker compose ... ps` / `docker logs`, remove the conflicting container, then re-run compose with the correct `WEB_BIND` / `WEB_PORT`. |
+| `web` container restarting; logs say `host not found in upstream "app:3000"` | The `web` container never actually started â€” usually a port bind conflict â€” so it has no network and nginx cannot resolve `app`. Find the real error in `docker compose ... ps` / `docker logs`, remove the conflicting container, then re-run compose with the correct `WEB_BIND` / `WEB_PORT`. |
 | `address already in use` on the web port | Two compose invocations bound the same host port: a duplicate `ports:` entry (an override file adding a publish next to the base one) or a manually started compose running concurrently with the gatekeeper's. `ss -tlnp \| grep 8023` names the owner; remove it and start the stack once, through one path. |
 | Public URL hangs, internal health is 200 | The gatekeeper is not running, or `PUBLIC_PORT` is not the port you curled. |
 | `ss` shows `0.0.0.0:8024` instead of `127.0.0.1:8024` | `WEB_BIND` is not `127.0.0.1` in the gatekeeper env (or an override file is still adding a publish). Fix the env, take the stack down, let the gatekeeper start it again. |
@@ -216,7 +216,7 @@ late, but not lost.
 
 ## Notes
 
-- Migrations and seed are not the gatekeeper's job — see "Migrations and seed" above.
+- Migrations and seed are not the gatekeeper's job â€” see "Migrations and seed" above.
 - `restart: unless-stopped` is safe because `docker compose down` removes containers, so they will
   not auto-restart after teardown.
 - The application source, Prisma schema and nginx config are untouched by on-demand hosting. The
@@ -225,5 +225,5 @@ late, but not lost.
 - For HTTPS on the VPS, terminate TLS in front of `PUBLIC_PORT` with nginx or a Cloudflare Tunnel
   pointed at `http://127.0.0.1:8023`.
 - On the VPS, UFW defaults to deny incoming. Allow only the public port before testing externally:
-  `ufw allow 8023/tcp` (and reload). The internal port (`8024` / `8026`) must **not** be allowed —
+  `ufw allow 8023/tcp` (and reload). The internal port (`8024` / `8026`) must **not** be allowed â€”
   `ss -tlnp | grep 8026` showing `127.0.0.1` (not `0.0.0.0`) is what actually keeps it private.

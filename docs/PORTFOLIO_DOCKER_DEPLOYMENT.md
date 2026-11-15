@@ -1,4 +1,4 @@
-# Gazi Portfolio — Docker deployment guide
+﻿# Gazi Portfolio â€” Docker deployment guide
 
 Everything runs locally as a four-container stack driven by `portfolio-deploy.ps1` at the
 workspace root. The shape deliberately mirrors `scm-deploy.ps1` / `pfh-deploy.ps1` so operating
@@ -10,18 +10,18 @@ this project is the same muscle memory as every other one in the workspace.
 
 | Service | Image | Host port | Role |
 |---------|-------|-----------|------|
-| `web` | `nginx:1.27-alpine` | `${WEB_BIND}:${WEB_PORT}` (**0.0.0.0:8023**) → :80 | Single origin. Proxies to the app; serves `/media/*` off the shared volume. |
+| `web` | `nginx:1.27-alpine` | `${WEB_BIND}:${WEB_PORT}` (**0.0.0.0:8023**) â†’ :80 | Single origin. Proxies to the app; serves `/media/*` off the shared volume. |
 | `app` | built from `deploy/docker/app/Dockerfile` | internal :3000 | Next.js site + admin + API + headless Chromium. |
-| `scheduler` | **the same built image** | none | `npm run scheduler` — plans LinkedIn posts every minute and publishes the ones whose slot has arrived. |
-| `postgres` | `postgres:16-alpine` | **5436** → :5432 | Data. Private to the stack, published only for inspection. |
+| `scheduler` | **the same built image** | none | `npm run scheduler` â€” plans LinkedIn posts every minute and publishes the ones whose slot has arrived. |
+| `postgres` | `postgres:16-alpine` | **5436** â†’ :5432 | Data. Private to the stack, published only for inspection. |
 
 Named volumes: `gazi-portfolio-postgres-data`, `gazi-portfolio-media`. The scheduler also bind-mounts
 `deploy/.runtime/` (git-ignored) to write `next-post.json`, which the VPS wake script reads.
 
 **Why a scheduler container exists.** PDF regeneration still runs from Next's `after()`, but a
-*scheduled* LinkedIn post needs a clock that outlives a request — `after()` only runs while a
+*scheduled* LinkedIn post needs a clock that outlives a request â€” `after()` only runs while a
 request is in flight, which is no use at 10:00 the next morning. The scheduler is that clock: one
-process, one tick a minute, `plan → publish due`. It reuses the app image, so it adds no build and
+process, one tick a minute, `plan â†’ publish due`. It reuses the app image, so it adds no build and
 no new dependency, and it takes a lease row in `app_settings` so two schedulers can never post the
 same thing twice.
 
@@ -46,7 +46,7 @@ same thing twice.
 .\portfolio-deploy.ps1 -Action scheduler-logs  # follow the scheduler container
 ```
 
-Always invoke it as `powershell -ExecutionPolicy Bypass -File .\portfolio-deploy.ps1 ...` —
+Always invoke it as `powershell -ExecutionPolicy Bypass -File .\portfolio-deploy.ps1 ...` â€”
 this machine's execution policy is `Restricted`, so a bare `.\portfolio-deploy.ps1` will not run.
 
 ## First-time setup
@@ -54,10 +54,10 @@ this machine's execution policy is `Restricted`, so a bare `.\portfolio-deploy.p
 `-Action env` copies `deploy/.env.example` to `deploy/.env` and fills in only the values that must
 not be typed by hand:
 
-- `AUTH_SECRET` (48 random bytes) — signs the admin session cookie
-- `SOCIAL_TOKEN_KEY` (32 random bytes) — encrypts social tokens at rest
-- `POSTGRES_PASSWORD` + a matching `DATABASE_URL` — generated together so they cannot disagree
-- `ADMIN_PASSWORD` — the seeded admin login, printed once to the console
+- `AUTH_SECRET` (48 random bytes) â€” signs the admin session cookie
+- `SOCIAL_TOKEN_KEY` (32 random bytes) â€” encrypts social tokens at rest
+- `POSTGRES_PASSWORD` + a matching `DATABASE_URL` â€” generated together so they cannot disagree
+- `ADMIN_PASSWORD` â€” the seeded admin login, printed once to the console
 
 `deploy/.env` is git-ignored. Every key is documented in `deploy/.env.example`.
 
@@ -75,9 +75,9 @@ ports:
   - "${WEB_BIND:-0.0.0.0}:${WEB_PORT:-8023}:80"
 ```
 
-- **`WEB_BIND`** — the host interface. `0.0.0.0` (the value in `deploy/.env.example`) publishes
+- **`WEB_BIND`** â€” the host interface. `0.0.0.0` (the value in `deploy/.env.example`) publishes
   directly; `127.0.0.1` makes the container reachable over loopback only.
-- **`WEB_PORT`** — the host port. `8023` for always-on; the internal port (`8024` local, `8026` on
+- **`WEB_PORT`** â€” the host port. `8023` for always-on; the internal port (`8024` local, `8026` on
   the VPS) when a gatekeeper owns the public port.
 
 Don't reach for a compose override file to change either one. Appending a `ports:` list in an
@@ -87,18 +87,18 @@ arrangement is documented in `ON_DEMAND_HOSTING.md`.
 
 ## What `-Action verify` proves
 
-It is not a health check — it is the evidence gate, and it fails the command with a non-zero exit
+It is not a health check â€” it is the evidence gate, and it fails the command with a non-zero exit
 code if anything is wrong:
 
-1. **Containers** — every service is `running` and not `unhealthy`, and the `scheduler` service is
+1. **Containers** â€” every service is `running` and not `unhealthy`, and the `scheduler` service is
    present (if it is missing, nothing will ever post)
-2. **HTTP** — `/`, `/api/health`, `/api/v1/profile`, `/api/v1/experiences`, `/api/v1/projects`,
+2. **HTTP** â€” `/`, `/api/health`, `/api/v1/profile`, `/api/v1/experiences`, `/api/v1/projects`,
    `/api/v1/social`, `/sitemap.xml`, `/admin` all answer 200
-3. **Both CV PDFs** — `/api/cv/designed` and `/api/cv/ats` return 200, with the byte size reported
-4. **Provenance** — reads `GIT_SHA` from `deploy/.env`, compares it against what `/api/health`
+3. **Both CV PDFs** â€” `/api/cv/designed` and `/api/cv/ats` return 200, with the byte size reported
+4. **Provenance** â€” reads `GIT_SHA` from `deploy/.env`, compares it against what `/api/health`
    reports, then greps the **running container's** built bundle for the SHA. This is the check that
    distinguishes "the build succeeded" from "the thing serving traffic contains my change".
-5. **Media** — if any upload exists, fetches it through nginx
+5. **Media** â€” if any upload exists, fetches it through nginx
 
 Note the port assumption: `-Action verify` probes `http://localhost:8023`. In on-demand mode that
 address belongs to the gatekeeper, which simply warms the stack on the first request; to check the
@@ -124,7 +124,7 @@ The `app` image is ~3 GB. Two deliberate choices get it there:
   browser. `playwright-core` drives the system Chromium via
   `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` rather than downloading its own copy.
 - **The whole app is copied, not Next's `standalone` output.** `standalone` traces only the modules
-  the server itself imports, which leaves out `prisma` and `tsx` — and without those, `-Action
+  the server itself imports, which leaves out `prisma` and `tsx` â€” and without those, `-Action
   migrate` and `-Action seed` cannot run inside the container. Reliability was chosen over size.
 
 ## Troubleshooting
@@ -135,10 +135,10 @@ The `app` image is ~3 GB. Two deliberate choices get it there:
 | `verify` reports the bundle does not contain the SHA | The image predates the current commit. `-Action up -Build`. |
 | `/api/health` returns 503 | The app is running but cannot reach Postgres. Check `-Action logs -Service postgres`. |
 | CV download takes several seconds, once | First generation after a content change. Subsequent requests serve the cached file. |
-| `/media/...` 404s | The media volume has no such file yet — uploads only exist after you add them in the panel. |
+| `/media/...` 404s | The media volume has no such file yet â€” uploads only exist after you add them in the panel. |
 | A `.ps1` "cannot be loaded because running scripts is disabled" | Invoke with `powershell -ExecutionPolicy Bypass -File ...`. |
 | `web` keeps restarting; logs show `host not found in upstream "app:3000"` | The `web` container never started (usually a port bind conflict), so it has no network and nginx cannot resolve `app`. Read the real error in `docker logs`, remove the conflicting container, then re-run compose with the correct `WEB_BIND` / `WEB_PORT`. |
-| `address already in use` / `ports are not available` for the web port | Two compose invocations bound the same port — a duplicate `ports:` entry (an override file adding a publish next to the base one) or a manual `docker compose up` running alongside the gatekeeper's. `ss -tlnp` on Linux, `Get-NetTCPConnection -LocalPort 8023` on Windows, names the owner. |
+| `address already in use` / `ports are not available` for the web port | Two compose invocations bound the same port â€” a duplicate `ports:` entry (an override file adding a publish next to the base one) or a manual `docker compose up` running alongside the gatekeeper's. `ss -tlnp` on Linux, `Get-NetTCPConnection -LocalPort 8023` on Windows, names the owner. |
 
 ## Exposing it publicly (optional, not done by default)
 
@@ -150,17 +150,17 @@ are dashboard steps on your side; nothing in this repo can complete them for you
 
 That path assumes `WEB_BIND=0.0.0.0`. If you'd rather the stack only wake when someone visits, keep
 the same tunnel target but let the gatekeeper own the public port and set `WEB_BIND=127.0.0.1` in
-the gatekeeper's env — see `ON_DEMAND_HOSTING.md`.
+the gatekeeper's env â€” see `ON_DEMAND_HOSTING.md`.
 
 ---
 
-## VPS Deployment (Contabo — 169.58.90.13)
+## VPS Deployment (Contabo â€” 169.58.90.13)
 
 The portfolio is also deployed on a Contabo Cloud VPS 6 (EU, Germany).
 
 ### Access
-- **URL:** http://169.58.90.13:8023
-- **Admin:** http://169.58.90.13:8023/admin
+- **URL:** https://gazi.ciphercall.dev
+- **Admin:** https://gazi.ciphercall.dev/admin
 - **Admin login:** `ciphercall@gmail.com` / `uDJ8rLDgjt15hwqKEsbU7b6t`
 
 Port `8023` is owned by the **on-demand gatekeeper**; the stack itself listens on `127.0.0.1:8026`
@@ -174,7 +174,7 @@ A cold visit shows a countdown page while the stack warms.
 
 ### Deploy / Update
 ```bash
-# Automatic: push to main on GitHub → GitHub Actions deploys
+# Automatic: push to main on GitHub â†’ GitHub Actions deploys
 # Manual on VPS:
 /opt/deploy-gazi-portfolio.sh
 
@@ -182,7 +182,7 @@ A cold visit shows a countdown page while the stack warms.
 .\deploy\deploy-local.ps1
 ```
 
-Whatever you run by hand publishes `WEB_PORT` on `WEB_BIND` from `deploy/.env` — `0.0.0.0:8023`,
+Whatever you run by hand publishes `WEB_PORT` on `WEB_BIND` from `deploy/.env` â€” `0.0.0.0:8023`,
 which the gatekeeper already owns. Stop the gatekeeper's stack first, or run the manual compose
 with `WEB_BIND=127.0.0.1 WEB_PORT=<internal>` so it lands beside the front door instead of on it.
 Two invocations on one port is the "address already in use" failure.
@@ -197,7 +197,7 @@ Two invocations on one port is the "address already in use" failure.
 ### Health Check
 ```bash
 # Through the gatekeeper (public) - liveness of the front door
-curl http://169.58.90.13:8023/healthz
+curl https://gazi.ciphercall.dev/healthz
 
 # The stack itself (loopback only) - 200 once Postgres is reachable
 curl http://127.0.0.1:8026/api/health
@@ -209,7 +209,7 @@ ss -tlnp | grep 8026
 
 ### Notes
 - Image is ~3.4 GB (includes Chromium for PDF rendering and post cards)
-- `SITE_URL` set to `http://169.58.90.13:8023` (update to domain when available)
+- `SITE_URL` set to `https://gazi.ciphercall.dev` (update to domain when available)
 - Ports: 8023 public (gatekeeper), 8026 internal loopback only, 5436 (postgres published for
   inspection)
 - The gatekeeper starts/stops containers but never migrates. After an image update, from
@@ -221,7 +221,7 @@ ss -tlnp | grep 8026
 
 ### Scheduled LinkedIn posts while the stack sleeps
 
-The gatekeeper stops the whole compose stack — scheduler included — after five hours of
+The gatekeeper stops the whole compose stack â€” scheduler included â€” after five hours of
 inactivity. That is the point of on-demand hosting, but it would leave a 10:00 post unsent until
 someone visited the site. `deploy/vps-wake.sh` closes that gap:
 
@@ -235,7 +235,7 @@ The script reads `deploy/.runtime/next-post.json` (written by the scheduler on e
 touches the gatekeeper **only** when the next post is due within ten minutes. Outside that window
 it does nothing, so the stack still sleeps; inside it, the stack wakes, the scheduler catches up,
 and the post goes out. If the wake fails, the scheduler's catch-up on the next start still
-publishes it — late, but not lost.
+publishes it â€” late, but not lost.
 
 Verify on the VPS:
 
