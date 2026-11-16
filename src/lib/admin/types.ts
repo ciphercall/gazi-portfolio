@@ -36,6 +36,17 @@ export const EMPLOYMENT_TYPE_LABELS: Record<EmploymentTypeValue, string> = {
   INTERNSHIP: "Internship",
 };
 
+/* ------------------------------------------------------------ platforms --- */
+
+export const APP_PLATFORMS = ["WEB", "ANDROID"] as const;
+
+export type AppPlatformValue = (typeof APP_PLATFORMS)[number];
+
+export const APP_PLATFORM_LABELS: Record<AppPlatformValue, string> = {
+  WEB: "Web",
+  ANDROID: "Android",
+};
+
 /* ----------------------------------------------------------------- rows --- */
 
 /** Dates cross the server/client boundary as plain ISO strings. */
@@ -137,6 +148,18 @@ export interface CertificationRow {
   order: number;
 }
 
+export interface AppLinkRow {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  href: string;
+  platform: AppPlatformValue;
+  order: number;
+  isPublished: boolean;
+  updatedAt: string;
+}
+
 /* --------------------------------------------------------------- inputs --- */
 
 export interface ExperienceInput {
@@ -236,6 +259,17 @@ export interface CertificationInput {
   issuedOn: string | null;
   url: string | null;
   order: number;
+}
+
+export interface AppLinkInput {
+  id: string | null;
+  name: string;
+  slug: string;
+  tagline: string;
+  href: string;
+  platform: AppPlatformValue;
+  order: number;
+  isPublished: boolean;
 }
 
 export type ReorderModel =

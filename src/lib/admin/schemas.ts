@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { EMPLOYMENT_TYPES, type ActionFail, type ReorderModel } from "@/lib/admin/types";
+import { APP_PLATFORMS, EMPLOYMENT_TYPES, type ActionFail, type ReorderModel } from "@/lib/admin/types";
 
 /**
  * Validation for every admin mutation.
@@ -254,6 +254,23 @@ export const certificationSchema = z.object({
 });
 
 export type ParsedCertification = z.infer<typeof certificationSchema>;
+
+/* ------------------------------------------------------------- app links --- */
+
+const requiredUrl = optionalUrl.pipe(z.string({ error: "A link is required." }).min(1, "A link is required."));
+
+export const appLinkSchema = z.object({
+  id: z.union([z.string().trim(), z.null()]).optional().transform((v) => (v && v.length > 0 ? v : null)),
+  name: requiredText(200, "Name"),
+  slug: z.string().trim().max(120, "Slug must be 120 characters or fewer.").default(""),
+  tagline: z.string().trim().max(500, "Keep the tagline under 500 characters.").default(""),
+  href: requiredUrl,
+  platform: z.enum(APP_PLATFORMS, { error: "Pick a platform." }),
+  order: orderNumber.default(0),
+  isPublished: z.boolean().default(true),
+});
+
+export type ParsedAppLink = z.infer<typeof appLinkSchema>;
 
 /* -------------------------------------------------------------- reorder --- */
 

@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/db";
 import {
+  APP_PLATFORMS,
   EMPLOYMENT_TYPES,
+  type AppLinkRow,
+  type AppPlatformValue,
   type CertificationRow,
   type EducationRow,
   type EmploymentTypeValue,
@@ -26,6 +29,12 @@ function toEmploymentType(value: string): EmploymentTypeValue {
   return (EMPLOYMENT_TYPES as readonly string[]).includes(value)
     ? (value as EmploymentTypeValue)
     : "FULL_TIME";
+}
+
+function toAppPlatform(value: string): AppPlatformValue {
+  return (APP_PLATFORMS as readonly string[]).includes(value)
+    ? (value as AppPlatformValue)
+    : "WEB";
 }
 
 /* ----------------------------------------------------------- experience --- */
@@ -163,6 +172,52 @@ export async function getProject(id: string): Promise<ProjectRow | null> {
 
 export async function nextProjectOrder(): Promise<number> {
   const last = await prisma.project.findFirst({
+    orderBy: { order: "desc" },
+    select: { order: true },
+  });
+  return (last?.order ?? -1) + 1;
+}
+
+/* ------------------------------------------------------------ app links --- */
+
+export async function listAppLinks(): Promise<AppLinkRow[]> {
+  const rows = await prisma.appLink.findMany({
+    orderBy: [{ order: "asc" }, { name: "asc" }],
+  });
+
+  return rows.map((row) => ({
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline,
+    href: row.href,
+    platform: toAppPlatform(row.platform),
+    order: row.order,
+    isPublished: row.isPublished,
+    updatedAt: row.updatedAt.toISOString(),
+  }));
+}
+
+export async function getAppLink(id: string): Promise<AppLinkRow | null> {
+  const row = await prisma.appLink.findUnique({ where: { id } });
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline,
+    href: row.href,
+    platform: toAppPlatform(row.platform),
+    order: row.order,
+    isPublished: row.isPublished,
+    updatedAt: row.updatedAt.toISOString(),
+  };
+}
+
+/** Suggested next `order` value so a new link lands at the end of the list. */
+export async function nextAppLinkOrder(): Promise<number> {
+  const last = await prisma.appLink.findFirst({
     orderBy: { order: "desc" },
     select: { order: true },
   });
