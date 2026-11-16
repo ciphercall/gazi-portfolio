@@ -20,14 +20,14 @@ export const APP_LINKS: SeedAppLink[] = [
     slug: "studio-android",
     name: "Studio for Android",
     tagline: "Install the studio app for offline case studies and one-tap contact.",
-    href: "https://github.com/ciphercall/rocket-launcher/releases/download/v1.0.0-build100/app-arm64-v8a-release.apk",
+    href: "https://github.com/ciphercall/rocket-launcher/releases/download/v1.1.0-build101/app-arm64-v8a-release.apk",
     platform: "ANDROID",
   },
   {
     slug: "portfolio-android",
     name: "Portfolio for Android",
     tagline: "The portfolio as a native app: career timeline, projects and CV.",
-    href: "https://github.com/ciphercall/rocket-launcher/releases/download/v0.2.0-build102/app-arm64-v8a-release.apk",
+    href: "https://github.com/ciphercall/rocket-launcher/releases/download/v0.3.0-build103/app-arm64-v8a-release.apk",
     platform: "ANDROID",
   },
 ];
