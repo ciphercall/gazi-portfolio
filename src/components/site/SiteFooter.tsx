@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { ArrowUp, MapPin } from "lucide-react";
+import { ArrowUp, Globe, MapPin, Smartphone } from "lucide-react";
 
 import { BuildStamp } from "@/components/site/BuildStamp";
 import { AvailabilityChip } from "@/components/site/AvailabilityChip";
 import { ChannelIcon, contactChannels } from "@/components/site/contact-channels";
 import { NAV_LINKS } from "@/components/site/nav-links";
 import { AURORA_LINE } from "@/components/ui/aurora";
+import { getAppLinks, type AppLinkDto } from "@/lib/queries";
 import type { ContactHandles, ContactLinks } from "@/components/site/contact-links";
 
 /**
@@ -23,7 +24,7 @@ export interface SiteFooterProps {
   links: ContactLinks;
 }
 
-export function SiteFooter({
+export async function SiteFooter({
   fullName,
   headline,
   location,
@@ -32,6 +33,7 @@ export function SiteFooter({
   links,
 }: SiteFooterProps) {
   const channels = contactChannels(links, handles);
+  const appLinks: AppLinkDto[] = await getAppLinks().catch(() => []);
   const year = new Date().getFullYear();
 
   return (
@@ -43,7 +45,13 @@ export function SiteFooter({
       />
 
       <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
-        <div className="grid gap-8 md:grid-cols-[1.4fr_1fr_1.1fr]">
+        <div
+          className={`grid gap-8 ${
+            appLinks.length > 0
+              ? "md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]"
+              : "md:grid-cols-[1.4fr_1fr_1.1fr]"
+          }`}
+        >
           <div>
             <Link href="/" className="font-display text-lg font-semibold text-ink">
               {fullName}
@@ -85,6 +93,35 @@ export function SiteFooter({
               })}
             </ul>
           </nav>
+
+          {appLinks.length > 0 ? (
+            <div className="text-sm">
+              <h2 className="label-mono">Apps &amp; sites</h2>
+              <ul className="mt-4 grid gap-1">
+                {appLinks.map((link) => {
+                  const Icon = link.platform === "WEB" ? Globe : Smartphone;
+                  return (
+                    <li key={link.slug}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-3 rounded-control px-2 py-2 text-muted transition hover:bg-panel hover:text-ink"
+                      >
+                        <Icon className="h-4 w-4 text-faint group-hover:text-teal" aria-hidden="true" />
+                        <span className="min-w-0">
+                          <span className="block font-medium">{link.name}</span>
+                          <span className="block truncate text-xs text-faint">
+                            {link.platform === "WEB" ? "Open site" : "Download APK"}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
 
           <div className="text-sm">
             <h2 className="label-mono">Elsewhere</h2>

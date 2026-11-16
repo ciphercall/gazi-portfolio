@@ -4,6 +4,7 @@ import { Briefcase, Boxes, Layers, TrendingUp } from "lucide-react";
 import { AboutSection } from "@/components/site/AboutSection";
 import { ContactGrid } from "@/components/site/ContactGrid";
 import { EducationSection } from "@/components/site/EducationSection";
+import { EcosystemSection } from "@/components/site/ecosystem";
 import { ExperienceGraph } from "@/components/site/ExperienceGraph";
 import { Hero } from "@/components/site/Hero";
 import { JsonLd } from "@/components/site/JsonLd";
@@ -13,10 +14,11 @@ import { SkillsSection } from "@/components/site/SkillsSection";
 import { StatsStrip, type StatItem } from "@/components/site/StatsStrip";
 import { contactChannels } from "@/components/site/contact-channels";
 import { contactLinks, type ContactHandles } from "@/components/site/contact-links";
-import { countSkills, wholeYearsSince } from "@/components/site/format";
+import { countSkills, formatTenure, halfYearsSince } from "@/components/site/format";
 import { ActionLink } from "@/components/ui/ActionLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
+  getAppLinks,
   getCertifications,
   getEducations,
   getExperiencesGrouped,
@@ -35,11 +37,11 @@ import {
 /**
  * Landing page.
  *
- * Eight bands, in the order a visitor needs them: who, how much, what, where he
- * has worked, with what, what he built, what he studied, how to reach him. All
- * of it is server-rendered from the database on every request — the only client
- * JavaScript on this route is the header, the reveal wrapper and the footer's
- * build stamp.
+ * Nine bands, in the order a visitor needs them: who, how much, what, where he
+ * has worked, with what, what he built, what else he ships, what he studied,
+ * how to reach him. All of it is server-rendered from the database on every
+ * request — the only client JavaScript on this route is the header, the reveal
+ * wrapper and the footer's build stamp.
  */
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await loadProfileSafe();
@@ -55,13 +57,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage() {
   const profile = await requireProfile();
 
-  const [experienceGroups, skills, projects, educations, certifications] = await Promise.all([
-    getExperiencesGrouped(),
-    getSkillsGrouped(),
-    getProjectSummaries(),
-    getEducations(),
-    getCertifications(),
-  ]);
+  const [experienceGroups, skills, projects, educations, certifications, appLinks] =
+    await Promise.all([
+      getExperiencesGrouped(),
+      getSkillsGrouped(),
+      getProjectSummaries(),
+      getEducations(),
+      getCertifications(),
+      getAppLinks(),
+    ]);
 
   const handles: ContactHandles = {
     email: profile.email,
@@ -85,7 +89,7 @@ export default async function HomePage() {
     return item.startDate < earliest ? item.startDate : earliest;
   }, null);
 
-  const years = wholeYearsSince(earliestStart);
+  const years = halfYearsSince(earliestStart);
   const featured = projects.filter((project) => project.featured);
 
   // "What I do most" is derived, not written: the tags that appear on the most
@@ -102,7 +106,7 @@ export default async function HomePage() {
   const stats: StatItem[] = [
     {
       icon: <TrendingUp className="h-5 w-5" />,
-      value: `${years}+`,
+      value: `${formatTenure(years)}+`,
       label: "Years of experience",
       hint: earliestStart ? `Shipping since ${earliestStart.slice(0, 4)}` : undefined,
     },
@@ -161,7 +165,7 @@ export default async function HomePage() {
               Every role, in order — <span className="text-aurora">no gaps glossed over</span>
             </>
           }
-          lead={`${years}+ years across enterprise ERP, industrial automation and product teams — laid out to scale, with concurrent roles side by side.`}
+          lead={`${formatTenure(years)}+ years across enterprise ERP, industrial automation and product teams — laid out to scale, with concurrent roles side by side.`}
         />
         <ExperienceGraph entries={experienceGroups.all} variant="compact" />
         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -196,6 +200,8 @@ export default async function HomePage() {
         />
         <ProjectsSection projects={featured} />
       </Section>
+
+      <EcosystemSection links={appLinks} />
 
       <Section id="education">
         <SectionHeading
