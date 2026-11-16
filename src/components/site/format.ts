@@ -50,13 +50,28 @@ export function formatRange(
   return end ? `${start} — ${end}` : start;
 }
 
-/** Whole years between a start date and today — used for the "years of experience" stat. */
+/** Whole years between a start date and today. */
 export function wholeYearsSince(iso: string | null | undefined): number {
   const start = toDate(iso);
   if (!start) return 0;
   const now = new Date();
   const days = (now.getTime() - start.getTime()) / 86_400_000;
   return Math.max(0, Math.floor(days / 365.25));
+}
+
+/** Elapsed years between a start date and today, floored to the nearest half. */
+export function halfYearsSince(iso: string | null | undefined): number {
+  const start = toDate(iso);
+  if (!start) return 0;
+  const now = new Date();
+  const days = (now.getTime() - start.getTime()) / 86_400_000;
+  const years = days / 365.25;
+  return Math.max(0, Math.floor(years * 2) / 2);
+}
+
+/** `9.5 → "9.5"`, `10 → "10"` — a whole tenure never prints a trailing ".0". */
+export function formatTenure(value: number): string {
+  return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
 /** `1 → "1 year"`, `9 → "9 years"`. */

@@ -4,7 +4,9 @@
  * Run with:  portfolio-deploy.ps1 -Action seed
  *
  * Deliberately idempotent and non-destructive:
- *   - rows are matched on a natural key and updated, never wholesale deleted
+ *   - rows are matched on a natural key and updated; only the slugs listed in
+ *     RETIRED_EXPERIENCE_SLUGS are deleted, so a renamed role cannot linger as
+ *     a duplicate
  *   - the admin PASSWORD is only ever written on first creation, so re-seeding
  *     can never silently reset a password he changed in the panel
  *   - anything he edited in the admin panel that the seed also owns will be
@@ -17,6 +19,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { PrismaClient } from "../src/generated/prisma/client";
+import { APP_LINKS } from "../src/data/app-links-seed";
 import {
   CERTIFICATIONS,
   EDUCATIONS,
@@ -34,6 +37,8 @@ if (!connectionString) {
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 
 const SITE_URL = process.env.SITE_URL ?? "http://localhost:8023";
+
+const RETIRED_EXPERIENCE_SLUGS = ["peoples-poultry-hatchery-senior-software-developer"];
 
 function experienceShareText(input: {
   title: string;
@@ -115,6 +120,8 @@ async function seedProfile(): Promise<void> {
 }
 
 async function seedExperiences(): Promise<number> {
+  await prisma.experience.deleteMany({ where: { slug: { in: RETIRED_EXPERIENCE_SLUGS } } });
+
   let order = 0;
   for (const item of EXPERIENCES) {
     const startDate = toDate(item.startDate);
@@ -149,6 +156,24 @@ async function seedExperiences(): Promise<number> {
     });
   }
   return EXPERIENCES.length;
+}
+
+async function seedAppLinks(): Promise<number> {
+  for (const [index, item] of APP_LINKS.entries()) {
+    await prisma.appLink.upsert({
+      where: { slug: item.slug },
+      create: {
+        slug: item.slug,
+        name: item.name,
+        tagline: item.tagline,
+        href: item.href,
+        platform: item.platform,
+        order: index,
+      },
+      update: {},
+    });
+  }
+  return APP_LINKS.length;
 }
 
 async function seedEducations(): Promise<number> {
@@ -333,6 +358,7 @@ async function main(): Promise<void> {
   const skills = await seedSkills();
   const certifications = await seedCertifications();
   const projects = await seedProjects();
+  const appLinks = await seedAppLinks();
 
   console.log(`  admin user      : ${admin}`);
   console.log(`  profile         : 1`);
@@ -341,6 +367,7 @@ async function main(): Promise<void> {
   console.log(`  skills          : ${skills}`);
   console.log(`  certifications  : ${certifications}`);
   console.log(`  projects        : ${projects}`);
+  console.log(`  app links       : ${appLinks}`);
   console.log(
     "\nNote: the two CV PDFs regenerate automatically on the next content save,\n" +
       "or on demand from /admin/cv.\n",

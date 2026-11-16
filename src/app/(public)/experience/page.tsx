@@ -9,7 +9,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { Section } from "@/components/site/Section";
 import { StatsStrip, type StatItem } from "@/components/site/StatsStrip";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { wholeYearsSince } from "@/components/site/format";
+import { formatTenure, halfYearsSince } from "@/components/site/format";
 import { getCertifications, getEducations, getExperiences } from "@/lib/queries";
 import { breadcrumbJsonLd, loadProfileSafe, pageMetadata, requireProfile } from "@/lib/seo";
 
@@ -78,7 +78,7 @@ export default async function ExperiencePage() {
   const stats: StatItem[] = [
     {
       icon: <TrendingUp className="h-5 w-5" />,
-      value: `${wholeYearsSince(earliest)}+`,
+      value: `${formatTenure(halfYearsSince(earliest))}+`,
       label: "Years of experience",
       hint: earliest ? `Since ${earliest.slice(0, 4)}` : undefined,
     },

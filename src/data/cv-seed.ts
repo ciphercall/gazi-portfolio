@@ -100,12 +100,12 @@ export const PROFILE: SeedProfile = {
   fullName: "Gazi Monir-Uz-Zaman",
   headline: "Senior Laravel & React Full-Stack Developer",
   subheadline:
-    "8+ years building web, mobile and industrial systems — ERP, HRM, supply chain, e-commerce and SCADA.",
+    "9.5 years building web, mobile and industrial systems — ERP, HRM, supply chain, e-commerce and SCADA.",
   // The PDF's "About Me" is a generic 2017-era objective statement ("Seeking a
   // challenging position in the IT Sector..."). The fiverr-cv ABOUT is the same
   // person writing about himself today, so that is what the site uses.
   summary:
-    "Senior full-stack developer with 8+ years of experience building web and mobile applications " +
+    "Senior full-stack developer with 9.5 years of experience building web and mobile applications " +
     "for businesses. I specialize in Laravel & PHP (bug fixes, APIs, e-commerce, ERP modules), React " +
     "(admin dashboards, SPAs, frontend integration), Flutter (Android apps with Laravel/REST backends), " +
     "and Node.js (REST APIs and real-time features). I have delivered production systems including " +
@@ -123,15 +123,15 @@ export const PROFILE: SeedProfile = {
   seoTitle: "Gazi Monir-Uz-Zaman — Senior Laravel & React Full-Stack Developer",
   seoDescription:
     "Portfolio of Gazi Monir-Uz-Zaman, senior full-stack developer: Laravel, React, Flutter and Node.js. " +
-    "8+ years delivering ERP, HRM, supply-chain, e-commerce and industrial SCADA systems.",
+    "9.5 years delivering ERP, HRM, supply-chain, e-commerce and industrial SCADA systems.",
 };
 
 /* ------------------------------------------------------------ experience --- */
 
 export const EXPERIENCES: SeedExperience[] = [
   {
-    slug: "peoples-poultry-hatchery-senior-software-developer",
-    title: "Senior Software Developer",
+    slug: "peoples-poultry-hatchery-project-manager",
+    title: "Project Manager",
     company: "People's Poultry & Hatchery Limited",
     companyUrl: null,
     employmentType: "FULL_TIME",
@@ -140,13 +140,51 @@ export const EXPERIENCES: SeedExperience[] = [
     endDate: null,
     isCurrent: true,
     summary:
-      "Building and maintaining the enterprise systems that run a poultry and hatchery operation end to end.",
+      "Leading delivery of the enterprise systems that run a poultry and hatchery operation end to end.",
     bullets: [
       "Build and maintain enterprise Laravel and React systems including HRM, supply chain, and attendance workflows.",
       "Design REST APIs, integrate Flutter mobile attendance with JWT backends, and support PostgreSQL/MySQL production databases.",
       "Ship Docker-based deployments and production support for ERP/SCM modules.",
     ],
     tags: ["Laravel", "React", "PostgreSQL", "Docker", "Flutter", "JWT"],
+  },
+  {
+    slug: "peoples-poultry-hatchery-senior-software-developer-part-time",
+    title: "Senior Software Developer",
+    company: "People's Poultry & Hatchery Limited",
+    companyUrl: null,
+    employmentType: "PART_TIME",
+    location: "Bangladesh",
+    startDate: "2024-04-01",
+    endDate: "2024-10-14",
+    isCurrent: false,
+    summary:
+      "Part-time senior developer on the same poultry and hatchery platforms, bridging the move into the full-time Project Manager role.",
+    bullets: [
+      "Built Laravel and React modules for the HRM and supply chain systems that the full-time Project Manager role now delivers.",
+      "Shipped REST APIs consumed by the Flutter attendance app, on JWT-secured PostgreSQL and MySQL backends.",
+      "Worked a part-time schedule alongside a parallel part-time engagement, then stepped up to the full-time role in October 2024.",
+    ],
+    tags: ["Laravel", "React", "PostgreSQL", "REST APIs", "Part-time"],
+  },
+  {
+    slug: "medpro-techtham-senior-developer-team-lead",
+    title: "Senior Developer & Team Lead",
+    company: "MedPro Techtham",
+    companyUrl: null,
+    employmentType: "PART_TIME",
+    location: "Bahrain",
+    startDate: "2024-04-01",
+    endDate: "2024-11-30",
+    isCurrent: false,
+    summary:
+      "Part-time senior developer and team lead for a Bahrain-based team, guiding delivery across time zones.",
+    bullets: [
+      "Led a small development team, setting priorities and unblocking work across a Bahrain/Dhaka time-zone split.",
+      "Owned architecture decisions and code review for the team's Laravel and React modules.",
+      "Delivered client releases on a part-time schedule in parallel with a full-time role.",
+    ],
+    tags: ["Team Lead", "Architecture", "Code Review", "Part-time"],
   },
   {
     slug: "bayshore-communications-senior-developer-team-lead",
@@ -156,8 +194,8 @@ export const EXPERIENCES: SeedExperience[] = [
     employmentType: "FULL_TIME",
     location: "Dhaka, Bangladesh",
     startDate: "2023-12-15",
-    endDate: null,
-    isCurrent: true,
+    endDate: "2024-10-14",
+    isCurrent: false,
     summary:
       "Leading web and mobile delivery, including decentralized blockchain products.",
     bullets: [
