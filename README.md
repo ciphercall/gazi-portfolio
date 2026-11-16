@@ -12,9 +12,10 @@ Runs entirely as a local Docker stack. Nothing is deployed to a third-party host
 
 | Surface | Route | Purpose |
 |---------|-------|---------|
-| Public site | `/` | Hero, stats, about, experience graph, skills, featured work, education, contact |
+| Public site | `/` | Hero, stats, about, experience graph, skills, featured work, apps & sites, education, contact |
 | Experience | `/experience` | Time-scaled career graph — concurrent roles on parallel lanes — plus per-role detail |
 | Projects | `/projects`, `/projects/[slug]` | Filterable grid and case studies with image galleries |
+| Apps & sites | `/admin/app-links`, `/` | Studio site and Android builds promoted in the landing page band and the footer |
 | CV | `/cv` | Explains and offers both PDF variants |
 | Admin panel | `/admin` | Create and edit every piece of content |
 | LinkedIn publishing | `/admin/social`, `/admin/social/settings` | Schedule, preview, publish and review posts about the projects |
@@ -109,6 +110,7 @@ src/
     render/cv/       internal print surfaces, token-gated
   components/        site/ · ui/ · admin/ · timeline/
   data/cv-seed.ts    the extracted CV content
+  data/app-links-seed.ts  the studio site + Android builds promoted by the site
   lib/
     db.ts env.ts crypto.ts session.ts auth.ts   foundation
     queries.ts                                  the ONLY content reader
@@ -123,7 +125,7 @@ src/
   scripts/build-seed-media.mjs  one-time importer for portfolio-render-lab screenshots
   seed-media/          303 webp screenshots + manifest.json (baked into the image)
 deploy/              docker-compose.yml, Dockerfile, nginx, env bootstrap scripts
-docs/                the three guides below
+docs/                the four guides below
 ```
 
 ## Documentation
@@ -131,9 +133,21 @@ docs/                the three guides below
 - [`docs/PORTFOLIO_DOCKER_DEPLOYMENT.md`](docs/PORTFOLIO_DOCKER_DEPLOYMENT.md) — the stack, ports, troubleshooting
 - [`docs/CV_PDF_PIPELINE.md`](docs/CV_PDF_PIPELINE.md) — how both PDFs are produced and kept current
 - [`docs/SOCIAL_POSTING.md`](docs/SOCIAL_POSTING.md) — what the APIs can and cannot do, and how to connect them
+- [`docs/CAREER_TIMELINE.md`](docs/CAREER_TIMELINE.md) — the canonical eight roles, the overlap rules and how the tenure figure is computed
 
 ## Recent hardening (latest pass)
 
+- **Apps & sites**: a new `AppLink` model (`WEB` / `ANDROID`) with migration
+  `20261116120000_app_links`, a full `/admin/app-links` CRUD (create, edit, reorder, publish,
+  delete) and a **non-destructive** seed of the studio site and both Android builds
+  (`src/data/app-links-seed.ts`, upserted with `update: {}`). The landing page gains an
+  "Apps & sites" band driven by `getAppLinks()` and the footer gains the matching column.
+- **Career record consolidated to eight roles** and a half-year tenure figure: the PPHL part-time
+  Senior Software Developer role and the MedPro Techtham team-lead engagement are now in the
+  timeline, the PPHL full-time role is `Project Manager`, and Bayshore is closed at `2024-10-14`.
+  `halfYearsSince()` + `formatTenure()` make the stat read `9.5+`. `seedExperiences()` deletes the
+  retired full-time slug so the rename cannot leave a duplicate. See
+  [`docs/CAREER_TIMELINE.md`](docs/CAREER_TIMELINE.md).
 - **LinkedIn auto-publishing**: a `scheduler` container plans one post per published project per
   day, renders a 1200×627 card per post, publishes at the scheduled instant with catch-up after a
   sleeping stack, and records every outcome. Admin credentials are stored encrypted in

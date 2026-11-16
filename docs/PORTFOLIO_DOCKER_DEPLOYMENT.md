@@ -85,6 +85,23 @@ override adds a second publish alongside the base entry, which ends as a duplica
 the `web` container with no network. `WEB_BIND` / `WEB_PORT` is the single knob. The on-demand
 arrangement is documented in `ON_DEMAND_HOSTING.md`.
 
+## Apps & sites (`app_links`)
+
+The landing page's "Apps & sites" band and the footer column render from the `app_links` table, so
+promoting a new build is an admin edit rather than a deploy.
+
+- Migration `20261116120000_app_links` creates the `AppPlatform` enum (`WEB`, `ANDROID`) and the
+  `app_links` table. Run `-Action migrate` after pulling this revision.
+- `-Action seed` upserts the three bundled links (`src/data/app-links-seed.ts`) with `update: {}`,
+  i.e. **non-destructively**: rows are created on a fresh database, while any edit made in
+  `/admin/app-links` survives a re-seed. Experience and profile rows are still overwritten on every
+  seed instead — see `CAREER_TIMELINE.md`.
+- Everything is edited at `/admin/app-links`: name, slug, tagline, link, platform (`WEB` prints
+  "Open site", `ANDROID` prints "Download APK"), order and published state. Unpublishing a row
+  removes it from the landing page band and the footer on the next request.
+- Every write calls `touchContent()` and revalidates `/admin/app-links`, `/` and `/api/v1/meta`, so
+  the public pages and the mobile client's content hash follow the edit.
+
 ## What `-Action verify` proves
 
 It is not a health check â€” it is the evidence gate, and it fails the command with a non-zero exit
