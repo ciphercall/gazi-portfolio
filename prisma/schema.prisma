@@ -50,6 +50,11 @@ enum AssetKind {
   CV_ATS
 }
 
+enum AppPlatform {
+  WEB
+  ANDROID
+}
+
 /* ------------------------------------------------------------------ auth --- */
 
 model User {
@@ -166,6 +171,24 @@ model Certification {
 
   @@index([order])
   @@map("certifications")
+}
+
+model AppLink {
+  id       String      @id @default(cuid())
+  slug     String      @unique
+  name     String
+  tagline  String      @db.Text @default("")
+  href     String
+  platform AppPlatform @default(WEB)
+  order    Int         @default(0)
+
+  isPublished Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isPublished, order])
+  @@map("app_links")
 }
 
 model Project {

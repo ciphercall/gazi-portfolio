@@ -72,6 +72,15 @@ export interface ExperienceDto {
   tags: string[];
 }
 
+/** A studio site or mobile build the portfolio promotes. */
+export interface AppLinkDto {
+  slug: string;
+  name: string;
+  tagline: string;
+  href: string;
+  platform: "WEB" | "ANDROID";
+}
+
 /* ---------------------------------------------------------------- profile --- */
 
 export async function getProfile() {
@@ -110,6 +119,23 @@ export async function getExperiencesGrouped() {
     partTime: all.filter((item) => item.employmentType !== "FULL_TIME"),
     all,
   };
+}
+
+/* -------------------------------------------------------------- app links --- */
+
+export async function getAppLinks(): Promise<AppLinkDto[]> {
+  const rows = await prisma.appLink.findMany({
+    where: { isPublished: true },
+    orderBy: [{ order: "asc" }, { name: "asc" }],
+  });
+
+  return rows.map((row) => ({
+    slug: row.slug,
+    name: row.name,
+    tagline: row.tagline,
+    href: row.href,
+    platform: row.platform,
+  }));
 }
 
 /* --------------------------------------------------------------- projects --- */
