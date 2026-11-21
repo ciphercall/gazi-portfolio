@@ -1,9 +1,11 @@
 import { ExternalLink, RefreshCw } from "lucide-react";
 
+import { CvSettingsForm } from "@/components/admin/forms/cv-settings-form";
 import { requireAdmin } from "@/lib/auth";
 import { touchContent } from "@/lib/cache";
 import { CV_FILENAMES, CV_SLUGS, regenerateAllCvAssets } from "@/lib/pdf/assets";
-import { getCvSourceHash, getGeneratedAsset } from "@/lib/queries";
+import { getCvSourceHash, getGeneratedAsset, getProfile } from "@/lib/queries";
+import { getCvSettings } from "@/lib/settings";
 import type { CvKind } from "@/lib/pdf/assets";
 
 /**
@@ -85,10 +87,12 @@ export default async function AdminCvPage() {
     touchContent();
   }
 
-  const [designed, ats, liveHash] = await Promise.all([
+  const [designed, ats, liveHash, cvSettings, profile] = await Promise.all([
     getGeneratedAsset("CV_DESIGNED"),
     getGeneratedAsset("CV_ATS"),
     getCvSourceHash(),
+    getCvSettings(),
+    getProfile(),
   ]);
 
   const rows: Record<CvKind, typeof designed> = {
@@ -136,6 +140,27 @@ export default async function AdminCvPage() {
           <ExternalLink className="size-3.5" aria-hidden />
           Public download page
         </a>
+      </section>
+
+      <section className="glass mt-8 p-6">
+        <h2 className="text-xl font-semibold text-ink">Document settings</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+          These switches are part of the content fingerprint, so saving re-renders both PDFs. The
+          layout itself is measured at print time: entries flow into as many A4 sheets as the
+          content needs, and each sheet is filled before a new one starts.
+        </p>
+        <p className="mt-2 text-xs text-muted">
+          Portrait: {profile?.avatarPath ? "uploaded" : "not uploaded"} · designed{" "}
+          {cvSettings.designedPhoto ? "prints it" : "omits it"} · ATS{" "}
+          {cvSettings.atsPhoto ? "prints it" : "omits it"}.
+        </p>
+        <div className="mt-5">
+          <CvSettingsForm
+            initialDesignedPhoto={cvSettings.designedPhoto}
+            initialAtsPhoto={cvSettings.atsPhoto}
+            hasAvatar={Boolean(profile?.avatarPath)}
+          />
+        </div>
       </section>
 
       <div className="mt-8 grid gap-5 lg:grid-cols-2">
@@ -223,19 +248,28 @@ export default async function AdminCvPage() {
       </div>
 
       <section className="mt-10">
-        <h2 className="label-mono">Inline preview · designed edition</h2>
-        <div className="glass mt-3 overflow-hidden p-1.5">
-          {/* Same-origin iframe: the route sends `Content-Disposition: inline` for
-              ?inline=1, so the browser renders the PDF instead of downloading it. */}
-          <iframe
-            src="/api/cv/designed?inline=1"
-            title="Designed CV preview"
-            className="h-[72vh] w-full rounded-[14px] border border-line bg-white"
-          />
+        <h2 className="label-mono">Inline preview · both editions</h2>
+        <div className="mt-3 grid gap-4 lg:grid-cols-2">
+          <div className="glass overflow-hidden p-1.5">
+            {/* Same-origin iframe: the route sends `Content-Disposition: inline`
+                for ?inline=1, so the browser renders the PDF instead of downloading it. */}
+            <iframe
+              src="/api/cv/designed?inline=1"
+              title="Designed CV preview"
+              className="h-[72vh] w-full rounded-[14px] border border-line bg-white"
+            />
+          </div>
+          <div className="glass overflow-hidden p-1.5">
+            <iframe
+              src="/api/cv/ats?inline=1"
+              title="ATS CV preview"
+              className="h-[72vh] w-full rounded-[14px] border border-line bg-white"
+            />
+          </div>
         </div>
         <p className="mt-3 text-xs text-muted">
-          The preview is served by the same endpoint a visitor downloads from — if this looks
-          right, the download is right.
+          Both previews are served by the same endpoints a visitor downloads from — if a preview
+          looks right, the download is right.
         </p>
       </section>
     </div>

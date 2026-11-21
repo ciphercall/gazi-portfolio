@@ -4,6 +4,7 @@ import { CircleCheck, Download, ScanText, Sparkles } from "lucide-react";
 import { CV_SLUGS } from "@/lib/pdf/assets";
 import { getCvSource, getGeneratedAsset } from "@/lib/queries";
 import type { CvSource } from "@/lib/queries";
+import { getCvSettings } from "@/lib/settings";
 
 /**
  * The visitor-facing download page.
@@ -40,12 +41,12 @@ function formatBytes(bytes: number): string | null {
 
 const FEATURES = {
   designed: [
-    "Colour A4 pages built in millimetres, print-ready",
-    "Header band, timeline and skill matrix — made to be looked at",
+    "Colour A4 sheets, measured so each page is filled — no stranded blocks or dead space",
+    "Header band carrying the same portrait the site and the app show",
     "Every regeneration prints the current site content",
   ],
   ats: [
-    "One column, no tables, no graphics, no images",
+    "One column, no tables, no graphics",
     "Real selectable text with conventional section headings",
     "Dates as Month YYYY — exactly what a parser looks for",
   ],
@@ -149,14 +150,17 @@ function VariantCard({
 export default async function CvDownloadPage() {
   let source: CvSource | null = null;
   let sizeHints: Record<"designed" | "ats", string | null> = { designed: null, ats: null };
+  let atsPhoto = false;
 
   try {
-    const [cvSource, designed, ats] = await Promise.all([
+    const [cvSource, designed, ats, cvSettings] = await Promise.all([
       getCvSource(),
       getGeneratedAsset("CV_DESIGNED"),
       getGeneratedAsset("CV_ATS"),
+      getCvSettings(),
     ]);
     source = cvSource;
+    atsPhoto = cvSettings.atsPhoto;
     sizeHints = {
       designed: designed ? formatBytes(designed.bytes) : null,
       ats: ats ? formatBytes(ats.bytes) : null,
@@ -199,8 +203,13 @@ export default async function CvDownloadPage() {
             icon={<ScanText className="size-5 text-cyan" />}
             eyebrow="For machines"
             title="ATS-friendly edition"
-            body="Deliberately plain: no graphics, no columns, no images. Its beauty is that an applicant tracking system can read every line of it."
-            features={FEATURES.ats}
+            body="Deliberately plain: one column, no tables, no graphics. Its beauty is that an applicant tracking system can read every line of it."
+            features={[
+              ...FEATURES.ats,
+              atsPhoto
+                ? "Profile photo included — enabled in the admin panel for markets that expect one"
+                : "No profile photo: parsers ignore images, so one is printed only when it is switched on",
+            ]}
             href={ATS_URL}
             sizeHint={sizeHints.ats}
             accent="bg-linear-to-br from-cyan/15 to-teal/10"

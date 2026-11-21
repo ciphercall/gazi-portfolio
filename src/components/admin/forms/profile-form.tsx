@@ -179,7 +179,7 @@ export function ProfileForm({ initial }: { initial: ProfileRow | null }) {
               onChange={(value) => update("avatarPath", value)}
               subfolder="profile"
               error={errorFor("avatarPath")}
-              hint="Square crops look best. Uploads become WebP at up to 1920 px."
+              hint="Square crops look best. Uploads become WebP at up to 1920 px. This portrait is printed on the designed CV, and on the ATS CV when that is enabled in CV settings."
             />
           </div>
         </AdminSection>
