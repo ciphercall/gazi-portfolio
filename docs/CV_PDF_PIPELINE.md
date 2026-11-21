@@ -10,12 +10,25 @@ Two CVs ship from the same content. They are different documents, not one docume
 
 The site's own design language, printed to A4 by headless Chromium.
 
-- Source: `src/app/render/cv/designed/page.tsx` + `CvDocument.tsx` + `print.css`
+- Source: `src/app/render/cv/designed/page.tsx` + `CvDocument.tsx` + `CvPaginator.tsx` + `print.css`
 - Renderer: `src/lib/pdf/designed.ts` using `playwright-core` against the system Chromium
   (`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`, default `/usr/bin/chromium-browser`)
 - Chromium launch flags include `--no-sandbox` and `--disable-dev-shm-usage`, which are required
   in a container; the renderer only ever loads this project's own markup
 - Uses the Midnight Aurora palette, so the PDF and the site are visibly the same product
+
+**Pagination is measured, not guessed.** The route renders every block once, off-screen, at the
+real 182 mm body width. `CvPaginator.tsx` measures each block, packs it into an A4 sheet without
+splitting it, keeps a section heading with the entry that follows it, adds a "… (continued)" heading
+when a section runs overleaf, and distributes each sheet's leftover height into the gaps between
+blocks instead of leaving one dead band above the footer. It then sets `data-cv-ready` on `<html>`,
+and `renderDesignedCv()` waits for that flag before printing — a pagination failure fails the
+render rather than shipping a half-empty PDF.
+
+**Portrait.** `src/lib/pdf/avatar.ts` reads `profile.avatarPath` from the media volume, crops it to a
+square with `sharp`, and inlines it as a JPEG data URI. It has to be inlined: nginx serves `/media/*`,
+not the Next process Chromium is printing from, so an `<img src="/media/…">` would be missing from
+the PDF. No avatar (or the switch off) prints a monogram instead.
 
 ### ATS-friendly — `/api/cv/ats`
 
@@ -24,13 +37,29 @@ A deliberately plain document, and the one that matters to an applicant-tracking
 - Source: `src/lib/pdf/ats.tsx`, built with `@react-pdf/renderer` as **structured data, not HTML**
 - The rules it follows, each of which exists to keep a parser happy:
   - strict single column — no columns, no tables, no sidebars
-  - no images, no icons, no graphics, no text baked into shapes
+  - **no images by default**; the profile photo is an opt-in switch (see below)
   - built-in **Helvetica** families only (base-14, not embedded)
   - real selectable text, no letter-spacing tricks
   - conventional headings in a fixed order: `Professional Summary`, `Experience`, `Education`,
     `Skills`, `Certifications`, `Projects`
   - dates as `Month YYYY`, positions and companies on their own lines
-  - plain hyphen bullets, one fact per line
+  - plain hyphen bullets, one fact per line, no page numbers, no running heads
+- When the photo is enabled it is one `Image` beside the identity block — never inside the text
+  flow — so the reading order of the text layer is unchanged.
+
+## Document settings
+
+Two keys in `app_settings`, edited on `/admin/cv`:
+
+| Key | Default | Effect |
+|-----|---------|--------|
+| `cv.designed.includePhoto` | `true` | Prints the portrait in the designed header band |
+| `cv.ats.includePhoto` | `false` | Prints the portrait beside the ATS header |
+
+They are read by `src/lib/settings.ts` (`getCvSettings()`), and `getCvSourceHash()` hashes them
+alongside the content — so flipping a switch changes the fingerprint, and the existing automatic
+regeneration re-renders both PDFs. There is no stale window in which the panel and the download
+disagree.
 
 ## Why the ATS variant is tested rather than trusted
 
@@ -40,8 +69,12 @@ asserts:
 - every required section heading is present, in the right relative order
 - every expected job title and company appears
 - dates match the `Month YYYY` format
-- the document contains no image XObjects
+- the document contains no image XObjects (and exactly one when the photo switch is on)
 - the extracted text is substantial (i.e. the text is genuinely text)
+
+There is a second case that renders with the photo enabled and asserts the image is embedded **and**
+the text layer still extracts the sections, titles and dates in the same order — a photo must never
+scramble the part a parser reads.
 
 Run it with:
 

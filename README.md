@@ -27,10 +27,12 @@ Runs entirely as a local Docker stack. Nothing is deployed to a third-party host
 They are not the same document in two colours — they solve different problems.
 
 - **Designed** (`/api/cv/designed`) — the site's own design language, printed to A4 by headless
-  Chromium. Aurora gradient accents, custom layout, a real designed artefact.
+  Chromium. Aurora gradient accents, a header band carrying the same portrait the site shows, and a
+  layout measured in the browser so every sheet is filled rather than guessed.
 - **ATS-friendly** (`/api/cv/ats`) — a deliberately plain document built as structured data, not
-  HTML: single column, no images, no tables, base-14 Helvetica that is not embedded, conventional
-  section headings and `Month YYYY` dates.
+  HTML: single column, no tables, no graphics, base-14 Helvetica that is not embedded, conventional
+  section headings and `Month YYYY` dates. The profile photo is an opt-in switch on `/admin/cv`
+  (off by default, because most parsers ignore images).
 
 Both are generated from the same live content, so **an edit in the admin panel changes what the
 next visitor downloads**. A content fingerprint is stored with each file; when it no longer
