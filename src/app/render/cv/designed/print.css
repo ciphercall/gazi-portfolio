@@ -79,6 +79,33 @@
   text-decoration: none;
 }
 
+/* ------------------------------------------------------------- measurement --- */
+
+/*
+ * The document is rendered once, off-screen, at the real body width so the
+ * paginator can measure each block before it builds the sheets. Absolute
+ * positioning keeps it out of the printed flow; it is removed once paginated.
+ */
+.cv-flow {
+  position: absolute;
+  left: -10000mm;
+  top: 0;
+  width: 210mm;
+  pointer-events: none;
+}
+
+.cv-flow-body {
+  width: 182mm;
+  margin: 0 auto;
+  /*
+   * Flex, with no gap: blocks must be measured with the same margin semantics
+   * they have inside `.cv-body` (a flex container), so a child's collapsed
+   * margin cannot make a measured block shorter than the printed one.
+   */
+  display: flex;
+  flex-direction: column;
+}
+
 /* -------------------------------------------------------------------- sheet --- */
 
 .cv-page {
@@ -86,8 +113,11 @@
   display: flex;
   flex-direction: column;
   width: 210mm;
-  /* A hair under A4, so a sub-pixel rounding error cannot spill a blank sheet. */
-  min-height: 296.6mm;
+  /* A hair under A4, so a sub-pixel rounding error cannot spill a blank sheet.
+     `height`, not `min-height`: a sheet is an atomic page, and growth is what
+     used to push a blank sheet out of the printer. */
+  height: 296.6mm;
+  overflow: hidden;
   background:
     radial-gradient(58% 34% at 88% 4%, rgba(163, 126, 225, 0.12), transparent 72%),
     radial-gradient(52% 30% at 6% 98%, rgba(23, 199, 183, 0.1), transparent 74%),
@@ -164,9 +194,55 @@
   background: var(--cv-aurora);
 }
 
-.cv-band-inner {
+.cv-band-grid {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 32mm;
+  align-items: start;
+  gap: 8mm;
+}
+
+.cv-band-id {
+  min-width: 0;
+}
+
+/* Portrait: the same face the site and the app show, cropped square once. */
+.cv-portrait {
+  position: relative;
+  width: 30mm;
+  height: 30mm;
+  margin: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--cv-surface);
+  box-shadow:
+    0 0 0 1.1mm rgba(23, 199, 183, 0.3),
+    0 0 0 1.7mm rgba(255, 255, 255, 0.07);
+}
+
+.cv-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* No uploaded photo, or the photo was switched off: a monogram still looks composed. */
+.cv-portrait-empty {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(70% 70% at 30% 20%, rgba(42, 214, 255, 0.22), transparent 70%),
+    radial-gradient(70% 70% at 80% 90%, rgba(163, 126, 225, 0.25), transparent 70%),
+    var(--cv-surface);
+}
+
+.cv-monogram {
+  font-size: 12.5pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--cv-teal);
 }
 
 .cv-name {
@@ -247,16 +323,24 @@
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  /*
+   * Spacing between blocks comes from the gap, not from margins on each block:
+   * that is what lets the paginator distribute a sheet's leftover height instead
+   * of leaving one dead band above the footer.
+   */
+  gap: var(--cv-fill-gap, 5mm);
   min-height: 0;
   padding: 7mm 14mm 2mm;
 }
 
 .cv-section {
-  margin-top: 5.5mm;
+  margin-top: 0;
 }
 
-.cv-body > .cv-section:first-child {
-  margin-top: 1mm;
+/* A section that continues overleaf keeps the heading treatment, not a new section gap. */
+.cv-section-cont {
+  margin-top: 0;
 }
 
 .cv-h2 {
@@ -312,17 +396,22 @@
 
 /* ---------------------------------------------------------------- timeline --- */
 
-.cv-timeline {
+/*
+ * Experience entries are individual pagination blocks, so the rail is drawn per
+ * block and bleeds half a gap past each end. Adjacent entries on a sheet read as
+ * one continuous timeline; on a new sheet it starts cleanly under the heading.
+ */
+.cv-section[data-cv-group="experience"]:not([data-cv-heading]) {
   position: relative;
-  padding-left: 4.6mm;
+  padding-left: 5.2mm;
 }
 
-.cv-timeline::before {
+.cv-section[data-cv-group="experience"]:not([data-cv-heading])::before {
   content: "";
   position: absolute;
   left: 1.15mm;
-  top: 1.8mm;
-  bottom: 1.2mm;
+  top: -2.5mm;
+  bottom: -2.5mm;
   width: 0.3mm;
   background: linear-gradient(
     180deg,
@@ -333,27 +422,22 @@
   );
 }
 
-.cv-entry {
-  position: relative;
-  margin-bottom: 4.4mm;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.cv-entry:last-child {
-  margin-bottom: 0;
-}
-
-.cv-entry::before {
+.cv-section[data-cv-group="experience"]:not([data-cv-heading])::after {
   content: "";
   position: absolute;
-  left: -4.6mm;
+  left: 0;
   top: 1.5mm;
   width: 2.6mm;
   height: 2.6mm;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--cv-teal), var(--cv-cyan));
   box-shadow: 0 0 0 1.1mm rgba(23, 199, 183, 0.13);
+}
+
+.cv-entry {
+  position: relative;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 .cv-entry-head {
@@ -451,12 +535,6 @@
 
 /* --------------------------------------------------------------- education --- */
 
-.cv-education {
-  display: flex;
-  flex-direction: column;
-  gap: 2.6mm;
-}
-
 .cv-edu-item {
   padding: 2.8mm 3.4mm;
   border: 0.3mm solid var(--cv-line);
@@ -509,12 +587,6 @@
 
 /* ---------------------------------------------------------- certifications --- */
 
-.cv-certs {
-  display: flex;
-  flex-direction: column;
-  gap: 2.2mm;
-}
-
 .cv-cert {
   padding: 2.6mm 3.4mm;
   border: 0.3mm solid var(--cv-line);
@@ -539,10 +611,15 @@
 
 /* ----------------------------------------------------- skills (two columns) --- */
 
-.cv-skills {
+/*
+ * One pagination block per pair of cards. A whole grid cannot be split across
+ * sheets, so it was the thing leaving the largest holes; a row can break.
+ */
+.cv-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.6mm 3.4mm;
+  gap: 3.4mm;
+  align-items: stretch;
 }
 
 .cv-skill-card {
@@ -579,12 +656,6 @@
 }
 
 /* ----------------------------------------------- selected projects (2 cols) --- */
-
-.cv-projects {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.6mm 3.4mm;
-}
 
 .cv-project {
   position: relative;

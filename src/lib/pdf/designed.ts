@@ -83,6 +83,13 @@ export async function renderDesignedCv(options?: DesignedRenderOptions): Promise
     page.setDefaultNavigationTimeout(timeoutMs);
     page.setDefaultTimeout(timeoutMs);
 
+    // A pagination failure inside Chromium would otherwise print a half-empty
+    // document; surface the console error instead of shipping it.
+    const consoleErrors: string[] = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") consoleErrors.push(message.text());
+    });
+
     const response = await page.goto(designedRenderUrl({ ttlSeconds: options?.ttlSeconds }), {
       waitUntil: "load",
     });
@@ -101,6 +108,30 @@ export async function renderDesignedCv(options?: DesignedRenderOptions): Promise
     await page.evaluate(async () => {
       await document.fonts.ready;
     });
+
+    // The sheet layout is measured in the browser (see CvPaginator), because the
+    // height of a block of text is only knowable once it has been laid out. Wait
+    // for that pass — `error` is terminal, so the failure is reported here rather
+    // than as a silently underfilled PDF.
+    await page.waitForFunction(
+      () => {
+        const state = document.documentElement.dataset.cvReady;
+        return state === "1" || state === "error";
+      },
+      undefined,
+      { timeout: timeoutMs },
+    );
+
+    const paginationState = await page.evaluate(
+      () => document.documentElement.dataset.cvReady,
+    );
+    if (paginationState !== "1") {
+      throw new Error(
+        `The designed CV paginator failed in Chromium${
+          consoleErrors.length ? `: ${consoleErrors.join(" | ")}` : " (no console error reported)."
+        }`,
+      );
+    }
 
     const pdf = await page.pdf({
       format: "A4",
