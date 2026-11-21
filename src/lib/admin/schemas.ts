@@ -214,6 +214,20 @@ export const profileSchema = z.object({
 
 export type ParsedProfile = z.infer<typeof profileSchema>;
 
+/* ---------------------------------------------------------- CV documents --- */
+
+/**
+ * The composition switches behind the two PDFs. They live in `app_settings`
+ * rather than on the profile because they change the document, not the person —
+ * and they are part of the CV content fingerprint, so saving them re-renders.
+ */
+export const cvSettingsSchema = z.object({
+  designedPhoto: z.boolean(),
+  atsPhoto: z.boolean(),
+});
+
+export type ParsedCvSettings = z.infer<typeof cvSettingsSchema>;
+
 /* ------------------------------------------------------------ list items --- */
 
 export const educationSchema = z

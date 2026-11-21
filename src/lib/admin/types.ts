@@ -233,6 +233,12 @@ export interface ProfileInput {
   seoDescription: string;
 }
 
+/** The two composition switches behind the generated CV PDFs. */
+export interface CvSettingsInput {
+  designedPhoto: boolean;
+  atsPhoto: boolean;
+}
+
 export interface EducationInput {
   id: string | null;
   school: string;
