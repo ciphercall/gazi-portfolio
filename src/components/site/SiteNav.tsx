@@ -45,6 +45,18 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
   const open = openOnRoute === pathname;
   const setOpen = (next: boolean) => setOpenOnRoute(next ? pathname : null);
 
+  // The bar thickens once the page has scrolled, so a section heading sliding
+  // under it never competes with the navigation labels. Passive listener, boolean
+  // state only — no per-frame measurement.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -60,7 +72,10 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
   return (
     <header className="no-print sticky top-0 z-40 px-4 pt-3 sm:px-6">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="glass hairline flex items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-3.5">
+        <div
+          className="glass-nav hairline flex items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-3.5"
+          data-scrolled={scrolled}
+        >
           <Link
             href="/"
             className="flex min-w-0 items-center gap-2.5 rounded-control p-1 transition hover:bg-panel"
@@ -141,7 +156,7 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }}
               transition={{ duration: reduceMotion ? 0 : 0.24, ease: EASE_AURORA }}
-              className="glass-strong mt-2 p-3 lg:hidden"
+              className="glass-nav mt-2 p-3 lg:hidden"
             >
               <nav aria-label="Sections" className="grid gap-1">
                 {NAV_LINKS.map((item) => {

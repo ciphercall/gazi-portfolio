@@ -188,21 +188,69 @@
 
 /* ------------------------------------------------------- 4. site primitives */
 @layer components {
-  /* Glass panel — the workhorse surface. */
+  /* Glass panel — the workhorse surface.
+     The prefixed declaration comes FIRST: Lightning CSS collapses a pair that
+     declares -webkit- last into the prefixed form only, and Chrome then ignores
+     the blur entirely. Emitting prefixed → unprefixed keeps both. */
   .glass {
     background: var(--c-panel);
     border: 1px solid var(--c-line);
     border-radius: var(--r-card);
-    backdrop-filter: blur(14px) saturate(140%);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
   }
 
   .glass-strong {
     background: var(--c-panel-strong);
     border: 1px solid var(--c-line-strong);
     border-radius: var(--r-card);
-    backdrop-filter: blur(18px) saturate(150%);
     -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+  }
+
+  /*
+   * The floating navigation bar.
+   *
+   * `.glass` is a 4% white film, which is right for a card sitting on a page but
+   * reads as *no surface at all* when it spans the whole viewport over the
+   * aurora field. A nav bar needs to look like a pane of frosted glass: a real
+   * tint, a stronger backdrop blur, and enough saturation that the colours moving
+   * underneath stay visible without the text losing contrast.
+   */
+  .glass-nav {
+    background: color-mix(in oklab, var(--c-canvas) 58%, transparent);
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--r-card);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    backdrop-filter: blur(22px) saturate(180%);
+    box-shadow:
+      var(--shadow-lift),
+      0 18px 44px -32px color-mix(in oklab, var(--c-teal) 60%, transparent);
+    /*
+     * Only the shadow animates. A `background-color` transition across a theme
+     * switch leaves the bar stuck on the previous canvas: the value is a
+     * `color-mix()` of a custom property, and the interpolated transition never
+     * settles on the new one. A theme change should snap; a scroll should ease.
+     */
+    transition: box-shadow 0.3s var(--ease-aurora);
+  }
+
+  /* Once the page has moved, the pane thickens so content passing behind it
+     never competes with the navigation labels. */
+  .glass-nav[data-scrolled="true"] {
+    background: color-mix(in oklab, var(--c-canvas) 78%, transparent);
+    box-shadow:
+      var(--shadow-lift),
+      0 22px 52px -28px rgba(0, 0, 0, 0.72);
+  }
+
+  @media (forced-colors: active) {
+    .glass-nav,
+    .glass-nav[data-scrolled="true"] {
+      background: Canvas;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
   }
 
   /* Hairline gradient border that reads as light catching an edge. */
