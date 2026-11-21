@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { contentHash } from "@/lib/crypto";
+import { getCvSettings } from "@/lib/settings";
 
 let _contentHashCache: string | null = null;
 let _contentHashCachedAt: number | null = null;
@@ -378,11 +379,15 @@ export async function getCvSource(): Promise<CvSource> {
 }
 
 /**
- * Fingerprint of every CV-relevant field. Stored alongside each generated PDF;
- * when it changes, the cached file is known to be stale.
+ * Fingerprint of every CV-relevant field — content *and* the document settings
+ * that change how the PDFs are composed. Stored alongside each generated file;
+ * when it changes, the cached file is known to be stale. Including the settings
+ * is what makes flipping "photo on the ATS CV" actually re-render the PDF
+ * instead of leaving the old one on the volume.
  */
 export async function getCvSourceHash(): Promise<string> {
-  return contentHash(await getCvSource());
+  const [source, cv] = await Promise.all([getCvSource(), getCvSettings()]);
+  return contentHash({ source, cv });
 }
 
 /* -------------------------------------------------------- generated assets --- */

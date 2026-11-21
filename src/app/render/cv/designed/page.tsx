@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 
 import { CvDocument } from "./CvDocument";
 import { verifyRenderToken } from "@/lib/crypto";
+import { loadAvatarDataUri } from "@/lib/pdf/avatar";
 import { getCvSource } from "@/lib/queries";
+import { getCvSettings } from "@/lib/settings";
 
 import "./print.css";
 
@@ -37,6 +39,16 @@ export default async function DesignedCvRenderPage({
   if (!verifyRenderToken(token)) notFound();
 
   const source = await getCvSource();
+  const [settings, avatarDataUri] = await Promise.all([
+    getCvSettings(),
+    loadAvatarDataUri(source.profile.avatarPath),
+  ]);
 
-  return <CvDocument source={source} />;
+  return (
+    <CvDocument
+      source={source}
+      avatarDataUri={avatarDataUri}
+      showPhoto={settings.designedPhoto}
+    />
+  );
 }
