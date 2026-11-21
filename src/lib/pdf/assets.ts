@@ -3,10 +3,12 @@ import path from "node:path";
 
 import { sha256 } from "@/lib/crypto";
 import { getEnv } from "@/lib/env";
+import { loadAvatarDataUri } from "@/lib/pdf/avatar";
 import { renderAtsCv } from "@/lib/pdf/ats";
 import { renderDesignedCv } from "@/lib/pdf/designed";
 import { getCvSource, getCvSourceHash, getGeneratedAsset, saveGeneratedAsset } from "@/lib/queries";
 import type { CvSource } from "@/lib/queries";
+import { getCvSettings } from "@/lib/settings";
 
 /**
  * Contract for the generated CV assets, and the implementation behind it.
@@ -232,7 +234,21 @@ async function produce(
   source: CvSource,
   sourceHash: string,
 ): Promise<CvAssetResult> {
-  const buffer = kind === "CV_DESIGNED" ? await renderDesignedCv() : await renderAtsCv(source);
+  let buffer: Buffer;
+  if (kind === "CV_DESIGNED") {
+    // The print surface reads its own settings and portrait; Chromium loads it
+    // over HTTP, so nothing has to be passed across the process boundary.
+    buffer = await renderDesignedCv();
+  } else {
+    const settings = await getCvSettings();
+    const photoDataUri = settings.atsPhoto
+      ? await loadAvatarDataUri(source.profile.avatarPath, 480)
+      : null;
+    buffer = await renderAtsCv(source, {
+      includePhoto: settings.atsPhoto,
+      photoDataUri,
+    });
+  }
   if (buffer.byteLength === 0) {
     throw new Error(`The ${kind} renderer returned an empty document.`);
   }

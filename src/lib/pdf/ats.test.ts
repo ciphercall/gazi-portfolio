@@ -2,6 +2,7 @@
 
 import { describe, expect, it } from "vitest";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
+import sharp from "sharp";
 
 import {
   CERTIFICATIONS,
@@ -196,6 +197,9 @@ describe("ATS CV PDF", () => {
       expect(at, `heading "${heading}" is missing or out of order`).toBeGreaterThanOrEqual(0);
       cursor = at + heading.length;
     }
+
+    // ATS has no "continued" convention: every section appears exactly once.
+    expect(pdf.text).not.toContain("(continued)");
   });
 
   it("prints every job title and company", async () => {
@@ -272,5 +276,60 @@ describe("ATS CV PDF", () => {
     const raw = Buffer.from(pdf.bytes).toString("latin1");
     expect(raw).not.toMatch(/\/Subtype\s*\/Image/);
     expect(raw).not.toContain("/Image");
+  });
+});
+
+/**
+ * The photo is an admin toggle, not a default. When it is on, the document gains
+ * exactly one image and nothing else changes: the text layer must still read in
+ * the same order, which is the property a parser actually depends on.
+ */
+describe("ATS CV PDF with the opt-in photo", () => {
+  let photoPdf: ExtractedPdf | null = null;
+
+  async function renderedWithPhoto(): Promise<ExtractedPdf> {
+    if (!photoPdf) {
+      const square = await sharp({
+        create: { width: 96, height: 96, channels: 3, background: { r: 23, g: 199, b: 183 } },
+      })
+        .jpeg()
+        .toBuffer();
+      photoPdf = await extract(
+        await renderAtsCv(fixtureSource(), {
+          includePhoto: true,
+          photoDataUri: `data:image/jpeg;base64,${square.toString("base64")}`,
+        }),
+      );
+    }
+    return photoPdf;
+  }
+
+  it("embeds exactly one image", async () => {
+    const pdf = await renderedWithPhoto();
+    // Operator-level check: the page actually draws an image, rather than the
+    // raw bytes merely containing a Dictionary name inside a compressed stream.
+    expect(pdf.imageOps.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("keeps the text layer in the same conventional order", async () => {
+    const pdf = await renderedWithPhoto();
+
+    expect(pdf.text).toContain(PROFILE.fullName);
+    expect(pdf.text).toContain(PROFILE.email);
+
+    let cursor = 0;
+    for (const heading of ATS_SECTION_ORDER) {
+      const at = pdf.text.indexOf(heading, cursor);
+      expect(at, `heading "${heading}" is missing or out of order`).toBeGreaterThanOrEqual(0);
+      cursor = at + heading.length;
+    }
+
+    for (const experience of EXPERIENCES) {
+      expect(pdf.text).toContain(experience.title);
+      expect(pdf.text).toContain(experience.company);
+    }
+
+    expect(pdf.text).not.toContain("(continued)");
+    expect(pdf.text).not.toMatch(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/);
   });
 });
