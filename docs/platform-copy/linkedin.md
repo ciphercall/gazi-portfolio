@@ -19,6 +19,12 @@ Shorter variant, if a field caps below 160 characters:
 Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker
 ```
 
+> **Warning — the role form can overwrite this.** When you save a position, LinkedIn offers
+> "Update your profile headline" with two radio buttons: one auto-generated
+> ("Project Manager at People's Poultry & Hatchery Limited · Full-time") and one keeping your
+> current headline. **Always pick the second**, or the long headline above is replaced and the
+> portfolio, CV and LinkedIn stop matching.
+
 ## About (2,600 characters max)
 
 ```
@@ -56,146 +62,315 @@ integration work, and rescue/extension of existing Laravel and React systems.
 Dhaka, Bangladesh · open to remote and international contracts
 ```
 
-## Experience (copy each block exactly; dates match the portfolio timeline)
+---
+
+## Experience — how the add-role form works
+
+Each position is one form with these fields. The tables below give the exact value per field.
+
+| Form field | What to enter |
+| --- | --- |
+| **Job title** * | from the table |
+| **Organization** * | from the table (LinkedIn appends `· Full-time` itself — do not type it) |
+| **Location** | from the table |
+| **Location type** | On-site / Hybrid / Remote, from the table |
+| **Employment type** | Full-time / Part-time, from the table |
+| **Where did you find this job** | skip — it is optional and not worth guessing |
+| **I currently work here** | tick only for the PPHL Project Manager role |
+| **Start month / year** * | from the table |
+| **End month / year** | leave empty when "currently work here" is ticked |
+| **Highlights** | paste the block (2,000-character limit) |
+| **Skills** | the five chips listed. The form shows LinkedIn's suggestions as `+` pills — replace them, do not accept them (see below) |
+| **Media** | optional; link the matching project on the portfolio if you want |
+| **Update your profile headline** | **always choose "keep current headline"** (see the warning above) |
+
+Nine roles, newest first. Dates match `gazi-portfolio/docs/CAREER_TIMELINE.md` exactly.
+
+---
+
+### 1. Project Manager — People's Poultry & Hatchery Limited
+
+| Field | Value |
+| --- | --- |
+| Job title | `Project Manager` |
+| Organization | `People's Poultry & Hatchery Limited` |
+| Location | `Bangladesh` |
+| Location type | Remote |
+| Employment type | Full-time |
+| Currently work here | **tick** |
+| Start | October 2024 |
+| End | (leave blank — current) |
+
+**Highlights** (2,000 max)
 
 ```
-Project Manager
-People's Poultry & Hatchery Limited · Full-time
-Oct 2024 - Present · Bangladesh
+Leading delivery of the enterprise systems a poultry and hatchery group runs on, end to end.
 
-Leading delivery of the enterprise systems that run a poultry and hatchery operation end to end.
-
-• Build and maintain enterprise Laravel and React systems including HRM, supply chain, and
-  attendance workflows.
-• Design REST APIs, integrate Flutter mobile attendance with JWT backends, and support
-  PostgreSQL/MySQL production databases.
-• Ship Docker-based deployments and production support for ERP/SCM modules.
-
-Skills: Laravel · React · PostgreSQL · Docker · Flutter · JWT
+• Own the platform roadmap across HRM, supply chain, inventory, accounts and biometric attendance — one auditable ERP on Laravel 12, React and PostgreSQL.
+• Delivered the procurement-to-inventory SCM: requisition, RFQ, quotation, purchase order, GRN, QC inspection, and a serialized stock ledger with quarantine, recheck and wastage.
+• Shipped the Flutter attendance client on JWT-secured APIs, fed by ZKTeco ADMS device punches, with an automated OTA release pipeline.
+• Replaced hand-rebuilt monthly reporting with dashboards that reconcile against the ledger.
+• Lead a small team: scope, architecture review, and client-facing timelines across ERP and SCM modules.
 ```
 
-```
-Senior Software Developer
-People's Poultry & Hatchery Limited · Part-time
-Apr 2024 - Oct 2024 · Bangladesh
-
-Part-time senior developer on the same poultry and hatchery platforms, bridging the move into the
-full-time Project Manager role.
-
-• Built Laravel and React modules for the HRM and supply chain systems that the full-time Project
-  Manager role now delivers.
-• Shipped REST APIs consumed by the Flutter attendance app, on JWT-secured PostgreSQL and MySQL
-  backends.
-• Worked a part-time schedule alongside a parallel part-time engagement, then stepped up to the
-  full-time role in October 2024.
-
-Skills: Laravel · React · PostgreSQL · REST APIs
-```
+**Skills — 5 chips (form cap)**
 
 ```
-Senior Developer & Team Lead
-MedPro Techtham · Part-time
-Apr 2024 - Nov 2024 · Bahrain
+Laravel · React · PostgreSQL · Docker · Flutter
+```
 
-Part-time senior developer and team lead for a Bahrain-based team, guiding delivery across time
-zones.
+---
 
-• Led a small development team, setting priorities and unblocking work across a Bahrain/Dhaka
-  time-zone split.
+### 2. Senior Software Developer — People's Poultry & Hatchery Limited
+
+| Field | Value |
+| --- | --- |
+| Job title | `Senior Software Developer` |
+| Organization | `People's Poultry & Hatchery Limited` |
+| Location | `Bangladesh` |
+| Location type | Remote |
+| Employment type | Part-time |
+| Currently work here | leave unticked |
+| Start | April 2024 |
+| End | October 2024 |
+
+**Highlights** (2,000 max)
+
+```
+Part-time senior developer on the same poultry and hatchery platforms, bridging the move into the full-time Project Manager role.
+
+• Built the Laravel and React modules for the HRM and supply chain systems that the full-time role now owns.
+• Shipped REST APIs consumed by the Flutter attendance app, on JWT-secured PostgreSQL and MySQL backends.
+• Worked a part-time schedule alongside a parallel part-time engagement, then stepped up to full-time in October 2024.
+```
+
+**Skills — 5 chips**
+
+```
+Laravel · React · PostgreSQL · REST APIs · JWT
+```
+
+---
+
+### 3. Senior Developer & Team Lead — MedPro Techtham
+
+| Field | Value |
+| --- | --- |
+| Job title | `Senior Developer & Team Lead` |
+| Organization | `MedPro Techtham` |
+| Location | `Bahrain` |
+| Location type | Remote |
+| Employment type | Part-time |
+| Currently work here | leave unticked |
+| Start | April 2024 |
+| End | November 2024 |
+
+**Highlights** (2,000 max)
+
+```
+Part-time senior developer and team lead for a Bahrain-based team, guiding delivery across time zones.
+
+• Led a small development team, setting priorities and unblocking work across a Bahrain/Dhaka time-zone split.
 • Owned architecture decisions and code review for the team's Laravel and React modules.
 • Delivered client releases on a part-time schedule in parallel with a full-time role.
-
-Skills: Team Lead · Architecture · Code Review
+• Contributed the 3D dental tooth-region module to the hospital management platform.
 ```
 
-```
-Senior Developer Team-Lead
-Bayshore Communications Ltd · Full-time
-Dec 2023 - Oct 2024 · Dhaka, Bangladesh
+**Skills — 5 chips**
 
+```
+Team Leadership · Software Architecture · Code Review · Laravel · React
+```
+
+---
+
+### 4. Senior Developer Team-Lead — Bayshore Communications Ltd
+
+| Field | Value |
+| --- | --- |
+| Job title | `Senior Developer Team-Lead` |
+| Organization | `Bayshore Communications Ltd` |
+| Location | `Dhaka, Bangladesh` |
+| Location type | On-site |
+| Employment type | Full-time |
+| Currently work here | leave unticked |
+| Start | December 2023 |
+| End | October 2024 |
+
+**Highlights** (2,000 max)
+
+```
 Leading web and mobile delivery, including decentralized blockchain products.
 
-• Lead development of web and mobile applications using React, Node.js, and MongoDB.
-• Coordinate team delivery, code review, and client-facing timelines for product features.
-• Contributed to decentralized web/mobile features including React, React Native, and real-time
-  Node.js services.
-
-Skills: React · React Native · Node.js · MongoDB · Team Lead
+• Led development of web and mobile applications on React, Node.js and MongoDB.
+• Team lead on SWOP, a marketplace trading physical goods and on-chain digital assets in one product — wallets, minting, social feed and analytics.
+• Shipped the DXG agency site and the FishMeAqua storefront for client delivery.
+• Coordinated team delivery, code review and client-facing timelines for product features.
 ```
 
-```
-Senior Developer Team-Lead (Handover)
-Bayshore Communications Ltd · Part-time
-Oct 2024 - Feb 2025 · Dhaka, Bangladesh
-
-Part-time handover of the SWOP and DWG codebases after the full-time role closed, keeping releases
-shipping into 2025.
-
-• Carried the SWOP backend and the DWG agency site through their final release cycles as a part-time
-  maintainer.
-• Reviewed and merged the last feature branches, then handed both repositories to their incoming
-  owners.
-
-Skills: React · Node.js · MongoDB · Release
-```
+**Skills — 5 chips**
 
 ```
-Senior Software & PLC Developer
-Syscon Engineering Limited · Full-time
-Apr 2022 - Dec 2023 · Chattogram, Bangladesh
+React · React Native · Node.js · MongoDB · Team Leadership
+```
 
+---
+
+### 5. Senior Developer Team-Lead (Handover) — Bayshore Communications Ltd
+
+| Field | Value |
+| --- | --- |
+| Job title | `Senior Developer Team-Lead (Handover)` |
+| Organization | `Bayshore Communications Ltd` |
+| Location | `Dhaka, Bangladesh` |
+| Location type | Remote |
+| Employment type | Part-time |
+| Currently work here | leave unticked |
+| Start | October 2024 |
+| End | February 2025 |
+
+**Highlights** (2,000 max)
+
+```
+Part-time handover of the SWOP and DWG codebases after the full-time role closed, keeping releases shipping into 2025.
+
+• Carried the SWOP backend and the DWG agency site through their final release cycles as a part-time maintainer.
+• Reviewed and merged the last feature branches, then handed both repositories to their incoming owners.
+• Closed the engagement on 12 February 2025 — the last commit date on both codebases.
+```
+
+**Skills — 5 chips**
+
+```
+React · Node.js · MongoDB · Release Engineering · Code Review
+```
+
+---
+
+### 6. Senior Software & PLC Developer — Syscon Engineering Limited
+
+| Field | Value |
+| --- | --- |
+| Job title | `Senior Software & PLC Developer` |
+| Organization | `Syscon Engineering Limited` |
+| Location | `Chattogram, Bangladesh` |
+| Location type | On-site |
+| Employment type | Full-time |
+| Currently work here | leave unticked |
+| Start | April 2022 |
+| End | December 2023 |
+
+**Highlights** (2,000 max)
+
+```
 Industrial software: PLC programming paired with web interfaces for monitoring and control.
 
-• Developed industrial software and web interfaces for PLC/SCADA environments (Siemens PLC-1214C,
-  OPC-UA).
+• Developed industrial software and web interfaces for PLC/SCADA environments (Siemens PLC-1214C, OPC-UA).
 • Built React and Node-RED integrations with MongoDB for monitoring and control workflows.
 • Delivered production-ready automation and web application features for engineering clients.
-
-Skills: PLC · SCADA · OPC-UA · React · Node-RED · MongoDB
+• Later productised the monitoring pattern as a standalone SCADA/EMS control center.
 ```
 
-```
-Project Manager
-Chittagong Soft Limited · Part-time
-Jul 2021 - Sep 2024 · Chattogram, Bangladesh
+**Skills — 5 chips**
 
+```
+PLC Programming · SCADA · OPC-UA · React · Node-RED
+```
+
+---
+
+### 7. Project Manager — Chittagong Soft Limited
+
+| Field | Value |
+| --- | --- |
+| Job title | `Project Manager` |
+| Organization | `Chittagong Soft Limited` |
+| Location | `Chattogram, Bangladesh` |
+| Location type | Hybrid |
+| Employment type | Part-time |
+| Currently work here | leave unticked |
+| Start | July 2021 |
+| End | September 2024 |
+
+**Highlights** (2,000 max)
+
+```
 Ran client projects end to end while staying hands-on in the code.
 
-• Managed and developed Laravel applications including food delivery (CallBien) and OCR-based
-  inventory (GlamourGlow).
-• Delivered REST API based online shop solutions (PHP, Ajax, jQuery) for international clients.
-• Handled client communication, scope, and on-time project delivery.
-
-Skills: Laravel · PHP · Project Management · Client Delivery
+• Managed and developed Laravel applications including food delivery (CallBien) and OCR-based inventory (GlamourGlow).
+• Delivered REST API based online shop solutions (PHP, Ajax, jQuery) for international clients, including The Furniture Singapore.
+• Handled client communication, scope and on-time project delivery.
 ```
 
-```
-Full-Stack Laravel Developer
-Anazbd Corporation · Full-time
-Oct 2020 - Feb 2022 · Chattogram, Bangladesh
+**Skills — 5 chips**
 
+```
+Laravel · PHP · Project Management · Client Delivery · REST APIs
+```
+
+---
+
+### 8. Full-Stack Laravel Developer — Anazbd Corporation
+
+| Field | Value |
+| --- | --- |
+| Job title | `Full-Stack Laravel Developer` |
+| Organization | `Anazbd Corporation` |
+| Location | `Chattogram, Bangladesh` |
+| Location type | On-site |
+| Employment type | Full-time |
+| Currently work here | leave unticked |
+| Start | October 2020 |
+| End | February 2022 |
+
+**Highlights** (2,000 max)
+
+```
 Multi-vendor e-commerce platform work, from catalog to admin.
 
 • Developed a multi-vendor e-commerce platform with Laravel and Ajax.
-• Implemented admin features, catalog flows, and production bug fixes.
+• Implemented admin features, catalog flows and production bug fixes.
 • Maintained MySQL-backed application features for live business use.
-
-Skills: Laravel · PHP · MySQL · E-commerce
 ```
 
-```
-Junior Software Developer
-Alchemy Software Limited · Full-time
-Apr 2017 - Sep 2020 · Chattogram, Bangladesh
+**Skills — 5 chips**
 
+```
+Laravel · PHP · MySQL · E-commerce · Ajax
+```
+
+---
+
+### 9. Junior Software Developer — Alchemy Software Limited
+
+| Field | Value |
+| --- | --- |
+| Job title | `Junior Software Developer` |
+| Organization | `Alchemy Software Limited` |
+| Location | `Chattogram, Bangladesh` |
+| Location type | On-site |
+| Employment type | Full-time |
+| Currently work here | leave unticked |
+| Start | April 2017 |
+| End | September 2020 |
+
+**Highlights** (2,000 max)
+
+```
 Where it started: real-time communication systems and full-stack client work.
 
-• Built real-time live chat applications with Node.js, WebRTC, Socket.IO, and MongoDB.
+• Built real-time live chat applications with Node.js, WebRTC, Socket.IO and MongoDB.
 • Worked on full-stack web features and production support for client projects.
 • Grew from junior developer into delivering production Node.js and web systems.
-
-Skills: Node.js · WebRTC · Socket.IO · MongoDB
 ```
+
+**Skills — 5 chips**
+
+```
+Node.js · WebRTC · Socket.IO · MongoDB · JavaScript
+```
+
+---
 
 ## Featured projects
 
@@ -336,19 +511,27 @@ Laravel · React · TypeScript · PostgreSQL · n8n · OpenRouter
 
 ## Skills section
 
-Two different LinkedIn fields are involved, and they are not the same list.
+Three places skills live on LinkedIn. They are separate lists with separate limits.
 
-**1. Top skills** — the short row shown under your headline. LinkedIn pins up to **five** (older
-accounts show three). Pick the five that define the work you want, and only pin something you can
-defend in a 20-minute conversation.
+**1. Top skills** — the short row under your headline. Up to **five** pinned (older accounts show
+three). Pin only what you can defend in a 20-minute conversation.
 
 ```
 Laravel · React · Flutter · PostgreSQL · Docker
 ```
 
-**2. The Skills section** — the full list, further down the profile. It holds **up to 50**, and
-recruiters filter searches against it, so this is a database field rather than a vanity list. All
-twenty-seven below fit with room to spare; add a few more as you use them.
+**2. Per-role skills** — the chips inside each position's form. When you open the form, LinkedIn
+pre-fills five `+` suggestion pills such as *Production Deployment*, *Mean Stack*, *Software Design*,
+*Release Engineering*, *Software Industry*. **Those are generic guesses — remove them and add the
+chips below instead.** They are the difference between a profile that reads as machine-generated and
+one that reads as specific.
+
+Five per role keeps each role legible and keeps the set across nine roles inside the 50-skill
+budget. The chips below are chosen so the arc reads: Node.js → Laravel → PLC/SCADA → React lead →
+ERP ownership.
+
+**3. The Skills section** — the full list, further down the profile. Up to **50**, and recruiters
+filter searches against it, so this is a database field rather than a vanity list.
 
 ```
 PHP, Laravel, Node.js, Express.js, REST API, API Integration, C#, ASP.NET,
@@ -369,15 +552,36 @@ matches against.
 **Attach each skill to the roles where you used it.** LinkedIn lets a skill carry endorsements
 against a specific experience entry, which is how "SCADA" reads as proven rather than claimed.
 
+## Three things your form screenshots settled
+
+1. **Headline — already correct.** Your screenshot shows the long title tagged *(current)*, so the
+   published headline is right. Just never tap the auto-generated radio when saving a role.
+
+2. **Skills — clear the suggestions.** The five `+` pills LinkedIn offered (*Production Deployment*,
+   *Mean Stack*, *Software Design*, *Release Engineering*, *Software Industry*) are its own guesses.
+   Remove them and add the specific chips from each role above.
+
+3. **Location — you have a conflict to settle.** Your form shows the PPHL Project Manager role at
+   **Chattogram** with **On-site**, while `CAREER_TIMELINE.md` records that role as **Bangladesh** and
+   your profile location as **Dhaka**. Those three cannot all be true, and a recruiter who checks
+   will notice. Decide the real arrangement, then set it in the portfolio seed as well so the site,
+   the CV and LinkedIn agree.
+
 ## Advice against over-claiming
 
 - Every date above matches `gazi-portfolio/docs/CAREER_TIMELINE.md`. If you change one, change it in
   both places.
 - Do not add Nuvista, MedPro IT (the HMS build) or DropshipBD as employers — the portfolio presents
   them as independent work, and LinkedIn must agree with the portfolio.
-- Do not confuse the two skills fields. Top skills is a pinned row of five; the Skills section holds
-  up to 50 and is the one recruiter search reads. Fill both, but never assume the pinned row is the
-  list.
+- Never pick the auto-generated headline when saving a role. It silently replaces the long headline.
+- Clear LinkedIn's suggested skill pills before adding yours. Left as-is they produce generic tags
+  like *Mean Stack* and *Software Industry* that say nothing and dilute search relevance.
 - "Nearly 7,000 commits" is the measured total of your own authored commits across the 33 local
   repositories that have your commits (6,960 at the time of writing). It grows as you work; keep it
   as a conservative floor rather than rounding it up.
+
+## One thing to settle
+
+Your screenshot shows the PPHL Project Manager role located in **Chattogram**, while the portfolio
+records that role as **Bangladesh** and your profile location as **Dhaka**. Pick one and make them
+agree — a recruiter who checks can see all three. The tables above use the portfolio value.
