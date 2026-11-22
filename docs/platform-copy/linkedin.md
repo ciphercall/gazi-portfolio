@@ -197,12 +197,21 @@ Where it started: real-time communication systems and full-stack client work.
 Skills: Node.js · WebRTC · Socket.IO · MongoDB
 ```
 
-## Featured projects (LinkedIn "Projects" section)
+## Featured projects
 
-LinkedIn allows many entries, so all twelve below fit. They are ordered by what wins work and
-deliberately span every discipline — enterprise ERP, marketplace, PLC, web SCADA, BMS, machine
-vision and mobile — because the industrial and vision work is what separates this profile from
-every other Laravel developer on the platform. Trim for a niche target, not by default.
+LinkedIn has two places for this work, and they hold different amounts.
+
+**The Featured section** (top of the profile, as cards or links) is the one with a practical cap:
+3–6 items perform best, and more than that suppresses engagement rather than adding reach. Put the
+six below there — they span enterprise, industrial and mobile in one glance.
+
+**The Projects section** (Accomplishments → Projects) takes all twelve, and is where the depth lives.
+Everything below fits there.
+
+Twelve entries follow. If you are filling Featured, stop after the sixth — SCM, ERP, SWOP, the
+Siemens PLC dashboard, DropshipBD and the SCADA/EMS control center. That six already spans
+enterprise, marketplace and industrial, which is the whole argument in one screen. The order is
+deliberate: the strongest and most differentiating entries come first.
 
 ```
 APEX Supply Chain Management (SCM) — Project Manager
@@ -325,17 +334,40 @@ purchase orders, discrepancy flagging and a human approval queue.
 Laravel · React · TypeScript · PostgreSQL · n8n · OpenRouter
 ```
 
-## Skills section (top 3 pinned, then order)
+## Skills section
+
+Two different LinkedIn fields are involved, and they are not the same list.
+
+**1. Top skills** — the short row shown under your headline. LinkedIn pins up to **five** (older
+accounts show three). Pick the five that define the work you want, and only pin something you can
+defend in a 20-minute conversation.
 
 ```
-Laravel · React · Flutter
+Laravel · React · Flutter · PostgreSQL · Docker
 ```
 
+**2. The Skills section** — the full list, further down the profile. It holds **up to 50**, and
+recruiters filter searches against it, so this is a database field rather than a vanity list. All
+twenty-seven below fit with room to spare; add a few more as you use them.
+
 ```
-PHP, TypeScript, Node.js, Next.js, PostgreSQL, MySQL, MongoDB, Docker, JWT, REST APIs, WebRTC,
-Socket.IO, PLC, SCADA, OPC-UA, Node-RED, Python, Tauri, Rust, Prisma, Tailwind CSS, Livewire,
+PHP, Laravel, Node.js, Express.js, REST API, API Integration, C#, ASP.NET,
+JavaScript, TypeScript, React, Next.js, HTML5 / CSS3,
+Flutter, React Native,
+MySQL, PostgreSQL, MongoDB, SQL Server,
+PLC Programming, SCADA, OPC-UA, Node-RED,
+Docker, WebRTC, Socket.IO, Networking,
+Python, Rust,
+JWT, Prisma, Tailwind CSS, Livewire,
 Project Management, Team Leadership, Code Review, ERP Implementation, E-commerce, System Architecture
 ```
+
+Grouped as backend, frontend, mobile, database, industrial, tooling, languages, then the
+methodology skills. If you only fill one, fill this one — it is what recruiter search actually
+matches against.
+
+**Attach each skill to the roles where you used it.** LinkedIn lets a skill carry endorsements
+against a specific experience entry, which is how "SCADA" reads as proven rather than claimed.
 
 ## Advice against over-claiming
 
@@ -343,6 +375,9 @@ Project Management, Team Leadership, Code Review, ERP Implementation, E-commerce
   both places.
 - Do not add Nuvista, MedPro IT (the HMS build) or DropshipBD as employers — the portfolio presents
   them as independent work, and LinkedIn must agree with the portfolio.
+- Do not confuse the two skills fields. Top skills is a pinned row of five; the Skills section holds
+  up to 50 and is the one recruiter search reads. Fill both, but never assume the pinned row is the
+  list.
 - "Nearly 7,000 commits" is the measured total of your own authored commits across the 33 local
   repositories that have your commits (6,960 at the time of writing). It grows as you work; keep it
   as a conservative floor rather than rounding it up.
