@@ -141,7 +141,13 @@ broken upgrade, an API that needs adding to a live product. I read the existing 
 as little as the fix requires.
 ```
 
-## Portfolio items (Upwork project entries — use the strongest five)
+## Portfolio items (Upwork project entries)
+
+Upwork's portfolio is not hard-capped, but a wall of eleven entries reads as unfocused. Use the five
+in **Primary** by default, and swap in from **Alternates** when a job targets that discipline. Every
+entry below is a real project on the site; nothing here is invented for the platform.
+
+### Primary five
 
 ### PPHL Supply Chain Management (SCM)
 
@@ -234,6 +240,125 @@ controls and an alarm list.
 Stack: Siemens PLC, OPC-UA, React, Node-RED, MongoDB
 
 Result: browser-based monitoring and control of a live PLC installation.
+```
+
+### Alternates — swap in by discipline
+
+The industrial and machine-vision entries below are the differentiator on this platform: most
+Upwork Laravel developers cannot show a PLC dashboard or a camera-inspection station.
+
+#### SCADA / EMS Control Center — for industrial monitoring and energy jobs
+
+```
+Role: Senior Software & PLC Developer
+Period: 2026
+Client: Independent (continues the Syscon-era SCADA work)
+
+Problem: industrial monitoring dashboards were rebuilt per installation, and energy and equipment
+trends had no single control center that could also report and alert.
+
+Solution: browser-based SCADA for PM5300 power and flow meters — RBAC with OTP, a topology-driven
+sidebar, 17-measurement meter pages with gauges, charts and grids, manual and scheduled PDF reports
+delivered by email, and a secure production build.
+
+Stack: Next.js, React, Prisma, MySQL, Tailwind, pdf-lib, Nodemailer
+
+Result: one reusable control center replacing per-site dashboards.
+```
+
+#### HVAC / BMS Control Center — for building-management and facility jobs
+
+```
+Role: Full-Stack Developer
+Period: 2025
+Client: Independent
+
+Problem: building systems are monitored through many small local controllers, and operators need one
+view of AHU, chiller and cooling-tower state to catch a problem before occupants do.
+
+Solution: a MERN control center over AHU, chiller and cooling-tower plant — role-based login,
+dashboard, animated unit schematics, setpoint commands, PDF and email reports, and a Docker stack
+behind a Cloudflare tunnel.
+
+Stack: React, Node.js, Express, MongoDB, Docker, Tailwind
+
+Result: a single operational view of plant equipment on a standard web stack.
+```
+
+#### Nuvista Inspection Desktop (HMI) — for machine-vision and shop-floor jobs
+
+```
+Role: Senior Software Developer
+Period: 2026
+Client: Independent
+
+Problem: a manufacturing line needed automated visual inspection of vials and cosmetics at the
+station, running offline, with a camera SDK and real image processing.
+
+Solution: a Tauri desktop shell with a React operator interface and a Python FastAPI vision sidecar
+using OpenCV — login, batch management, parameter tuning, audit trail, camera views and multi-defect
+detection with configurable thresholds, shipped as an offline installer.
+
+Stack: Tauri, Rust, React, TypeScript, Python, FastAPI, OpenCV, MongoDB
+
+Result: local-first inspection HMI combining a native shell with a Python vision service.
+```
+
+#### Pharma Vial QC Desktop Inspector — for pharmaceutical QC jobs
+
+```
+Role: Full-Stack Developer
+Period: 2025
+Client: Independent
+
+Problem: vial inspection is visual and repetitive, so a manual check produces both misses and
+inconsistent reject reasons.
+
+Solution: a PyQt6 inspection station that captures a tray image and runs OpenCV multi-defect checks —
+empty, missing label, deformed, mixed and low-fill — with configurable thresholds, batch processing,
+annotated result images and a single-file .exe deploy.
+
+Stack: Python, PyQt6, OpenCV, NumPy, PyInstaller
+
+Result: consistent, recorded inspection decisions on the line instead of after it.
+```
+
+#### Biometric Attendance & HR Suite — for mobile and HR-tech jobs
+
+```
+Role: Project Manager
+Period: 2026 - Present
+Client: People's Poultry & Hatchery Limited
+
+Problem: attendance was collected by biometric devices but reconciled by hand, and staff had no
+self-service view of their own attendance, leave or payslips.
+
+Solution: a Flutter Android client with check-in/out, geo trails, leave application, payslips, alerts
+and a services screen, on JWT-secured Laravel APIs fed by ZKTeco device punches, with an automated
+OTA release pipeline.
+
+Stack: Flutter, Laravel, MySQL, PostgreSQL, ZKTeco, JWT
+
+Result: the mobile half of the enterprise ERP, used daily by field staff.
+```
+
+#### Gazi Portfolio Companion App — for Flutter and offline-first jobs
+
+```
+Role: Full-Stack Developer
+Period: 2026 - Present
+Client: Independent
+
+Problem: a portfolio is read on a phone, but a web page is not an app someone keeps on their home
+screen — and a mobile client that blanks out on a weak connection is worse than none.
+
+Solution: an offline-first Flutter Android client consuming a versioned REST API, with three-layer
+caching (disk snapshot, bundled seed, network), content-hash-gated refresh and self-hosted OTA
+updates.
+
+Stack: Flutter, Dart, Android
+
+Result: a resilient mobile client that opens instantly and never shows an empty screen.
 ```
 
 ## Proposals — opening lines that work

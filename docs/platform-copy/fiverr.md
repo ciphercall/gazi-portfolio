@@ -201,6 +201,165 @@ right fix upstream.
 
 ---
 
+## Gig 4 — SCADA, EMS and BMS dashboards
+
+```
+Title: I will build a SCADA, EMS or BMS monitoring dashboard for your plant or building
+
+Category: Programming & Tech → Web Programming → Frontend Development
+```
+
+**Description**
+
+```
+Plant and building data in a browser, with the alarms and reports an operator actually needs.
+
+I have built industrial monitoring both sides of the line: PLC control logic on a Siemens PLC-1214C
+with an OPC-UA bridge, browser SCADA over power and flow meters with RBAC, topology-driven
+navigation, gauges, trends and scheduled PDF reports, and a building-management control center over
+AHU, chiller and cooling-tower plant with animated unit schematics and setpoint commands.
+
+What I deliver:
+• Live tag and measurement views with gauges, multi-series trends and status tiles
+• Alarm lists with acknowledgement, and setpoint/control actions with audit
+• Role-based access — operator, engineer, superadmin with OTP where you need it
+• Scheduled and on-demand PDF reports delivered by email
+• A containerised deploy that runs on your existing server
+
+Stack: React, Next.js, Node.js, Prisma, MySQL, MongoDB, OPC-UA, Node-RED.
+```
+
+**Packages**
+
+| Tier | Scope |
+| --- | --- |
+| Basic | One monitoring screen — live values, trend chart and alarm list |
+| Standard | Multi-screen dashboard with RBAC and setpoint control |
+| Premium | Full control center: topology navigation, reports, email delivery, Docker deploy |
+
+**FAQ**
+
+```
+Q: Can you talk to our PLC or meters?
+A: Yes, over OPC-UA, Modbus or a vendor SDK, or by reading an existing gateway. I will confirm what
+your plant exposes before quoting.
+
+Q: Do you program the PLC itself?
+A: I have written ladder and SCL on Siemens S7-1200 series. For other brands I integrate with what
+your integrator provides rather than guessing.
+
+Q: Is this a real web app or just a dashboard demo?
+A: It is a deployable app — authentication, roles, a database and a container. Nothing is mocked
+except the sample data before your device is connected.
+```
+
+---
+
+## Gig 5 — machine vision / camera inspection desktop app
+
+```
+Title: I will build a camera-based visual inspection app for your production line
+
+Category: Programming & Tech → Desktop Applications → Desktop Applications
+```
+
+**Description**
+
+```
+Automated visual checking on the shop floor, running on the machine instead of in the cloud.
+
+I have shipped two: a manufacturing inspection HMI (Tauri + React over a Python OpenCV sidecar, with
+a camera SDK, batch management and an audit trail) and a pharmaceutical vial-tray inspector running
+multi-defect checks with a single-file .exe deploy.
+
+What I deliver:
+• Camera capture with a fallback so the app still runs without hardware
+• Defect detection with configurable thresholds and annotated result images
+• Batch/run management, operator login and an audit trail
+• A local database so it works with no network
+• A packaged installer — .exe or MSI — that your operators can run
+
+Stack: Python, OpenCV, NumPy, PyQt6, FastAPI, Tauri, Rust, React.
+```
+
+**Packages**
+
+| Tier | Scope |
+| --- | --- |
+| Basic | Capture-and-check tool for one defect type, packaged as .exe |
+| Standard | Multi-defect detection with thresholds, batch runs and saved results |
+| Premium | Full inspection station: operator UI, audit trail, camera SDK, installer, offline storage |
+
+**FAQ**
+
+```
+Q: We do not have the camera yet — can you still start?
+A: Yes. I build against synthetic or recorded frames so the detection logic is proven before the
+hardware arrives, then swap in the real SDK.
+
+Q: Which cameras do you support?
+A: Any SDK with a Python or C# interface — Hikrobot, Basler and generic USB/UVC. I will ask for the
+SDK docs first.
+
+Q: Will it work on our older line PC?
+A: If it runs Windows 10 and can install a .NET/VC++ runtime, yes. I test on modest hardware and
+keep the model light.
+```
+
+---
+
+## Gig 6 — Flutter app on a Laravel or REST backend
+
+```
+Title: I will build a Flutter Android app backed by your Laravel or REST API
+
+Category: Programming & Tech → Mobile Phones & Computing → App Development
+```
+
+**Description**
+
+```
+A mobile client that opens instantly and never shows an empty screen.
+
+I build Flutter apps for business use on Laravel/REST backends: a biometric attendance client with
+geo trails and payslips, a marketplace app, and an offline-first companion app with three-layer
+caching and self-hosted OTA updates.
+
+What I deliver:
+• Screens wired to your real API — auth, lists, detail views, forms
+• Offline handling with a last-good cache, so weak signal is not a blank page
+• JWT or token auth, refresh and secure storage
+• Push notifications where you need them
+• A signed release APK, and an OTA pipeline so updates do not need the Play Store
+
+Stack: Flutter, Dart, Android, REST, JWT. Backends in Laravel or Node.js.
+```
+
+**Packages**
+
+| Tier | Scope |
+| --- | --- |
+| Basic | One app screen set (up to 3 screens) against your API |
+| Standard | A full app: auth, list/detail, forms, offline cache, signed APK |
+| Premium | App plus OTA release pipeline and Play Store-ready build |
+
+**FAQ**
+
+```
+Q: iOS too?
+A: My shipped work is Android. I can build Flutter for iOS, but I will not claim App Store
+experience I do not have — ask me and I will tell you honestly.
+
+Q: We do not have an API yet.
+A: I can build the Laravel API as a separate gig, so the same person owns both contracts.
+
+Q: How do updates reach users without the Play Store?
+A: Self-hosted OTA with signed manifests and version channels. Users confirm install once, then
+updates arrive in-app.
+```
+
+---
+
 ## Buyer-request reply templates
 
 ```

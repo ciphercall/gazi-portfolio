@@ -159,6 +159,66 @@ exceptions instead of silently posting them.
 Laravel · React · n8n · PostgreSQL
 ```
 
+### Card 9 — SCADA / EMS Control Center
+
+```
+One browser control center for industrial plant
+
+Power and flow meters monitored live: RBAC with OTP, topology-driven navigation, 17-measurement
+meter pages with gauges and trends, and scheduled PDF reports delivered by email.
+
+2026 · Independent
+Next.js · Prisma · MySQL · pdf-lib
+```
+
+### Card 10 — HVAC / BMS Control Center
+
+```
+A single operational view of building plant
+
+AHU, chiller and cooling-tower supervision with animated unit schematics, setpoint commands, PDF and
+email reporting, on a standard web stack with a containerised deploy.
+
+2025 · Independent
+React · Node.js · MongoDB · Docker
+```
+
+### Card 11 — Nuvista Inspection Desktop (HMI)
+
+```
+Machine vision at the shop floor, running offline
+
+A Tauri desktop station with a React operator UI over a Python FastAPI vision sidecar: camera SDK
+integration, defect thresholds, batch management and an offline installer.
+
+2026 · Independent
+Tauri · Rust · Python · OpenCV
+```
+
+### Card 12 — Pharma Vial QC Desktop Inspector
+
+```
+Consistent vial inspection decisions, on the line
+
+Multi-defect detection for pharmaceutical vial trays — empty, missing label, deformed, mixed, low
+fill — with configurable thresholds, batch processing and a single-file .exe deploy.
+
+2025 · Independent
+Python · PyQt6 · OpenCV
+```
+
+### Card 13 — Gazi Portfolio Companion App
+
+```
+A mobile client that works with no connection
+
+Offline-first Flutter app on a versioned REST API: three-layer caching, content-hash-gated refresh
+and self-hosted OTA updates.
+
+2026 - Present · Independent
+Flutter · Dart · Android
+```
+
 ---
 
 ## Direct-outreach messages

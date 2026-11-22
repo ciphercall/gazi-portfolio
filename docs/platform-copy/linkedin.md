@@ -197,7 +197,12 @@ Where it started: real-time communication systems and full-stack client work.
 Skills: Node.js · WebRTC · Socket.IO · MongoDB
 ```
 
-## Featured projects (LinkedIn "Projects" section — five entries)
+## Featured projects (LinkedIn "Projects" section)
+
+LinkedIn allows many entries, so all twelve below fit. They are ordered by what wins work and
+deliberately span every discipline — enterprise ERP, marketplace, PLC, web SCADA, BMS, machine
+vision and mobile — because the industrial and vision work is what separates this profile from
+every other Laravel developer on the platform. Trim for a niche target, not by default.
 
 ```
 APEX Supply Chain Management (SCM) — Project Manager
@@ -247,6 +252,77 @@ Full marketplace suite: Laravel API, React admin, Next.js SEO storefront, Flutte
 updates, and a one-origin Docker deploy.
 
 Laravel · React · Next.js · Flutter · PostgreSQL · Docker
+```
+
+```
+SCADA / EMS Control Center — Senior Software & PLC Developer
+2026 · Independent (continues the Syscon-era SCADA work)
+
+Browser-based SCADA for industrial power and flow meters: RBAC with OTP, topology-driven navigation,
+17-measurement meter pages with gauges, trends and grids, plus scheduled PDF reporting and
+automailing.
+
+Next.js · React · Prisma · MySQL · pdf-lib · Nodemailer
+```
+
+```
+HVAC / BMS Control Center — Full-Stack Developer
+2025 · Independent
+
+Building-management SCADA over AHU, chiller and cooling-tower plant: role-based login, animated unit
+schematics, setpoint commands, PDF and email reports, and a containerised deploy.
+
+React · Node.js · Express · MongoDB · Docker
+```
+
+```
+Nuvista Inspection Desktop (HMI) — Senior Software Developer
+2026 · Independent
+
+Shop-floor visual-inspection station: Tauri shell and React operator UI over a Python FastAPI vision
+sidecar, with camera SDK integration, defect thresholds, batch management and an offline installer.
+
+Tauri · Rust · React · TypeScript · Python · FastAPI · OpenCV · MongoDB
+```
+
+```
+Pharma Vial QC Desktop Inspector — Full-Stack Developer
+2025 · Independent
+
+Pharmaceutical vial-tray inspection: multi-defect detection (empty, missing label, deformed, mixed,
+low fill) with configurable thresholds, batch processing and a single-file .exe deploy.
+
+Python · PyQt6 · OpenCV · NumPy · PyInstaller
+```
+
+```
+Gazi Portfolio Companion App — Full-Stack Developer
+2026 - Present · Independent
+
+Offline-first Flutter Android client for the portfolio: three-layer caching, content-hash-gated
+refresh and self-hosted OTA updates.
+
+Flutter · Dart · Android
+```
+
+```
+Biometric Attendance & HR Suite — Project Manager
+2026 - Present · People's Poultry & Hatchery Limited
+
+Mobile half of the enterprise ERP: Flutter check-in/out with geo trails, leave, payslips and alerts
+on JWT-secured Laravel APIs fed by ZKTeco device punches.
+
+Flutter · Laravel · ZKTeco · JWT
+```
+
+```
+AI Invoice-to-PO Matching — Full-Stack Developer
+2026 · Independent
+
+Accounts-payable automation: LLM extraction from invoice PDFs and images, matching against open
+purchase orders, discrepancy flagging and a human approval queue.
+
+Laravel · React · TypeScript · PostgreSQL · n8n · OpenRouter
 ```
 
 ## Skills section (top 3 pinned, then order)
