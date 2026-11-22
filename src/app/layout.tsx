@@ -33,11 +33,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:8023"),
   title: {
-    default: "Gazi Monir-Uz-Zaman — Senior Laravel & React Full-Stack Developer",
+    default: "Gazi Monir-Uz-Zaman — Senior Full-Stack Software Engineer",
     template: "%s · Gazi Monir-Uz-Zaman",
   },
   description:
-    "Portfolio of Gazi Monir-Uz-Zaman, senior full-stack developer: Laravel, React, Flutter and Node.js.",
+    "Portfolio of Gazi Monir-Uz-Zaman, senior full-stack software engineer: Laravel, React, Next.js, Node.js and PostgreSQL.",
   applicationName: "Gazi Monir-Uz-Zaman",
   authors: [{ name: "Gazi Monir-Uz-Zaman", url: "https://github.com/ciphercall" }],
   creator: "Gazi Monir-Uz-Zaman",

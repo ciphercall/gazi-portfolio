@@ -33,6 +33,7 @@ import {
   profilePageJsonLd,
   requireProfile,
 } from "@/lib/seo";
+import { headlineShort } from "@/components/site/format";
 
 /**
  * Landing page.
@@ -136,7 +137,7 @@ export default async function HomePage() {
 
       <Hero
         fullName={profile.fullName}
-        headline={profile.headline}
+        headline={headlineShort(profile.headline)}
         subheadline={profile.subheadline}
         location={profile.location}
         currentRoles={currentRoles}

@@ -9,6 +9,7 @@ import {
   type ContactHandles,
 } from "@/components/site/contact-links";
 import { DEFAULT_HEADLINE, SITE_NAME, loadProfile } from "@/lib/seo";
+import { headlineShort } from "@/components/site/format";
 
 /**
  * Public site shell: header, main, footer.
@@ -41,6 +42,9 @@ export default async function PublicLayout({ children }: { children: ReactNode }
 
   const fullName = profile?.fullName.trim() || SITE_NAME;
   const headline = profile?.headline.trim() || DEFAULT_HEADLINE;
+  // The chrome shows the display segment; the canonical title stays on the CV,
+  // the JSON-LD and the SEO defaults.
+  const tagline = headlineShort(headline, DEFAULT_HEADLINE);
   const handles = handlesFrom(profile);
   const links = contactLinks(handles);
 
@@ -55,7 +59,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
           Skip to content
         </a>
 
-        <SiteNav fullName={fullName} tagline={headline} />
+        <SiteNav fullName={fullName} tagline={tagline} />
 
         {/*
           A neutral wrapper, not a <main>: each page owns its own main landmark so
@@ -68,7 +72,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
 
         <SiteFooter
           fullName={fullName}
-          headline={headline}
+          headline={tagline}
           location={profile?.location ?? ""}
           summary={profile?.summary ?? ""}
           handles={handles}

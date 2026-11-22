@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
 import { DEFAULT_HEADLINE, SITE_NAME, SITE_URL, loadProfileSafe } from "@/lib/seo";
+import { headlineShort } from "@/components/site/format";
 
 /**
  * The OpenGraph card, painted in the Midnight Aurora style.
@@ -27,7 +28,7 @@ export default async function OpengraphImage() {
   const profile = await loadProfileSafe();
 
   const name = profile?.fullName.trim() || SITE_NAME;
-  const headline = profile?.headline.trim() || DEFAULT_HEADLINE;
+  const headline = headlineShort(profile?.headline) || DEFAULT_HEADLINE;
   const location = profile?.location.trim() || "Dhaka, Bangladesh";
   const host = SITE_URL.replace(/^https?:\/\//, "");
 
