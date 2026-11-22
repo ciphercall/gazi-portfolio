@@ -156,7 +156,7 @@ export function ProfileForm({ initial }: { initial: ProfileRow | null }) {
                 onChange={(value) => update("headline", value)}
                 error={errorFor("headline")}
                 required
-                placeholder="Senior Laravel & React Full-Stack Developer"
+                placeholder="Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker"
               />
               <TextField
                 label="Subheadline"
