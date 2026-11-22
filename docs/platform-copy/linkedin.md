@@ -372,6 +372,50 @@ Node.js · WebRTC · Socket.IO · MongoDB · JavaScript
 
 ---
 
+## Companies not in the dropdown (closed, renamed, or no LinkedIn Page)
+
+LinkedIn's **Organization** field is a type-ahead fed only by companies that have a LinkedIn Page. If
+a former employer is missing from it, that is a normal situation, not an error — closed companies,
+renamed companies and small firms frequently have no Page. What you do depends on which case it is.
+
+| Situation | What to do | Result |
+| --- | --- | --- |
+| **Company is still trading, has a Page** | Pick it from the dropdown | Logo shows, and colleagues/endorsements link up |
+| **Still trading, but no Page** | Type the exact legal name and save. The field accepts free text. | The role shows the name with no logo — correct and harmless |
+| **Closed or wound up** | Type the exact legal name as it was, and say so in Highlights, e.g. "Company closed in 2022" | No logo, but the record stays honest and verifiable |
+| **Renamed or acquired** | Use the name it had **while you worked there**, then add the current name: `Chittagong Soft Limited (now …)` | Recruiters searching your history find the right entity |
+| **You are unsure of the exact legal name** | Get it from your appointment letter, payslip or the RJSC/BIDA registration, not from memory | Avoids a name that cannot be verified |
+
+**Do not invent a LinkedIn Page for a company you did not own.** Creating one as a former employee
+misrepresents the company and can be reported. Only the current company can legitimately create one.
+
+**Do not pick a similarly-named but different company** just to get a logo. It is a factual
+misstatement, and the alumni/endorsement links will attach you to a company you never worked for.
+
+### Practical fallback: put the company in Media or Highlights
+
+If the name cannot be found and you want the work visible anyway, the Highlights box and the Media
+slot are per-role and always accept text and links. Pointing Media at the live project on your
+portfolio is stronger evidence than any logo.
+
+### Your seven employers
+
+The portfolio's seed has `companyUrl: null` for all seven, so none of them has ever been pinned to a
+LinkedIn Page. Check each against the dropdown and apply the rule above:
+
+| Company | Roles | What to check |
+| --- | --- | --- |
+| People's Poultry & Hatchery Limited | 2 (current) | Should exist as a Page — the group is active and a colleague already lists "Peoples Poultry & Hatchety Ltd" (note the misspelling in that profile). Search both spellings before typing your own. |
+| MedPro Techtham | 1 | Bahrain-based. A Page appears to exist as "MedPro TechTham Solutions W.L.L" — confirm the entity match before selecting; a `.W.L.L` suffix is a legal form, not a different company. |
+| Bayshore Communications Ltd | 2 | Dhaka-based, no clear Page found. Type the exact legal name; if it is still trading but unlisted, that is the "no Page" case. |
+| Syscon Engineering Limited | 1 | Chattogram engineering firm. If the dropdown offers only a foreign "Syscon", do **not** select it — type the name instead. |
+| Chittagong Soft Limited | 1 | Verify whether it was renamed or wound up. If renamed, use the name it had while you worked there. |
+| Anazbd Corporation | 1 | Verify the exact registered spelling (`Anazbd` is unusual). No Page found in search. |
+| Alchemy Software Limited | 1 | A Page matches this exact name — this one is most likely to resolve cleanly from the dropdown. |
+
+Anything that does not resolve is fine: free-text the legal name and let the Highlights box carry the
+work. A missing logo costs you nothing; a wrong company link costs you credibility.
+
 ## Featured projects
 
 LinkedIn has two places for this work, and they hold different amounts.
@@ -552,36 +596,20 @@ matches against.
 **Attach each skill to the roles where you used it.** LinkedIn lets a skill carry endorsements
 against a specific experience entry, which is how "SCADA" reads as proven rather than claimed.
 
-## Three things your form screenshots settled
-
-1. **Headline — already correct.** Your screenshot shows the long title tagged *(current)*, so the
-   published headline is right. Just never tap the auto-generated radio when saving a role.
-
-2. **Skills — clear the suggestions.** The five `+` pills LinkedIn offered (*Production Deployment*,
-   *Mean Stack*, *Software Design*, *Release Engineering*, *Software Industry*) are its own guesses.
-   Remove them and add the specific chips from each role above.
-
-3. **Location — you have a conflict to settle.** Your form shows the PPHL Project Manager role at
-   **Chattogram** with **On-site**, while `CAREER_TIMELINE.md` records that role as **Bangladesh** and
-   your profile location as **Dhaka**. Those three cannot all be true, and a recruiter who checks
-   will notice. Decide the real arrangement, then set it in the portfolio seed as well so the site,
-   the CV and LinkedIn agree.
-
 ## Advice against over-claiming
 
 - Every date above matches `gazi-portfolio/docs/CAREER_TIMELINE.md`. If you change one, change it in
   both places.
-- Do not add Nuvista, MedPro IT (the HMS build) or DropshipBD as employers — the portfolio presents
-  them as independent work, and LinkedIn must agree with the portfolio.
 - Never pick the auto-generated headline when saving a role. It silently replaces the long headline.
 - Clear LinkedIn's suggested skill pills before adding yours. Left as-is they produce generic tags
   like *Mean Stack* and *Software Industry* that say nothing and dilute search relevance.
+- A company that is missing from the dropdown is not a problem. Free-text the legal name; never
+  attach yourself to a similar-sounding company for the sake of a logo.
+- **Location still conflicts.** Your role form used **Chattogram · On-site** for the PPHL Project
+  Manager role, while `CAREER_TIMELINE.md` says **Bangladesh** and your profile location is **Dhaka**.
+  Settle it in the seed so the site, the CV and LinkedIn agree.
+- Do not add Nuvista, MedPro IT (the HMS build) or DropshipBD as employers — the portfolio presents
+  them as independent work, and LinkedIn must agree with the portfolio.
 - "Nearly 7,000 commits" is the measured total of your own authored commits across the 33 local
   repositories that have your commits (6,960 at the time of writing). It grows as you work; keep it
   as a conservative floor rather than rounding it up.
-
-## One thing to settle
-
-Your screenshot shows the PPHL Project Manager role located in **Chattogram**, while the portfolio
-records that role as **Bangladesh** and your profile location as **Dhaka**. Pick one and make them
-agree — a recruiter who checks can see all three. The tables above use the portfolio value.
