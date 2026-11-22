@@ -32,6 +32,12 @@ export default async function OpengraphImage() {
   const location = profile?.location.trim() || "Dhaka, Bangladesh";
   const host = SITE_URL.replace(/^https?:\/\//, "");
 
+  // The canvas is a fixed 1200px wide with 72px padding, so ~1056px of usable
+  // line. Sans-serif averages ~0.55em per character, so 38px fits ~50 characters
+  // and the two-role headline (~66) would wrap into the name above it. Step the
+  // type down instead of letting it overflow.
+  const headlineSize = headline.length > 58 ? 28 : headline.length > 46 ? 32 : 38;
+
   return new ImageResponse(
     (
       <div
@@ -117,7 +123,7 @@ export default async function OpengraphImage() {
             <div style={{ display: "flex", fontSize: "82px", color: INK, lineHeight: 1.05 }}>
               {name}
             </div>
-            <div style={{ display: "flex", fontSize: "38px", color: MUTED }}>{headline}</div>
+            <div style={{ display: "flex", fontSize: `${headlineSize}px`, color: MUTED }}>{headline}</div>
           </div>
 
           <div

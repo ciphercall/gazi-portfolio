@@ -85,6 +85,18 @@ export function headlineShort(headline: string | null | undefined, fallback = ""
   return (first ?? value).trim();
 }
 
+/**
+ * The single primary role, for narrow surfaces. The headline can carry two roles
+ * (`Engineer · Project Manager`), which is right for the hero but too wide for
+ * the CV running head, where it would collide with the candidate's name. Ellipsis
+ * would truncate mid-word in a printed document, so drop the second role instead.
+ */
+export function headlineRole(headline: string | null | undefined, fallback = ""): string {
+  const full = headlineShort(headline, fallback);
+  const primary = full.split(" · ")[0];
+  return (primary ?? full).trim();
+}
+
 /** `1 → "1 year"`, `9 → "9 years"`. */
 export function pluralize(count: number, singular: string, plural = `${singular}s`): string {
   return `${count} ${count === 1 ? singular : plural}`;
