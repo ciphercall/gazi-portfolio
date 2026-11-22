@@ -26,7 +26,8 @@ export const SITE_URL = (
 ).replace(/\/+$/, "");
 
 /** Copy used when the profile row is missing or a field is blank. */
-export const DEFAULT_HEADLINE = "Senior Laravel & React Full-Stack Developer";
+export const DEFAULT_HEADLINE =
+  "Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps";
 
 /** The route Next serves the generated `opengraph-image.tsx` at. */
 export const OG_IMAGE_PATH = "/opengraph-image";

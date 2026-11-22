@@ -74,6 +74,17 @@ export function formatTenure(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
 }
 
+/**
+ * The profile headline is one long, keyword-dense string, kept byte identical to
+ * LinkedIn. Layouts that cannot take five clauses render only the first segment,
+ * so the display copy is derived and can never drift from the canonical copy.
+ */
+export function headlineShort(headline: string | null | undefined, fallback = ""): string {
+  const value = (headline ?? "").trim() || fallback;
+  const first = value.split(" | ")[0];
+  return (first ?? value).trim();
+}
+
 /** `1 → "1 year"`, `9 → "9 years"`. */
 export function pluralize(count: number, singular: string, plural = `${singular}s`): string {
   return `${count} ${count === 1 ? singular : plural}`;

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { CvPaginator } from "./CvPaginator";
 import { formatDateRange, formatMonthYear } from "@/lib/pdf/content";
 import type { CvSource } from "@/lib/queries";
+import { headlineShort } from "@/components/site/format";
 
 /**
  * The designed (colourised) CV document.
@@ -144,7 +145,7 @@ function RunningHead({ profile }: { profile: CvSource["profile"] }) {
   return (
     <div className="cv-runhead" data-cv-runhead="">
       <span className="cv-runhead-name">{profile.fullName}</span>
-      <span className="cv-runhead-role">{profile.headline}</span>
+      <span className="cv-runhead-role">{headlineShort(profile.headline)}</span>
     </div>
   );
 }
