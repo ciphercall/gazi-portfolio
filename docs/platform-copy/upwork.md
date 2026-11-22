@@ -13,7 +13,7 @@ Full-Stack Engineer | Laravel · React/Next.js · PostgreSQL
 The canonical title is longer than Upwork's field allows, so the overview opens with it instead:
 
 ```
-Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps
+Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps
 ```
 
 ## Hourly rate guidance

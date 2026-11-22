@@ -10,7 +10,7 @@ portfolio, plus the profile text.
 ### Profile headline (short)
 
 ```
-Senior Full-Stack Software Engineer — Laravel, React/Next.js, PostgreSQL
+Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager — Laravel, React/Next.js, PostgreSQL
 ```
 
 ### Profile description

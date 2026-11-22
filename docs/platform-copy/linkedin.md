@@ -7,16 +7,19 @@ Paste-ready for the profile, in the order the fields appear on LinkedIn.
 ## Headline (220 characters max)
 
 This is the canonical title. It is the same string the portfolio webapp carries in
-`PROFILE.headline`, so the two can never disagree.
+`PROFILE.headline`, so the two can never disagree. It names both current roles — engineer first,
+because that is what the marketplaces sell, then Project Manager so PM searches find you too.
 
 ```
-Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps
+Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps
 ```
+
+169 characters, 51 under the 220 limit.
 
 Shorter variant, if a field caps below 160 characters:
 
 ```
-Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker
+Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker
 ```
 
 > **Warning — the role form can overwrite this.** When you save a position, LinkedIn offers

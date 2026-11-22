@@ -11,7 +11,7 @@ conversation rather than to rank in a search.
 
 ```
 Gazi Monir-Uz-Zaman
-Senior Full-Stack Software Engineer (9+ Yrs) — PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker
+Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager — PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker
 ```
 
 ### Headline (short, shown in cards)
