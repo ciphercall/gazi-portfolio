@@ -100,9 +100,13 @@ export const PROFILE: SeedProfile = {
   fullName: "Gazi Monir-Uz-Zaman",
   // Canonical title, kept byte-identical to the LinkedIn headline. It is long on
   // purpose: the hero and the OG card render `headlineShort` (see lib/seo.ts),
-  // while both CV PDFs and the JSON-LD jobTitle carry this full string.
+  // while the ATS CV and the JSON-LD jobTitle carry this full string.
+  // The second role is deliberate: this person is a Project Manager as well as an
+  // engineer, and a headline that said only "engineer" hid the current position
+  // from headline-based recruiter search. Engineer leads because that is the work
+  // the marketplaces sell.
   headline:
-    "Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps",
+    "Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps",
   subheadline:
     "9+ years building web, mobile and industrial systems — ERP, HRM, supply chain, e-commerce and SCADA.",
   // The PDF's "About Me" is a generic 2017-era objective statement ("Seeking a
