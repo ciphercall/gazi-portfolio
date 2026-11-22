@@ -27,7 +27,7 @@ export const SITE_URL = (
 
 /** Copy used when the profile row is missing or a field is blank. */
 export const DEFAULT_HEADLINE =
-  "Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps";
+  "Senior Full-Stack Software Engineer (9+ Yrs) · Project Manager | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps";
 
 /** The route Next serves the generated `opengraph-image.tsx` at. */
 export const OG_IMAGE_PATH = "/opengraph-image";
@@ -88,6 +88,11 @@ export interface PageMetadataInput {
   description: string;
   path: string;
   keywords?: string[];
+  /**
+   * Bypass the root layout's `%s · {name}` template. Titles that already name the
+   * person must set this, or the template appends the name a second time.
+   */
+  absoluteTitle?: boolean;
 }
 
 /**
@@ -101,7 +106,7 @@ export function pageMetadata(input: PageMetadataInput): Metadata {
   const image = { url: absoluteUrl(OG_IMAGE_PATH), width: 1200, height: 630, alt: SITE_NAME };
 
   return {
-    title: input.title,
+    title: input.absoluteTitle ? { absolute: input.title } : input.title,
     description,
     keywords: input.keywords,
     alternates: { canonical: url },

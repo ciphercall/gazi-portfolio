@@ -46,13 +46,14 @@ import { headlineShort } from "@/components/site/format";
  */
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await loadProfileSafe();
-  const title =
-    profile?.seoTitle.trim() ||
-    (profile ? `${profile.fullName} — ${profile.headline}` : SITE_NAME);
+  // `seoTitle` already names the person, and the root layout's title template
+  // appends the name again — which rendered "Gazi … — Senior …, Gazi …". The
+  // profile title is therefore emitted as an absolute title.
+  const title = profile?.seoTitle.trim() || `${SITE_NAME} — Senior Full-Stack Software Engineer`;
   const description =
     profile?.seoDescription.trim() || profile?.subheadline.trim() || DEFAULT_HEADLINE;
 
-  return pageMetadata({ title, description, path: "/" });
+  return pageMetadata({ title, description, path: "/", absoluteTitle: true });
 }
 
 export default async function HomePage() {
