@@ -98,14 +98,18 @@ export interface SeedProject {
 
 export const PROFILE: SeedProfile = {
   fullName: "Gazi Monir-Uz-Zaman",
-  headline: "Senior Laravel & React Full-Stack Developer",
+  // Canonical title, kept byte-identical to the LinkedIn headline. It is long on
+  // purpose: the hero and the OG card render `headlineShort` (see lib/seo.ts),
+  // while both CV PDFs and the JSON-LD jobTitle carry this full string.
+  headline:
+    "Senior Full-Stack Software Engineer (9+ Yrs) | PHP/Laravel · React/Next.js · Node.js · PostgreSQL · Docker | Shipping Production SaaS & Enterprise Apps",
   subheadline:
-    "9.5 years building web, mobile and industrial systems — ERP, HRM, supply chain, e-commerce and SCADA.",
+    "9+ years building web, mobile and industrial systems — ERP, HRM, supply chain, e-commerce and SCADA.",
   // The PDF's "About Me" is a generic 2017-era objective statement ("Seeking a
   // challenging position in the IT Sector..."). The fiverr-cv ABOUT is the same
   // person writing about himself today, so that is what the site uses.
   summary:
-    "Senior full-stack developer with 9.5 years of experience building web and mobile applications " +
+    "Senior full-stack software engineer with 9+ years of experience building web and mobile applications " +
     "for businesses. I specialize in Laravel & PHP (bug fixes, APIs, e-commerce, ERP modules), React " +
     "(admin dashboards, SPAs, frontend integration), Flutter (Android apps with Laravel/REST backends), " +
     "and Node.js (REST APIs and real-time features). I have delivered production systems including " +
@@ -120,10 +124,10 @@ export const PROFILE: SeedProfile = {
   githubUrl: "https://github.com/ciphercall",
   facebookUrl: "https://facebook.com/apufirestl",
   messengerUsername: "apufirestl",
-  seoTitle: "Gazi Monir-Uz-Zaman — Senior Laravel & React Full-Stack Developer",
+  seoTitle: "Gazi Monir-Uz-Zaman — Senior Full-Stack Software Engineer",
   seoDescription:
-    "Portfolio of Gazi Monir-Uz-Zaman, senior full-stack developer: Laravel, React, Flutter and Node.js. " +
-    "9.5 years delivering ERP, HRM, supply-chain, e-commerce and industrial SCADA systems.",
+    "Portfolio of Gazi Monir-Uz-Zaman, senior full-stack software engineer: Laravel, React, Next.js, Node.js and PostgreSQL. " +
+    "9+ years delivering ERP, HRM, supply-chain, e-commerce and industrial SCADA systems.",
 };
 
 /* ------------------------------------------------------------ experience --- */
@@ -196,6 +200,8 @@ export const EXPERIENCES: SeedExperience[] = [
     startDate: "2023-12-15",
     endDate: "2024-10-14",
     isCurrent: false,
+    // The full-time role hands over on 2024-10-14; DWG and SWOP commits run to
+    // 2025-02-12 under the part-time handover row that follows it.
     summary:
       "Leading web and mobile delivery, including decentralized blockchain products.",
     bullets: [
@@ -204,6 +210,25 @@ export const EXPERIENCES: SeedExperience[] = [
       "Contributed to decentralized web/mobile features including React, React Native, and real-time Node.js services.",
     ],
     tags: ["React", "React Native", "Node.js", "MongoDB", "Team Lead"],
+  },
+  {
+    slug: "bayshore-communications-senior-developer-team-lead-part-time",
+    title: "Senior Developer Team-Lead (Handover)",
+    company: "Bayshore Communications Ltd",
+    companyUrl: null,
+    employmentType: "PART_TIME",
+    location: "Dhaka, Bangladesh",
+    startDate: "2024-10-15",
+    endDate: "2025-02-12",
+    isCurrent: false,
+    summary:
+      "Part-time handover of the SWOP and DWG codebases after the full-time role closed, keeping releases shipping into 2025.",
+    bullets: [
+      "Carried the SWOP backend and the DWG agency site through their final release cycles as a part-time maintainer.",
+      "Reviewed and merged the last feature branches, then handed both repositories to their incoming owners.",
+      "Closed the engagement on 12 February 2025 — the last commit date on both codebases.",
+    ],
+    tags: ["React", "Node.js", "MongoDB", "Release", "Part-time"],
   },
   {
     slug: "syscon-engineering-senior-software-plc-developer",
@@ -369,6 +394,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "The systems running a live poultry and hatchery business: HRM, supply chain, inventory and attendance in one platform.",
     body:
+      "**Period:** 2024-07-10 → present · **Engagement:** People's Poultry & Hatchery Limited (part-time, then full-time from 2024-10-15)\n\n" +
       "A production ERP covering human resources, supply chain and attendance for a poultry and hatchery group.\n\n" +
       "### Problem / Context\n\n" +
       "A poultry and hatchery group was running HR, supply chain, inventory and attendance on " +
@@ -396,9 +422,9 @@ export const PROJECTS: SeedProject[] = [
       "One auditable platform replacing the fragmented tooling, with serialized stock traceability " +
       "and a mobile attendance client — a strong enterprise/ERP case study for manufacturing and " +
       "agri clients.",
-    role: "Senior Software Developer",
+    role: "Senior Software Developer → Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Laravel", "React", "PostgreSQL", "MySQL", "Docker", "Flutter"],
@@ -411,6 +437,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "A Web3 platform for wallet-based contact sharing, token swapping and a decentralized NFT marketplace, with a React/Next.js frontend and a Node.js/MongoDB backend.",
     body:
+      "**Period:** 2024-03-05 → 2025-02-12 · **Engagement:** Bayshore Communications Ltd (full-time, then part-time handover)\n\n" +
       "### Problem / Context\n\n" +
       "A decentralized application spanning web and mobile: exchange contact details, swap tokens, and trade NFTs without a central operator. The platform had to support wallet-based identity, on-chain asset ownership and real-time messaging across clients.\n\n" +
       "### What it does\n\n" +
@@ -430,7 +457,7 @@ export const PROJECTS: SeedProject[] = [
       "marketplace flows and real-time messaging for Web3 clients.",
     role: "Senior Developer Team-Lead",
     client: "Bayshore Communications Ltd",
-    year: null,
+    year: 2025,
     liveUrl: null,
     repoUrl: "https://github.com/Travisswop/swop-app-backend",
     techStack: [
@@ -456,6 +483,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "Low-latency browser-to-browser chat with presence, built directly on WebRTC.",
     body:
+      "**Period:** 2017-04-01 → 2020-09-30 · **Engagement:** Alchemy Software Limited (full-time)\n\n" +
       "A real-time communication product built before hosted chat APIs were the default choice.\n\n" +
       "### Problem / Context\n\n" +
       "A business needed low-latency browser-to-browser communication with presence, before hosted " +
@@ -474,7 +502,7 @@ export const PROJECTS: SeedProject[] = [
       "reference for custom real-time features without third-party chat SaaS.",
     role: "Junior Software Developer",
     client: "Alchemy Software Limited",
-    year: null,
+    year: 2020,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Node.js", "WebRTC", "Socket.IO", "MongoDB"],
@@ -487,6 +515,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "A marketplace where many vendors sell through one storefront and one admin.",
     body:
+      "**Period:** 2020-10-01 → 2022-02-26 · **Engagement:** Anazbd Corporation (full-time)\n\n" +
       "A multi-vendor commerce platform covering vendor onboarding, catalog management and order flow.\n\n" +
       "### Problem / Context\n\n" +
       "A marketplace needed many vendors selling through one storefront and one admin, with per-vendor " +
@@ -504,7 +533,7 @@ export const PROJECTS: SeedProject[] = [
       "needing vendor-scoped catalogs.",
     role: "Full-Stack Laravel Developer",
     client: "Anazbd Corporation",
-    year: null,
+    year: 2022,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Laravel", "PHP", "MySQL", "Ajax"],
@@ -517,6 +546,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "Sales, ledger and accounts in one system, with reporting on top.",
     body:
+      "**Period:** 2024-04-01 → 2025-02-28 · **Engagement:** People's Poultry & Hatchery Limited (started part-time, continued under the full-time role)\n\n" +
       "An ERP covering sales and accounting workflows with a React interface and a " +
       "PostgreSQL-backed Laravel API.\n\n" +
       "### Problem / Context\n\n" +
@@ -532,9 +562,9 @@ export const PROJECTS: SeedProject[] = [
       "### Outcome / Value\n\n" +
       "A unified sales + accounting ERP with reporting — a reusable pattern for SME accounting " +
       "clients.",
-    role: null,
-    client: null,
-    year: null,
+    role: "Full-Stack Developer",
+    client: "People's Poultry & Hatchery Limited",
+    year: 2024,
     liveUrl: null,
     repoUrl: null,
     techStack: ["React", "Laravel", "PostgreSQL", "Python"],
@@ -547,6 +577,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "Reads supplier email into structured orders — OCR at the front door of an inventory system.",
     body:
+      "**Period:** 2021-07-01 → 2024-09-07 · **Engagement:** Chittagong Soft Limited (part-time client engagement)\n\n" +
       "An order-profiling and inventory management system that turns incoming email into structured data.\n\n" +
       "### Problem / Context\n\n" +
       "A business was receiving supplier orders by email, then re-typing them into an inventory system " +
@@ -564,7 +595,7 @@ export const PROJECTS: SeedProject[] = [
       "operations clients.",
     role: "Project Manager",
     client: "Chittagong Soft Limited",
-    year: null,
+    year: 2023,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Laravel", "jQuery", "Gmail API", "OCR"],
@@ -576,6 +607,7 @@ export const PROJECTS: SeedProject[] = [
     title: "CallBien — Food Delivery Service",
     summary: "A food delivery service: menu, orders, delivery flow.",
     body:
+      "**Period:** 2021-07-01 → 2024-09-07 · **Engagement:** Chittagong Soft Limited (part-time client engagement)\n\n" +
       "A food delivery platform built on Laravel with a jQuery front end.\n\n" +
       "### Problem / Context\n\n" +
       "A food delivery business needed menu, orders and delivery flow in one platform instead of " +
@@ -592,7 +624,7 @@ export const PROJECTS: SeedProject[] = [
       "A working food-delivery platform — a reusable pattern for delivery/ordering clients.",
     role: "Project Manager",
     client: "Chittagong Soft Limited",
-    year: null,
+    year: 2022,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Laravel", "jQuery", "MySQL"],
@@ -605,6 +637,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "A REST-API-driven online shop delivered for an international client.",
     body:
+      "**Period:** 2021-07-01 → 2024-09-07 · **Engagement:** Chittagong Soft Limited (part-time client engagement)\n\n" +
       "A RESTful API based online shop built for a Singapore-based furniture retailer.\n\n" +
       "### Problem / Context\n\n" +
       "An international furniture retailer needed an online shop delivered directly with the client, " +
@@ -621,7 +654,7 @@ export const PROJECTS: SeedProject[] = [
       "A delivered international e-commerce site — a reference for REST-API-first shop builds.",
     role: "Project Manager",
     client: "Chittagong Soft Limited",
-    year: null,
+    year: 2021,
     liveUrl: null,
     repoUrl: null,
     techStack: ["PHP", "Ajax", "jQuery", "REST API"],
@@ -634,6 +667,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "PLC control logic paired with a web dashboard for live plant monitoring.",
     body:
+      "**Period:** 2022-04-07 → 2023-12-01 · **Engagement:** Syscon Engineering Limited (full-time)\n\n" +
       "Industrial automation work combining PLC programming with a web application for monitoring and control.\n\n" +
       "### Problem / Context\n\n" +
       "An industrial plant needed PLC control logic paired with a web dashboard for live plant " +
@@ -651,7 +685,7 @@ export const PROJECTS: SeedProject[] = [
       "A PLC + web-dashboard plant control system — a niche industrial-automation showcase.",
     role: "Senior Software & PLC Developer",
     client: "Syscon Engineering Limited",
-    year: null,
+    year: 2023,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Siemens PLC", "Ladder", "SCL", "OPC-UA", "React", "Node-RED", "MongoDB"],
@@ -664,6 +698,7 @@ export const PROJECTS: SeedProject[] = [
     summary:
       "Biometric attendance & HR system: ZKTeco device integration, face-recognition mobile app, HR admin panel.",
     body:
+      "**Period:** 2026-03-02 → present · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "A poultry/hatchery group needed HR and attendance across devices and field staff.\n\n" +
       "### What it does\n\n" +
@@ -675,9 +710,9 @@ export const PROJECTS: SeedProject[] = [
       "Laravel 8/13 backends, React frontends, Flutter mobile with on-device face recognition, ZKTeco ADMS.\n\n" +
       "### Outcome / Value\n\n" +
       "Biometric attendance system — strong differentiator for HR/enterprise clients.",
-    role: "Senior Software Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/PPHL-ERP/pphl_erp",
     techStack: ["Laravel", "React", "Flutter", "MySQL", "PostgreSQL", "ZKTeco", "JWT"],
@@ -689,6 +724,7 @@ export const PROJECTS: SeedProject[] = [
     title: "DropshipBD — Multi-Supplier E-Commerce Marketplace",
     summary: "A complete multi-vendor marketplace: Laravel API, React admin, Next.js storefront, Flutter app, and Docker deploy.",
     body:
+      "**Period:** 2026-10-15 → present · **Engagement:** Independent product (own venture)\n\n" +
       "### Problem / Context\n\n" +
       "A multi-supplier dropshipping business needed one platform spanning catalog, payments, orders and " +
       "delivery across web and mobile, with per-supplier restrictions and bilingual admin.\n\n" +
@@ -707,8 +743,8 @@ export const PROJECTS: SeedProject[] = [
       "### Outcome / Value\n\n" +
       "End-to-end marketplace delivery reusable as a Fiverr 'full e-commerce suite' gig.",
     role: "Full-Stack Developer",
-    client: "DropshipBD",
-    year: null,
+    client: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/dropship_backend",
     techStack: ["Laravel", "React", "Next.js", "Flutter", "PostgreSQL", "Docker", "SSLCommerz"],
@@ -720,6 +756,7 @@ export const PROJECTS: SeedProject[] = [
     title: "PPHL Supply Chain Management (SCM)",
     summary: "Enterprise procurement-to-inventory system: RFQ, PO, GRN, QC, stock ledger with serials, production/BOM, reports.",
     body:
+      "**Period:** 2026-02-22 → present · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "A poultry and hatchery group needed an auditable supply chain from requisition to payment, with " +
       "serialized stock traceability across sectors, plus quarantine, repair and scrap handling.\n\n" +
@@ -740,9 +777,9 @@ export const PROJECTS: SeedProject[] = [
       "### Outcome / Value\n\n" +
       "Deep, demoable enterprise SCM backend+frontend for manufacturing/logistics clients, with " +
       "serialized stock traceability end to end.",
-    role: "Senior Software Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/PPHL-ERP/Backend_Supply_Chain_Management",
     techStack: ["Laravel", "React", "PostgreSQL", "Docker", "JWT"],
@@ -754,6 +791,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Peoples Farm & Hatchery ERP",
     summary: "Multi-tenant poultry farm & hatchery ERP with batch genealogy stock ledger and 9-stage hatchery workflow.",
     body:
+      "**Period:** 2026-10-01 → present · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "A greenfield ERP for farm and hatchery operations requiring traceable batch genealogy across the " +
       "9-stage hatchery workflow, with hard fail-closed multi-tenancy.\n\n" +
@@ -769,9 +807,9 @@ export const PROJECTS: SeedProject[] = [
       "with CompanyScope; 47 tests; Docker staging with GitHub-polling auto-update.\n\n" +
       "### Outcome / Value\n\n" +
       "Niche agri/poultry vertical with clean, well-documented architecture and hard tenancy.",
-    role: "Senior Software Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/PPHL-ERP/peoples_farm_and_hatchery_backend",
     techStack: ["Laravel", "PostgreSQL", "Docker", "JWT"],
@@ -783,6 +821,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Hospital Management System (HMS)",
     summary: "Full hospital ERP: patients, appointments, billing, procedures, ZKTeco biometrics, Agora telemedicine, AI scribe.",
     body:
+      "**Period:** 2024-04-01 → 2024-11-30 · **Engagement:** MedPro Techtham (part-time)\n\n" +
       "### Problem / Context\n\n" +
       "A hospital needed unified clinical, admin, HR and procurement operations with telemedicine, " +
       "replacing fragmented departmental systems.\n\n" +
@@ -799,8 +838,8 @@ export const PROJECTS: SeedProject[] = [
       "### Outcome / Value\n\n" +
       "Healthcare ERP with telemedicine — strong freelance/enterprise value.",
     role: "Senior Software Developer",
-    client: "MedPro IT",
-    year: null,
+    client: "MedPro Techtham",
+    year: 2024,
     liveUrl: null,
     repoUrl: "https://github.com/medproit/hms",
     techStack: ["Laravel", "PHP", "MySQL", "Tailwind", "Alpine.js", "Vite", "OpenAI", "Agora"],
@@ -812,6 +851,7 @@ export const PROJECTS: SeedProject[] = [
     title: "SCADA / EMS Control Center",
     summary: "Browser-based SCADA for industrial power & flow meters: RBAC, topology-driven UI, PDF reports, automailing.",
     body:
+      "**Period:** 2026-04-02 → 2026-06-10 · **Engagement:** Independent build, continuing the Syscon-era SCADA work\n\n" +
       "### Problem / Context\n\n" +
       "An industrial plant needed browser-based monitoring of PM5300 power/flow meters with role-based " +
       "access, replacing desktop-only SCADA.\n\n" +
@@ -827,8 +867,8 @@ export const PROJECTS: SeedProject[] = [
       "### Outcome / Value\n\n" +
       "Enterprise EMS/SCADA dashboard — high-ticket industrial client showcase.",
     role: "Senior Software & PLC Developer",
-    client: "Syscon Engineering Limited",
-    year: null,
+    client: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/scada_control_center",
     techStack: ["Next.js", "React", "Prisma", "MySQL", "Tailwind", "Framer Motion", "pdf-lib", "Nodemailer"],
@@ -840,6 +880,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Nuvista Inspection Desktop (HMI)",
     summary: "Desktop HMI for automated visual inspection: Tauri + React + Python CV sidecar + camera SDK.",
     body:
+      "**Period:** 2026-08-30 → 2026-10-29 · **Engagement:** Independent engagement\n\n" +
       "### Problem / Context\n\n" +
       "A manufacturing line needed a desktop HMI for automated visual inspection of vials/cosmetics, " +
       "running offline with camera SDK and CV sidecar.\n\n" +
@@ -854,8 +895,8 @@ export const PROJECTS: SeedProject[] = [
       "### Outcome / Value\n\n" +
       "Industrial desktop app with camera SDK + CV sidecar — niche, high-value manufacturing demo.",
     role: "Senior Software Developer",
-    client: "Nuvista",
-    year: null,
+    client: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/nuvista-inspection-desktop",
     techStack: ["Tauri", "Rust", "React", "TypeScript", "Python", "FastAPI", "OpenCV", "MongoDB"],
@@ -867,6 +908,7 @@ export const PROJECTS: SeedProject[] = [
     title: "AI Invoice-to-PO Matching",
     summary: "AI-powered accounts-payable automation: LLM invoice OCR, PO matching, discrepancy flagging, approval workflow.",
     body:
+      "**Period:** 2026-10-18 → 2026-11-15 · **Engagement:** Independent product work\n\n" +
       "### Problem / Context\n\n" +
       "Manufacturers manually matching supplier invoice PDFs/images against purchase orders — slow and " +
       "error-prone AP work.\n\n" +
@@ -882,7 +924,7 @@ export const PROJECTS: SeedProject[] = [
       "AI-powered AP automation showcase for LLM extraction + human-in-the-loop workflows.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/ai-invoice-po-matching",
     techStack: ["Laravel", "React", "TypeScript", "PostgreSQL", "n8n", "OpenRouter", "Docker"],
@@ -894,6 +936,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Cinematic Video Engine",
     summary: "Text-to-cinema pipeline: LLM scene parsing, TTS voiceover, FFmpeg assembly, multi-language subtitles.",
     body:
+      "**Period:** 2026-10-18 → 2026-10-29 · **Engagement:** Independent tooling\n\n" +
       "### Problem / Context\n\n" +
       "Turning researched text into cinema-quality 16:9 narrative videos with synchronized voiceovers.\n\n" +
       "### What it does\n\n" +
@@ -906,7 +949,7 @@ export const PROJECTS: SeedProject[] = [
       "End-to-end AI video generation pipeline for content-automation clients.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/cinematic-video-engine",
     techStack: ["Python", "FFmpeg", "LLM", "TTS", "Docker"],
@@ -918,6 +961,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Workflow Video Studio",
     summary: "Automated HD workflow recorder + multilingual voiceover engine producing polished MP4s from live apps.",
     body:
+      "**Period:** 2026-10-12 → 2026-10-13 · **Engagement:** Independent tooling\n\n" +
       "### Problem / Context\n\n" +
       "Producing polished product-demo videos manually is slow and inconsistent.\n\n" +
       "### What it does\n\n" +
@@ -930,7 +974,7 @@ export const PROJECTS: SeedProject[] = [
       "Automated product-demo video generation — unique automation asset for client onboarding/training.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/workflow-video-studio",
     techStack: ["Node.js", "TypeScript", "Playwright", "FFmpeg", "Docker", "Zod"],
@@ -942,6 +986,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Weight Scale Connector (Desktop)",
     summary: "Windows desktop weighbridge app: serial-port capture, printing, camera screenshots, backend sync.",
     body:
+      "**Period:** 2025-06-27 → present · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "A poultry farm weigh-in station needed software to capture scale readings, print, and sync to backend.\n\n" +
       "### What it does\n\n" +
@@ -952,9 +997,9 @@ export const PROJECTS: SeedProject[] = [
       "Python 3.10/11 Tkinter/ttkbootstrap; PyInstaller one-file/one-folder builds; pywin32 printing; reportlab PDFs.\n\n" +
       "### Outcome / Value\n\n" +
       "Tangible hardware-integrated desktop tool with live demo value for weighbridge/poultry clients.",
-    role: "Senior Software Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Python", "Tkinter", "pyserial", "PyInstaller", "reportlab"],
@@ -966,6 +1011,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Pharma Vial QC Desktop Inspector",
     summary: "Desktop computer-vision inspector for pharmaceutical vial trays: multi-defect detection, batch, .exe deploy.",
     body:
+      "**Period:** 2025 · **Engagement:** Independent build (inferred period)\n\n" +
       "### Problem / Context\n\n" +
       "Pharma QC needed automated defect detection on vial trays (empty, missing label, deformed, mixed, low fill).\n\n" +
       "### What it does\n\n" +
@@ -978,7 +1024,7 @@ export const PROJECTS: SeedProject[] = [
       "Niche pharma QC automation desktop app sellable to manufacturing clients.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2025,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Python", "PyQt6", "OpenCV", "NumPy", "PyInstaller"],
@@ -990,6 +1036,7 @@ export const PROJECTS: SeedProject[] = [
     title: "HVAC / BMS Control Center",
     summary: "MERN building-management SCADA dashboard for AHUs, chillers, cooling towers with reports and email alerts.",
     body:
+      "**Period:** 2025 · **Engagement:** Independent build (inferred period)\n\n" +
       "### Problem / Context\n\n" +
       "A facility needed browser-based supervision of plant units with SCADA-style telemetry.\n\n" +
       "### What it does\n\n" +
@@ -1002,7 +1049,7 @@ export const PROJECTS: SeedProject[] = [
       "HVAC/plant SCADA dashboard for facility-management clients.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2025,
     liveUrl: null,
     repoUrl: null,
     techStack: ["React", "Node.js", "Express", "MongoDB", "Docker", "Tailwind"],
@@ -1014,6 +1061,7 @@ export const PROJECTS: SeedProject[] = [
     title: "3D Dental Tooth Region Segmenter",
     summary: "Python tool annotating 3D tooth models (GLB/GLTF) into regions for a Laravel 3D viewer.",
     body:
+      "**Period:** 2024-04-01 → 2024-11-30 · **Engagement:** MedPro Techtham (part-time) — built alongside the HMS dental module\n\n" +
       "### Problem / Context\n\n" +
       "Dental software needed annotated 3D tooth models (regions) consumable by a Laravel viewer.\n\n" +
       "### What it does\n\n" +
@@ -1024,9 +1072,9 @@ export const PROJECTS: SeedProject[] = [
       "Python Tkinter GUI + trimesh/pyglet OpenGL viewer; pygltflib; NumPy.\n\n" +
       "### Outcome / Value\n\n" +
       "3D dental model segmentation tool for medical/dental software clients.",
-    role: "Full-Stack Developer",
-    client: null,
-    year: null,
+    role: "Senior Software Developer",
+    client: "MedPro Techtham",
+    year: 2024,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Python", "Tkinter", "trimesh", "pyglet", "NumPy"],
@@ -1038,6 +1086,7 @@ export const PROJECTS: SeedProject[] = [
     title: "FishMeAqua — Aquaculture E-Commerce",
     summary: "Fish/aquaculture e-commerce site with install wizard and multi-gateway payments.",
     body:
+      "**Period:** 2023-12-15 → 2024-09-24 · **Engagement:** Bayshore Communications Ltd (full-time)\n\n" +
       "### Problem / Context\n\n" +
       "An aquaculture business needed an e-commerce site with broad payment gateway support.\n\n" +
       "### What it does\n\n" +
@@ -1048,9 +1097,9 @@ export const PROJECTS: SeedProject[] = [
       "Laravel 8 modular (nwidart), Blade, MySQL; 10+ payment SDKs.\n\n" +
       "### Outcome / Value\n\n" +
       "Aquaculture/fish marketplace e-commerce with multi-gateway payments.",
-    role: "Full-Stack Developer",
-    client: null,
-    year: null,
+    role: "Senior Developer Team-Lead",
+    client: "Bayshore Communications Ltd",
+    year: 2024,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Laravel", "PHP", "MySQL", "Blade"],
@@ -1062,6 +1111,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Floating Print Capture Utility",
     summary: "Native Win32 desktop utility: floating bubble captures tables from any app, OCR, PDF/print.",
     body:
+      "**Period:** 2024 · **Engagement:** Independent utility (inferred period)\n\n" +
       "### Problem / Context\n\n" +
       "Users needed to capture tables from any desktop app and print/save as PDF.\n\n" +
       "### What it does\n\n" +
@@ -1074,7 +1124,7 @@ export const PROJECTS: SeedProject[] = [
       "Native Windows desktop capture/print utility with table extraction.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2024,
     liveUrl: null,
     repoUrl: null,
     techStack: ["C++", "Win32", "CMake"],
@@ -1086,6 +1136,7 @@ export const PROJECTS: SeedProject[] = [
     title: "DXG Digital Agency Website",
     summary: "Marketing website for a digital agency: service pages, portfolio, blog, scheduling, contact automation.",
     body:
+      "**Period:** 2023-11-29 → 2024-09-24 · **Engagement:** Bayshore Communications Ltd (full-time)\n\n" +
       "### Problem / Context\n\n" +
       "A digital agency needed a modern marketing site with scheduling and content management.\n\n" +
       "### What it does\n\n" +
@@ -1096,9 +1147,9 @@ export const PROJECTS: SeedProject[] = [
       "Next.js 14 App Router, React 18, TypeScript, Tailwind, Framer Motion, Radix UI.\n\n" +
       "### Outcome / Value\n\n" +
       "Agency marketing website with scheduling, blog, and contact automation.",
-    role: "Full-Stack Developer",
+    role: "Senior Developer Team-Lead",
     client: "Bayshore Communications Ltd",
-    year: null,
+    year: 2024,
     liveUrl: null,
     repoUrl: "https://github.com/BayshoreCommunication/dxg-website",
     techStack: ["Next.js", "React", "TypeScript", "Tailwind", "Framer Motion"],
@@ -1110,6 +1161,7 @@ export const PROJECTS: SeedProject[] = [
     title: "On-Demand Gatekeeper (Cost-Saving Proxy)",
     summary: "Reverse proxy that lazily boots a target Docker stack on first visit and tears down after idle.",
     body:
+      "**Period:** 2026-10-25 → 2026-11-08 · **Engagement:** Independent tooling\n\n" +
       "### Problem / Context\n\n" +
       "Idle Docker stacks waste resources on small VPS; needed lazy boot + teardown to cut idle infra cost.\n\n" +
       "### What it does\n\n" +
@@ -1124,7 +1176,7 @@ export const PROJECTS: SeedProject[] = [
       "On-demand hosting proxy that cuts idle infra costs.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/on-demand-gatekeeper",
     techStack: ["Node.js", "Docker", "HTTP Proxy"],
@@ -1136,6 +1188,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Rocket Launcher (OTA Release Pipeline)",
     summary: "Self-hosted OTA publisher for Flutter APKs: split-per-ABI, SHA-256 manifests, prod/beta channels.",
     body:
+      "**Period:** 2026-08-12 → 2026-11-14 · **Engagement:** Independent tooling for internal Android release work\n\n" +
       "### Problem / Context\n\n" +
       "Flutter apps needed self-hosted over-the-air updates without app stores.\n\n" +
       "### What it does\n\n" +
@@ -1147,7 +1200,7 @@ export const PROJECTS: SeedProject[] = [
       "Self-hosted Flutter OTA update pipeline with SHA-256 manifests and channels.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/rocket-launcher",
     techStack: ["PowerShell", "GitHub API", "Flutter"],
@@ -1159,6 +1212,7 @@ export const PROJECTS: SeedProject[] = [
     title: "PPHL Accounts ERP (Backend + Client)",
     summary: "Accounting/ledger ERP: sales, stock, orders, ledgers, reports, dashboards across poultry verticals.",
     body:
+      "**Period:** 2024-07-09 → present · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "PPHL needed accounting and sales operations across egg/feed/chicks/live-bird/fertilizer verticals.\n\n" +
       "### What it does\n\n" +
@@ -1170,9 +1224,9 @@ export const PROJECTS: SeedProject[] = [
       "Laravel 10 API + React 18/Vite/Redux/PrimeReact client; MySQL/PostgreSQL.\n\n" +
       "### Outcome / Value\n\n" +
       "Accounting/ERP frontend with dashboards, ledgers, and multi-vertical reporting.",
-    role: "Senior Software Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/PPHL-ERP/pphl_account-laravel",
     techStack: ["Laravel", "React", "MySQL", "Redux", "PrimeReact"],
@@ -1184,6 +1238,7 @@ export const PROJECTS: SeedProject[] = [
     title: "SCM Data-Migration Tooling",
     summary: "Python/Excel/Google Sheets tooling to import sector stock and vendor masters into SCM PostgreSQL.",
     body:
+      "**Period:** 2026-02-22 → 2026-11-21 · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "SCM needed bulk import of sector stock quantities and vendor/product categories from spreadsheets.\n\n" +
       "### What it does\n\n" +
@@ -1194,9 +1249,9 @@ export const PROJECTS: SeedProject[] = [
       "Python, openpyxl/pandas, PostgreSQL, Google Sheets/Apps Script, Laravel artisan import commands.\n\n" +
       "### Outcome / Value\n\n" +
       "ERP data-migration/import tooling and Google Sheets automation.",
-    role: "Full-Stack Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: null,
     techStack: ["Python", "PostgreSQL", "Excel", "Google Sheets"],
@@ -1208,6 +1263,7 @@ export const PROJECTS: SeedProject[] = [
     title: "ZKTeco Attendance Automation",
     summary: "Laravel monolith for ZKTeco device automation: ADMS ingestion, reports, multi-app APIs, biometrics.",
     body:
+      "**Period:** 2026-06-17 → present · **Engagement:** People's Poultry & Hatchery Limited\n\n" +
       "### Problem / Context\n\n" +
       "A plant needed ZKTeco biometric attendance integrated with HR and mobile apps, with ADMS push protocol.\n\n" +
       "### What it does\n\n" +
@@ -1221,9 +1277,9 @@ export const PROJECTS: SeedProject[] = [
       "Hardware-integrated biometric timekeeping with ADMS protocol.\n\n" +
       "### Outcome / Value\n\n" +
       "Hardware-integrated biometric timekeeping backend with ADMS protocol + multi-app APIs.",
-    role: "Senior Software Developer",
+    role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
-    year: null,
+    year: 2026,
     liveUrl: "https://zkteco.peoplesitsolution.online",
     repoUrl: "https://github.com/Tanvirshibli/zkteco-Automation-management-PPHL",
     techStack: ["Laravel", "PostgreSQL", "Redis", "Docker", "Livewire"],
@@ -1235,6 +1291,7 @@ export const PROJECTS: SeedProject[] = [
     title: "Gazi Portfolio Companion App (Flutter)",
     summary: "Offline-first Android companion app consuming the portfolio API with content-hash refresh and OTA updates.",
     body:
+      "**Period:** 2026-10-15 → present · **Engagement:** Independent product (own)\n\n" +
       "### Problem / Context\n\n" +
       "A portfolio website needed a read-only mobile companion with offline resilience.\n\n" +
       "### What it does\n\n" +
@@ -1247,7 +1304,7 @@ export const PROJECTS: SeedProject[] = [
       "Offline-first mobile client consuming a self-hosted API — resilient mobile UX demo.",
     role: "Full-Stack Developer",
     client: null,
-    year: null,
+    year: 2026,
     liveUrl: null,
     repoUrl: "https://github.com/ciphercall/gazi-portfolio-app",
     techStack: ["Flutter", "Dart", "Android"],
