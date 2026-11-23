@@ -1,94 +1,73 @@
-#!/usr/bin/env bash
-# ============================================================================
-#  deploy-gazi-portfolio.sh - VPS deploy for the Gazi Portfolio
-#
-#  Lives at /opt/deploy-gazi-portfolio.sh on the VPS and is invoked by
-#  .github/workflows/deploy.yml on every push to main.
-#
-#  IMPORTANT: this repo copy is a RECONSTRUCTION of the behaviour documented in
-#  VPS_DEPLOYMENT.md (pull, build, up, migrate, health check, then the seed step
-#  the workflow runs separately). The VPS copy may have drifted. Before relying on
-#  it, diff it once:
-#      ssh root@169.58.90.13 'cat /opt/deploy-gazi-portfolio.sh' | diff - <this file>
-#  and fold any real difference back into this file.
-#
-#  The app runs behind the on-demand gatekeeper:
-#    gatekeeper : public 8023 (all interfaces)
-#    real stack : 127.0.0.1:8026 (compose overrides WEB_BIND/WEB_PORT)
-#    postgres   : 5436
-#
-#  The gatekeeper uses DEPLOY_BUILD=false, so images must exist before it can
-#  cold-start the stack. That is why this script builds, and why nothing here may
-#  ever prune tagged images (see the last step).
-# ============================================================================
+#!/bin/bash
+set -e
 
-set -euo pipefail
+PROJECT_DIR="/opt/github/gazi-portfolio"
+DEPLOY_DIR="$PROJECT_DIR/deploy"
+GATEKEEPER_ENV="/opt/github/on-demand-gatekeeper/.env"
 
-REPO_DIR="/opt/github/gazi-portfolio"
-DEPLOY_DIR="${REPO_DIR}/deploy"
-BRANCH="${BRANCH:-main}"
+PUBLIC_PORT=8023
+INTERNAL_PORT=8023
+WEB_BIND=0.0.0.0
+MODE="always-on"
 
-log()  { printf '\n==> %s\n' "$1"; }
-warn() { printf '    %s\n' "$1"; }
-
-# ---------------------------------------------------------------- teardown ---
-# The gatekeeper may hold the port and a rebuild while it serves traffic leaves
-# visitors on a half-built app. Ask it to stop the stack first.
-if [ -f /opt/github/on-demand-gatekeeper/.env ]; then
-  ADMIN_TOKEN="$(grep -E '^ADMIN_TOKEN=' /opt/github/on-demand-gatekeeper/.env | cut -d= -f2- || true)"
-  if [ -n "${ADMIN_TOKEN:-}" ]; then
-    log "Asking the gatekeeper to tear the stack down"
-    curl -fsS -X POST "http://127.0.0.1:8023/_ondemand/teardown?token=${ADMIN_TOKEN}" \
-      || warn "gatekeeper teardown skipped"
-  fi
+if [ -f "$GATEKEEPER_ENV" ] && grep -q '^PUBLIC_PORT=' "$GATEKEEPER_ENV"; then
+  MODE="on-demand"
+  PUBLIC_PORT=$(grep -E '^PUBLIC_PORT=' "$GATEKEEPER_ENV" | tail -1 | cut -d= -f2)
+  INTERNAL_PORT=$(grep -E '^INTERNAL_PORT=' "$GATEKEEPER_ENV" | tail -1 | cut -d= -f2)
+  WEB_BIND=$(grep -E '^WEB_BIND=' "$GATEKEEPER_ENV" | tail -1 | cut -d= -f2)
+  WEB_BIND=${WEB_BIND:-127.0.0.1}
 fi
 
-# -------------------------------------------------------------------- pull ---
-log "Updating ${REPO_DIR}"
-cd "${REPO_DIR}"
-git fetch origin "${BRANCH}"
-git reset --hard "origin/${BRANCH}"
+echo "=== Deploying Gazi Portfolio ($MODE) ==="
+echo "Timestamp: $(date)"
+echo "Public port: $PUBLIC_PORT | Internal port: $INTERNAL_PORT | Bind: $WEB_BIND"
 
-# ------------------------------------------------------------------- build ---
-log "Building images"
-GIT_SHA="$(git -C "${REPO_DIR}" rev-parse --short HEAD)"
-cd "${DEPLOY_DIR}"
-if grep -qE '^GIT_SHA=' .env; then
-  sed -i "s|^GIT_SHA=.*|GIT_SHA=${GIT_SHA}|" .env
-fi
-GIT_SHA="${GIT_SHA}" docker compose --env-file .env build
+cd "$PROJECT_DIR"
 
-# --------------------------------------------------------------------- up ---
-log "Starting the stack"
-GIT_SHA="${GIT_SHA}" docker compose --env-file .env up -d
+echo "[1/5] Pulling latest code from main..."
+git fetch origin main
+git reset --hard origin/main
 
-log "Waiting for the app to become healthy"
-for attempt in $(seq 1 60); do
-  if curl -fsS "http://127.0.0.1:8026/api/health" >/dev/null 2>&1; then
-    warn "app healthy after ${attempt} attempt(s)"
-    break
-  fi
-  sleep 3
-  if [ "${attempt}" -eq 60 ]; then
-    echo "ERROR: app did not become healthy" >&2
-    docker compose --env-file .env logs --tail 80 app
-    exit 1
-  fi
-done
+echo "[2/5] Building Docker images..."
+cd "$DEPLOY_DIR"
+docker compose --env-file .env build
 
-# ---------------------------------------------------------------- migrate ---
-log "Applying database migrations"
+echo "[3/5] Starting containers..."
+WEB_BIND="$WEB_BIND" WEB_PORT="$INTERNAL_PORT" docker compose --env-file .env up -d
+
+echo "[4/5] Running migrations..."
 docker compose --env-file .env exec -T app npx prisma migrate deploy
 
-# ------------------------------------------------------- reclaim images -----
-# This build re-tagged gazi-portfolio/app:latest, so the previous one is now
-# dangling. `-a` is never used: it would delete the images of the OTHER on-demand
-# stacks, which the gatekeeper needs to cold-start them.
-log "Reclaiming dangling images"
-docker image prune -f >/dev/null 2>&1 || warn "image prune skipped"
+echo "[5/5] Health check..."
+sleep 5
+if [ "$MODE" = "on-demand" ]; then
+  HEALTH_URL="http://127.0.0.1:${INTERNAL_PORT}/api/health"
+else
+  HEALTH_URL="http://127.0.0.1:${PUBLIC_PORT}/healthz"
+fi
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL")
+echo "Health check ($HEALTH_URL): HTTP $HTTP_CODE"
 
-log "Deploy complete"
-echo "    public : http://<vps-ip>:8023 (gatekeeper)"
-echo "    stack  : http://127.0.0.1:8026 (loopback only)"
-echo "    seed   : run by the workflow -"
-echo "             docker compose --env-file .env exec -T app npx tsx prisma/seed.ts"
+if [ "$MODE" = "on-demand" ]; then
+  ADMIN_TOKEN=$(grep -E '^ADMIN_TOKEN=' "$GATEKEEPER_ENV" | tail -1 | cut -d= -f2)
+  if [ -n "$ADMIN_TOKEN" ]; then
+    echo "Syncing gatekeeper state..."
+    curl -s -m 300 -X POST "http://127.0.0.1:${PUBLIC_PORT}/_ondemand/redeploy?token=${ADMIN_TOKEN}" || true
+    echo
+  fi
+  PUBLIC_CODE=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:${PUBLIC_PORT}/healthz")
+  echo "Public health check: HTTP $PUBLIC_CODE"
+fi
+
+if [ "$HTTP_CODE" = "200" ]; then
+    touch /opt/github/gazi-portfolio/deploy/.rebuild-stamp
+    echo "Rebuild stamp touched"
+    # This build re-tagged gazi-portfolio/app:latest, so the previous one is now
+    # dangling. `-a` is never used: it would delete the images of the OTHER
+    # on-demand stacks, which the gatekeeper needs to cold-start them.
+    docker image prune -f >/dev/null 2>&1 || true
+    echo "=== Deploy successful ==="
+else
+    echo "=== Deploy FAILED - health check returned $HTTP_CODE ==="
+    exit 1
+fi
