@@ -419,141 +419,345 @@ LinkedIn Page. Check each against the dropdown and apply the rule above:
 Anything that does not resolve is fine: free-text the legal name and let the Highlights box carry the
 work. A missing logo costs you nothing; a wrong company link costs you credibility.
 
-## Featured projects
+## Featured section (3–6 cards)
 
-LinkedIn has two places for this work, and they hold different amounts.
+The Featured section sits near the top of the profile and shows as cards. Three to six perform best;
+beyond that engagement falls rather than grows, so this is a curated window, not a catalogue.
 
-**The Featured section** (top of the profile, as cards or links) is the one with a practical cap:
-3–6 items perform best, and more than that suppresses engagement rather than adding reach. Put the
-six below there — they span enterprise, industrial and mobile in one glance.
+Add these six, in this order. They span enterprise, marketplace and industrial in one screen:
 
-**The Projects section** (Accomplishments → Projects) takes all twelve, and is where the depth lives.
-Everything below fits there.
+SCM · ERP · SWOP · Siemens PLC dashboard · DropshipBD · SCADA/EMS
 
-Twelve entries follow. If you are filling Featured, stop after the sixth — SCM, ERP, SWOP, the
-Siemens PLC dashboard, DropshipBD and the SCADA/EMS control center. That six already spans
-enterprise, marketplace and industrial, which is the whole argument in one screen. The order is
-deliberate: the strongest and most differentiating entries come first.
+## Projects section (Accomplishments → Projects)
+
+This is the depth, and it takes all twelve. The form has five fields per entry:
+
+| Field | Required | What to put |
+| --- | --- | --- |
+| Project name | Yes | The name as it appears on the site — consistent naming is what makes the two sources verifiable |
+| Associated with | No | The **role** that did the work, from your existing positions |
+| Project URL | No | The live case-study page — always fill this |
+| Start / end date | No | Month and year, matching the site |
+| Description | No | Up to 2,000 characters |
+
+Three rules that matter more than the wording:
+
+1. **Attach each project to the role that actually did it**, not to your current job. Seven of the
+   twelve are independent and have no employer — leave *Associated with* **blank** for those. Do not
+   attach them to People's Poultry & Hatchery to "give them context": that is the one thing a
+   reference check would catch.
+2. **Always fill Project URL.** It is the whole point of the section — a client can read the full
+   case study, and every one of these URLs is live.
+3. **Keep dates identical to the site.** If a recruiter compares the two, they should not have to
+   reconcile a discrepancy.
+
+Every entry below is written to paste field by field.
+
+---
+
+**1. PPHL Supply Chain Management (SCM)**
+
+- **Associated with:** Project Manager — People's Poultry & Hatchery Limited
+- **Project URL:** https://gazi.ciphercall.dev/projects/pphl-supply-chain
+- **Dates:** Feb 2026 – Present
+- **Description:**
 
 ```
-APEX Supply Chain Management (SCM) — Project Manager
-2026 - Present · People's Poultry & Hatchery Limited
+Enterprise procurement-to-inventory platform for a live poultry and hatchery business,
+covering the full purchasing cycle from requisition through to a serialized stock ledger.
 
-Enterprise procurement-to-inventory platform: requisition, RFQ, quotation, purchase order, GRN,
-QC inspection and a serialized stock ledger with quarantine, recheck and wastage.
+Scope delivered:
+- Requisition, RFQ, quotation and comparative-statement workflow
+- Purchase orders and goods-received notes (GRN)
+- QC inspection with quarantine, recheck and wastage handling
+- Serialized stock ledger with full movement audit trail
+- Production and bill-of-materials (BOM) tracking
+- Role-based access control and reporting
 
-Laravel 12 · React · PostgreSQL · Docker · JWT
+Built with Laravel 12, React and PostgreSQL, containerised with Docker and secured with JWT.
 ```
 
-```
-Enterprise ERP & Supply Chain Platform — Senior Software Developer, then Project Manager
-2024 - Present · People's Poultry & Hatchery Limited
+---
 
-The systems running a live poultry and hatchery business: HRM, supply chain, inventory, accounts and
-attendance in one auditable platform, with a Flutter mobile attendance client.
+**2. Enterprise ERP & Supply Chain Platform**
+
+- **Associated with:** Senior Software Developer → Project Manager — People's Poultry & Hatchery Limited
+- **Project URL:** https://gazi.ciphercall.dev/projects/peoples-erp
+- **Dates:** Jul 2024 – Present
+- **Description:**
+
+```
+The operating platform behind a live poultry and hatchery group: HRM, supply chain,
+inventory, accounts and attendance in a single auditable system.
+
+Why it mattered:
+The business ran these functions across spreadsheets and disconnected tools. Bringing them
+into one platform meant stock movements, payroll and purchasing all reconciled against the
+same records, instead of being re-keyed between systems.
+
+Scope delivered:
+- HRM with employee records, leave and payroll
+- Supply chain and procurement
+- Inventory with batch and serial tracking
+- Accounts and vendor ledgers
+- Attendance fed from biometric devices
+- Flutter mobile client for field and shop-floor staff
+
+Started as a senior developer on the initial build and moved into project management as the
+platform expanded across the group.
 
 Laravel · React · PostgreSQL · MySQL · Docker · Flutter
 ```
 
-```
-SWOP — Web3 Marketplace & NFT Platform — Senior Developer Team-Lead
-2024 - 2025 · Bayshore Communications Ltd
+---
 
-Marketplace trading both physical goods and on-chain digital assets in one product, with wallets,
-minting, social feed and analytics.
+**3. SWOP — Web3 Marketplace & NFT Platform**
 
-React · Next.js · Node.js · MongoDB · Solana · Ethereum
-```
-
-```
-Siemens PLC-1214C Monitoring & Control — Senior Software & PLC Developer
-2022 - 2023 · Syscon Engineering Limited
-
-PLC control logic paired with a browser dashboard: ladder/SCL on a PLC-1214C, an OPC-UA bridge, and
-a React interface fed through Node-RED for live plant monitoring and control.
-
-Siemens PLC · OPC-UA · React · Node-RED · MongoDB
-```
+- **Associated with:** Senior Developer Team-Lead — Bayshore Communications Ltd
+- **Project URL:** https://gazi.ciphercall.dev/projects/swop
+- **Dates:** Mar 2024 – Feb 2025
+- **Description:**
 
 ```
-DropshipBD — Multi-Supplier E-Commerce Marketplace — Full-Stack Developer
-2026 - Present · Independent
+A marketplace that trades both physical goods and on-chain digital assets in one product —
+the engineering problem being that a single listing can represent stock in a warehouse or a
+token on a chain, and buyers should not have to care which.
 
-Full marketplace suite: Laravel API, React admin, Next.js SEO storefront, Flutter app with OTA
-updates, and a one-origin Docker deploy.
+Scope delivered:
+- Wallet-based identity and contact sharing (Privy, XMTP)
+- Token swapping and a decentralised NFT marketplace (Metaplex)
+- Social feed and marketplace analytics
+- React / Next.js frontend over a Node.js and MongoDB backend
+- Redis caching and Socket.IO real-time updates
+- Solana and Ethereum integration
 
-Laravel · React · Next.js · Flutter · PostgreSQL · Docker
+Led the frontend and application team through delivery of the marketplace, feed and wallet
+flows to production.
+
+React · Next.js · Node.js · Express · MongoDB · Redis · Socket.IO · Solana · Ethereum ·
+Metaplex · Privy · XMTP
 ```
 
-```
-SCADA / EMS Control Center — Senior Software & PLC Developer
-2026 · Independent (continues the Syscon-era SCADA work)
+---
 
-Browser-based SCADA for industrial power and flow meters: RBAC with OTP, topology-driven navigation,
-17-measurement meter pages with gauges, trends and grids, plus scheduled PDF reporting and
-automailing.
+**4. Siemens PLC-1214C Monitoring & Control**
 
-Next.js · React · Prisma · MySQL · pdf-lib · Nodemailer
-```
+- **Associated with:** Senior Software & PLC Developer — Syscon Engineering Limited
+- **Project URL:** https://gazi.ciphercall.dev/projects/siemens-plc-1214c
+- **Dates:** Apr 2022 – Dec 2023
+- **Description:**
 
 ```
-HVAC / BMS Control Center — Full-Stack Developer
-2025 · Independent
+Industrial control work: PLC logic for plant equipment, paired with a browser dashboard so
+operators could see and command the plant without standing at the panel.
 
-Building-management SCADA over AHU, chiller and cooling-tower plant: role-based login, animated unit
-schematics, setpoint commands, PDF and email reports, and a containerised deploy.
+Scope delivered:
+- Ladder and SCL control logic on a Siemens PLC-1214C
+- OPC-UA bridge exposing PLC tags to a web tier
+- Node-RED flow layer for live data routing
+- React dashboard for monitoring and issuing commands
+- Historical tag logging in MongoDB
 
-React · Node.js · Express · MongoDB · Docker
+This is the work that bridges software and the plant floor — the PLC side has to be correct
+before any dashboard matters.
+
+Siemens PLC · Ladder · SCL · OPC-UA · Node-RED · React · MongoDB
 ```
 
-```
-Nuvista Inspection Desktop (HMI) — Senior Software Developer
-2026 · Independent
+---
 
-Shop-floor visual-inspection station: Tauri shell and React operator UI over a Python FastAPI vision
-sidecar, with camera SDK integration, defect thresholds, batch management and an offline installer.
+**5. DropshipBD — Multi-Supplier E-Commerce Marketplace**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/dropship-marketplace
+- **Dates:** Oct 2026 – Present
+- **Description:**
+
+```
+A complete multi-vendor dropshipping marketplace, built as a product rather than a
+single-client store: suppliers list stock, resellers publish storefronts, orders route to the
+supplier who actually holds the goods.
+
+Scope delivered:
+- Laravel API with supplier, reseller and order domains
+- React admin console
+- Next.js storefront optimised for search
+- Flutter customer app with OTA updates
+- SSLCommerz payment integration
+- Single-origin Docker deployment
+
+Laravel · React · Next.js · Flutter · PostgreSQL · Docker · SSLCommerz
+```
+
+---
+
+**6. SCADA / EMS Control Center**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/scada-ems
+- **Dates:** Apr 2026 – Jun 2026
+- **Description:**
+
+```
+Browser-based SCADA for industrial power and flow metering — the operator view of an energy
+management system, built so a plant engineer can open a normal web browser instead of
+installing a thick client.
+
+Scope delivered:
+- Role-based access control with OTP second factor
+- Topology-driven navigation (plant → line → meter)
+- Meter pages with 17 measurements: gauges, trends and tabular grids
+- Scheduled PDF report generation (pdf-lib)
+- Automated email delivery of reports (Nodemailer)
+- Next.js and Prisma over MySQL
+
+Continues the SCADA work from the Syscon period, rebuilt as a deployable product.
+
+Next.js · React · Prisma · MySQL · Tailwind · Framer Motion · pdf-lib · Nodemailer
+```
+
+---
+
+**7. HVAC / BMS Control Center**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/hvac-bms
+- **Dates:** 2025
+- **Description:**
+
+```
+Building-management SCADA for HVAC plant — AHUs, chillers and cooling towers — presented as a
+control room a facilities engineer can actually use.
+
+Scope delivered:
+- Role-based login
+- Animated unit schematics reflecting live plant state
+- Setpoint commands issued from the interface
+- PDF and email reporting
+- Containerised deployment
+
+React · Node.js · Express · MongoDB · Docker · Tailwind
+```
+
+---
+
+**8. Nuvista Inspection Desktop (HMI)**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/nuvista-inspection
+- **Dates:** Aug 2026 – Oct 2026
+- **Description:**
+
+```
+A shop-floor visual-inspection station: a camera looks at a part, computer vision decides
+whether it passes, and the operator sees the verdict and the reason.
+
+Scope delivered:
+- Tauri desktop shell with a React operator interface
+- Python FastAPI vision sidecar
+- Camera SDK integration for capture
+- Configurable defect thresholds
+- Batch management for production runs
+- Offline installer for machines with no internet access
+
+The desktop shell matters here: factory PCs are locked down, so the whole stack has to run
+locally and install without a network.
 
 Tauri · Rust · React · TypeScript · Python · FastAPI · OpenCV · MongoDB
 ```
 
-```
-Pharma Vial QC Desktop Inspector — Full-Stack Developer
-2025 · Independent
+---
 
-Pharmaceutical vial-tray inspection: multi-defect detection (empty, missing label, deformed, mixed,
-low fill) with configurable thresholds, batch processing and a single-file .exe deploy.
+**9. Pharma Vial QC Desktop Inspector**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/pharma-qc-inspector
+- **Dates:** 2025
+- **Description:**
+
+```
+Computer-vision inspection for pharmaceutical vial trays, where a missed defective vial is a
+patient-safety problem rather than a customer complaint.
+
+Scope delivered:
+- Multi-defect detection: empty vial, missing label, deformed, mixed batch, low fill
+- Configurable thresholds per defect class
+- Batch processing of full trays
+- Single-file .exe deployment with no Python install required on the QC line
 
 Python · PyQt6 · OpenCV · NumPy · PyInstaller
 ```
 
-```
-Gazi Portfolio Companion App — Full-Stack Developer
-2026 - Present · Independent
+---
 
-Offline-first Flutter Android client for the portfolio: three-layer caching, content-hash-gated
-refresh and self-hosted OTA updates.
+**10. Gazi Portfolio Companion App (Flutter)**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/gazi-portfolio-companion-app
+- **Dates:** Oct 2026 – Present
+- **Description:**
+
+```
+An offline-first Android client for my portfolio, built to demonstrate the delivery pipeline
+rather than just the screen: the app works without a network and updates itself without
+going through Play Store review.
+
+Scope delivered:
+- Three-layer caching (memory, disk, bundled seed)
+- Content-hash-gated refresh so unchanged payloads are not re-downloaded
+- Self-hosted OTA update delivery
+- Flutter and Dart, published as a signed Android build
 
 Flutter · Dart · Android
 ```
 
+---
+
+**11. Biometric Attendance & HR Suite (PPHL)**
+
+- **Associated with:** Project Manager — People's Poultry & Hatchery Limited
+- **Project URL:** https://gazi.ciphercall.dev/projects/employee-attendance-app
+- **Dates:** Mar 2026 – Present
+- **Description:**
+
 ```
-Biometric Attendance & HR Suite — Project Manager
-2026 - Present · People's Poultry & Hatchery Limited
+Attendance and HR for a workforce spread across sites that are not all online — the hard
+part being that a worker at a remote poultry shed still has to be able to check in.
 
-Mobile half of the enterprise ERP: Flutter check-in/out with geo trails, leave, payslips and alerts
-on JWT-secured Laravel APIs fed by ZKTeco device punches.
+Scope delivered:
+- Flutter check-in/check-out with geo trails
+- ZKTeco biometric device integration for fixed sites
+- Face-recognition mobile check-in for field staff
+- Leave, payslips and notifications
+- HR administration panel
+- JWT-secured Laravel APIs over MySQL and PostgreSQL
 
-Flutter · Laravel · ZKTeco · JWT
+Flutter · Laravel · React · ZKTeco · MySQL · PostgreSQL · JWT
 ```
 
+---
+
+**12. AI Invoice-to-PO Matching**
+
+- **Associated with:** *(leave blank — independent product)*
+- **Project URL:** https://gazi.ciphercall.dev/projects/ai-invoice-po
+- **Dates:** Oct 2026 – Nov 2026
+- **Description:**
+
 ```
-AI Invoice-to-PO Matching — Full-Stack Developer
-2026 · Independent
+Accounts-payable automation: invoices arrive in any format, get read, and are matched against
+open purchase orders so a human only reviews the exceptions.
 
-Accounts-payable automation: LLM extraction from invoice PDFs and images, matching against open
-purchase orders, discrepancy flagging and a human approval queue.
+Scope delivered:
+- LLM extraction from invoice PDFs and images
+- Three-way matching against open purchase orders
+- Discrepancy flagging with the reason surfaced to the reviewer
+- Human approval queue — nothing pays automatically
+- Laravel and React over PostgreSQL, orchestrated with n8n and OpenRouter
 
-Laravel · React · TypeScript · PostgreSQL · n8n · OpenRouter
+The design principle was deliberately conservative: the AI proposes, a person approves.
+
+Laravel · React · TypeScript · PostgreSQL · n8n · OpenRouter · Docker
 ```
 
 ## Skills section
