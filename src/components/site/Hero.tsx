@@ -44,7 +44,7 @@ export function Hero({
   const hasRoles = currentRoles.length > 0;
 
   return (
-    <section className="relative isolate flex min-h-[72svh] items-center overflow-hidden px-4 pb-16 pt-10 sm:px-6 sm:pb-24">
+    <section className="relative isolate flex min-h-[72svh] items-center overflow-hidden px-4 pb-16 pt-10 sm:px-6 sm:pb-24 lg:px-8">
       <div className="aurora-mesh" aria-hidden="true" />
       <div className="grid-overlay" aria-hidden="true" />
       <div
@@ -53,7 +53,7 @@ export function Hero({
         style={{ backgroundImage: "linear-gradient(to bottom, transparent, var(--c-canvas))" }}
       />
 
-      <div className={`relative z-10 mx-auto grid w-full max-w-6xl gap-10 ${hasRoles ? "lg:grid-cols-[1.45fr_0.75fr] lg:items-center" : "lg:grid-cols-1"}`}>
+      <div className={`relative z-10 mx-auto grid w-full max-w-[var(--shell-max)] gap-10 lg:gap-14 ${hasRoles ? "lg:grid-cols-[1.5fr_0.8fr] lg:items-center" : "lg:grid-cols-1"}`}>
         <div>
           <div className="animate-rise" style={rise(40)}>
             <AvailabilityChip />
@@ -68,7 +68,7 @@ export function Hero({
           </h1>
 
           <p
-            className="animate-rise mt-6 max-w-2xl font-display text-lg font-medium leading-snug text-ink/90 sm:text-xl"
+            className="animate-rise mt-6 max-w-2xl font-display text-lg font-medium leading-snug text-ink sm:text-xl"
             style={rise(200)}
           >
             {headline}

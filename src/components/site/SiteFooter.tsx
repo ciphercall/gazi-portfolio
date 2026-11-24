@@ -44,7 +44,7 @@ export async function SiteFooter({
         style={{ backgroundImage: AURORA_LINE }}
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
+      <div className="mx-auto w-full max-w-[var(--shell-max)] px-4 py-10 sm:px-6 lg:px-8">
         <div
           className={`grid gap-8 ${
             appLinks.length > 0
@@ -57,7 +57,7 @@ export async function SiteFooter({
               {fullName}
             </Link>
             <p className="mt-1 text-sm text-muted">{headline}</p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-faint">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
               {summary.length > 220 ? `${summary.slice(0, 217).trimEnd()}…` : summary}
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-2">

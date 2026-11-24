@@ -26,7 +26,7 @@ export function StatsStrip({ items }: { items: StatItem[] }) {
              {item.value}
            </p>
           <div>
-            <p className="text-sm font-medium text-ink/90">{item.label}</p>
+            <p className="text-sm font-medium text-ink">{item.label}</p>
             {item.hint ? <p className="mt-1 text-xs text-faint">{item.hint}</p> : null}
           </div>
         </div>

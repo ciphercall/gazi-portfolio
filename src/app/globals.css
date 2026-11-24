@@ -46,6 +46,9 @@
   --r-card: 20px;
   --r-control: 12px;
 
+  /* layout: the one page width every public surface shares */
+  --shell-max: 92rem;
+
   /* motion */
   --ease-aurora: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
@@ -53,28 +56,36 @@
   color-scheme: dark;
 }
 
+/*
+ * Light theme — warm paper.
+ *
+ * The ink, muted and faint values are deliberately dark: on a cream canvas the
+ * previous greys sat around 5:1, which reads as washed out at the small sizes
+ * the site uses for meta text. These land at ~7:1 and ~9:1, and the panels are
+ * opaque enough that the aurora behind them cannot reduce contrast.
+ */
 .light {
-  --c-canvas: #faf8f4;
-  --c-canvas-2: #f2eee7;
-  --c-panel: rgba(255, 255, 255, 0.72);
+  --c-canvas: #fbf9f5;
+  --c-canvas-2: #f4f0e9;
+  --c-panel: rgba(255, 255, 255, 0.88);
   --c-panel-strong: #ffffff;
-  --c-line: rgba(20, 17, 14, 0.1);
-  --c-line-strong: rgba(20, 17, 14, 0.2);
+  --c-line: rgba(23, 19, 16, 0.14);
+  --c-line-strong: rgba(23, 19, 16, 0.26);
 
-  --c-ink: #14110e;
-  --c-muted: #5a5046;
-  --c-faint: #736a5e;
+  --c-ink: #171310;
+  --c-muted: #443c34;
+  --c-faint: #5c534a;
 
-  --c-teal: #0c7a73;
-  --c-cyan: #09739a;
-  --c-violet: #6645a8;
-  --c-rose: #b54578;
+  --c-teal: #0b6d66;
+  --c-cyan: #076083;
+  --c-violet: #5b3e9c;
+  --c-rose: #a63a6c;
 
   --c-on-accent: #ffffff;
   --shadow-lift: 0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
-    0 18px 36px -26px rgba(20, 17, 14, 0.35);
-  --shadow-glow: 0 0 0 1px rgba(14, 143, 134, 0.2),
-    0 16px 40px -20px rgba(14, 143, 134, 0.35);
+    0 18px 36px -26px rgba(23, 19, 16, 0.42);
+  --shadow-glow: 0 0 0 1px rgba(11, 109, 102, 0.22),
+    0 16px 40px -20px rgba(11, 109, 102, 0.35);
 
   color-scheme: light;
 }
@@ -208,6 +219,12 @@
     backdrop-filter: blur(18px) saturate(150%);
   }
 
+  /* On cream a pale panel needs an edge and a shadow, or the card dissolves
+     into the canvas and its text reads lighter than it is. */
+  .light .glass {
+    box-shadow: 0 10px 30px -24px rgba(23, 19, 16, 0.35);
+  }
+
   /*
    * The floating navigation bar.
    *
@@ -314,8 +331,9 @@
 
   .label-mono {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--c-faint);
   }
@@ -447,6 +465,23 @@
   .ambient-glyph--cyan {
     color: var(--c-cyan);
     opacity: 0.06;
+  }
+
+  /*
+   * In light mode the decorative layers sit directly behind body text, so the
+   * same opacity that reads as atmosphere on near-black turns into a wash that
+   * eats contrast on cream. They stay present, just quieter.
+   */
+  .light .ambient-aurora {
+    opacity: 0.18;
+  }
+  .light .ambient-glyph,
+  .light .ambient-glyph--violet,
+  .light .ambient-glyph--cyan {
+    opacity: 0.05;
+  }
+  .light .grain::before {
+    opacity: 0.02;
   }
 
   /* Prose for project bodies (markdown). */
