@@ -105,13 +105,13 @@ export default async function ProjectsPage({
         </p>
 
         {projects.length > 0 ? (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project, index) => (
               <Reveal key={project.slug} delay={index * 0.04} className="h-full">
                 <ProjectCard
                   project={project}
                   priority={index === 0}
-                  sizes="(min-width: 1280px) 400px, (min-width: 640px) 45vw, 100vw"
+                  sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 100vw"
                 />
               </Reveal>
             ))}

@@ -21,13 +21,13 @@ export function ProjectsSection({ projects, showAllLink = true }: ProjectsSectio
 
   return (
     <div className="mt-12">
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
         {projects.map((project, index) => (
           <Reveal key={project.slug} delay={index * 0.05}>
             <ProjectCard
               project={project}
               priority={index === 0}
-              sizes="(min-width: 1024px) 560px, 100vw"
+              sizes="(min-width: 1536px) 30vw, (min-width: 1024px) 46vw, 100vw"
             />
           </Reveal>
         ))}

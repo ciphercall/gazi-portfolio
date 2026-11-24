@@ -108,7 +108,7 @@ export default async function ProjectDetailPage({
           </Link>
         </nav>
 
-        <header className="mt-8 max-w-4xl">
+        <header className="mt-8 max-w-5xl">
           {project.featured ? (
             <div className="mb-4">
               <Chip tone="violet" icon={<Layers className="h-3.5 w-3.5" />}>
@@ -164,12 +164,12 @@ export default async function ProjectDetailPage({
             label={project.title}
             kind="Project cover"
             className="aspect-[16/9] w-full"
-            sizes="(min-width: 1024px) 1100px, 100vw"
+            sizes="(min-width: 1536px) 1440px, 100vw"
             priority
           />
         </div>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[1.6fr_0.9fr] lg:gap-10">
+        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)] lg:gap-10 xl:gap-14">
           <article aria-labelledby="case-study-heading">
             <h2 id="case-study-heading" className="label-mono">
               Case study
@@ -259,8 +259,8 @@ export default async function ProjectDetailPage({
                   Gallery
                 </h2>
                 <p className="label-mono">
-                  {project.images.length} {project.images.length === 1 ? "image" : "images"} — click
-                  any image to enlarge
+                  {project.images.length} {project.images.length === 1 ? "image" : "images"} — play
+                  the slideshow, or open any image at full size
                 </p>
               </div>
             </div>
