@@ -68,6 +68,15 @@ PostgreSQL 16 · `motion` · `lucide-react` · `@react-pdf/renderer` · `playwri
 Design system: **Midnight Aurora** — one token file (`src/app/globals.css`) drives both the site
 and, by extension, the printed CV.
 
+## Interface
+
+Public pages share one container width (`--shell-max`, 92rem) so content fills wide screens
+instead of sitting in a narrow column. Project galleries are slideshows: autoplay every five
+seconds, paused on hover/focus and stopped by any manual navigation, with a thumbnail strip and
+keyboard/touch/swipe controls. Any image opens a near-fullscreen viewer with 2× zoom and drag-to-pan.
+Light mode is a warm-paper palette whose ink/muted/faint tokens sit at ~9:1 and ~7:1 contrast.
+Full reference: [`docs/INTERFACE.md`](docs/INTERFACE.md).
+
 ## Quick start
 
 From the workspace root (`C:\Users\ciphe\Documents\GitHub`):
@@ -127,11 +136,12 @@ src/
   scripts/build-seed-media.mjs  one-time importer for portfolio-render-lab screenshots
   seed-media/          303 webp screenshots + manifest.json (baked into the image)
 deploy/              docker-compose.yml, Dockerfile, nginx, env bootstrap scripts
-docs/                the four guides below
+docs/                the guides below
 ```
 
 ## Documentation
 
+- [`docs/INTERFACE.md`](docs/INTERFACE.md) — layout shell, project gallery/lightbox, light-mode tokens
 - [`docs/PORTFOLIO_DOCKER_DEPLOYMENT.md`](docs/PORTFOLIO_DOCKER_DEPLOYMENT.md) — the stack, ports, troubleshooting
 - [`docs/CV_PDF_PIPELINE.md`](docs/CV_PDF_PIPELINE.md) — how both PDFs are produced and kept current
 - [`docs/SOCIAL_POSTING.md`](docs/SOCIAL_POSTING.md) — what the APIs can and cannot do, and how to connect them
@@ -139,6 +149,14 @@ docs/                the four guides below
 
 ## Recent hardening (latest pass)
 
+- **Interface refresh** — one public layout shell (`--shell-max`, 92rem), section headings whose
+  lead sits beside the title on wide screens, project galleries turned into an autoplay slideshow
+  with thumbnails, and a near-fullscreen lightbox with 2× zoom and drag-to-pan. Light mode is a
+  refined warm-paper palette with ink/muted/faint at ~9:1 and ~7:1 contrast. Full detail:
+  [`docs/INTERFACE.md`](docs/INTERFACE.md).
+- **Admin saves through the proxy** — nginx now forwards `Host`/`X-Forwarded-Host` as `$http_host`.
+  `$host` dropped the port, so every Server Action behind nginx on `:8023`/`:8026` was rejected as
+  `Invalid Server Actions request`; reordering a gallery or saving a project could not persist.
 - **Apps & sites**: a new `AppLink` model (`WEB` / `ANDROID`) with migration
   `20261116120000_app_links`, a full `/admin/app-links` CRUD (create, edit, reorder, publish,
   delete) and a **non-destructive** seed of the studio site and both Android builds
@@ -158,9 +176,10 @@ docs/                the four guides below
   `app_settings` and the scheduling/image columns on `social_dispatches`.
 - `GET /api/v1/social` exposes published posts to the Android app; `/api/v1/projects` now carries
   `linkedinUrl`.
-- Web layout containers now share one max-width/padding contract (`max-w-6xl`, `px-4 sm:px-6`)
-  across the sticky header, footer and public routes (home, cv, projects, experience). Hero and
-  education grids collapse instead of leaving empty tracks when the related data set is partial.
+- Web layout containers now share one width contract, `--shell-max` (92rem / 1472px) in
+  `globals.css`, used by the sticky header, footer, hero, every `Section` and `/cv`. Section
+  headings put their lead paragraph beside the title from `xl` up, and the project grids widen
+  to match. Details: [`docs/INTERFACE.md`](docs/INTERFACE.md).
 - `api/v1/meta` content hash reads are memoised for 30 seconds to reduce polling load; the cache is
   invalidated when content is touched in the admin panel. Project list payloads now omit the long
   `body` column.
