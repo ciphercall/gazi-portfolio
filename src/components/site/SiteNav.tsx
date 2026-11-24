@@ -70,8 +70,8 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
   }, [open]);
 
   return (
-    <header className="no-print sticky top-0 z-40 px-4 pt-3 sm:px-6">
-      <div className="mx-auto w-full max-w-6xl">
+    <header className="no-print sticky top-0 z-40 px-4 pt-3 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[var(--shell-max)]">
         <div
           className="glass-nav hairline flex items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-3.5"
           data-scrolled={scrolled}

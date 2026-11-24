@@ -27,10 +27,10 @@ export function Section({
       id={id}
       className={`relative isolate px-4 ${
         tight ? "py-10 sm:py-14" : "py-16 sm:py-20"
-      } sm:px-6 ${className}`}
+      } sm:px-6 lg:px-8 ${className}`}
     >
       {grid ? <div className="grid-overlay" aria-hidden="true" /> : null}
-      <div className="relative z-10 mx-auto w-full max-w-6xl">{children}</div>
+      <div className="relative z-10 mx-auto w-full max-w-[var(--shell-max)]">{children}</div>
     </section>
   );
 }
