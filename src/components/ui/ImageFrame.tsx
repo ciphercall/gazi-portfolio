@@ -32,6 +32,12 @@ export interface ImageFrameProps {
   quality?: number;
   roundedClassName?: string;
   imgClassName?: string;
+  /**
+   * `cover` fills the slot and crops (cards, thumbnails). `contain` shows the
+   * whole image inside the slot (the gallery stage, where a screenshot must not
+   * lose its edges).
+   */
+  fit?: "cover" | "contain";
 }
 
 const STOP_WORDS = new Set(["and", "the", "for", "with", "from", "into", "of", "a", "an"]);
@@ -66,6 +72,7 @@ export function ImageFrame({
   quality = 82,
   roundedClassName = "rounded-card",
   imgClassName = "",
+  fit = "cover",
 }: ImageFrameProps) {
   if (src) {
     return (
@@ -80,7 +87,7 @@ export function ImageFrame({
           quality={quality}
           priority={priority}
           unoptimized={src.startsWith("/media/")}
-          className={`object-cover ${imgClassName}`}
+          className={`${fit === "contain" ? "object-contain" : "object-cover"} ${imgClassName}`}
         />
       </div>
     );
@@ -100,7 +107,7 @@ export function ImageFrame({
       <div className="absolute inset-0" style={{ backgroundImage: AURORA_VIGNETTE }} aria-hidden />
 
       <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
-        <span className="font-display text-3xl font-semibold tracking-tight text-ink/85 drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)] sm:text-3xl">
+        <span className="font-display text-3xl font-semibold tracking-tight text-ink drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)] sm:text-3xl">
           {monogram}
         </span>
       </div>

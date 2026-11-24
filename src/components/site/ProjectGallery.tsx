@@ -1,23 +1,38 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Expand, ImageIcon, X } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Expand,
+  ImageIcon,
+  Pause,
+  Play,
+} from "lucide-react";
 
 import { ImageFrame } from "@/components/ui/ImageFrame";
+import { ImageLightbox } from "@/components/site/ImageLightbox";
 import type { ProjectImageDto } from "@/components/site/types";
 
 /**
- * Project gallery with a lightbox.
+ * Project gallery as a slideshow.
  *
- * Keyboard: Escape closes, ArrowLeft/ArrowRight step through the set, Tab is
- * trapped inside the dialog while it is open, and focus returns to the
- * thumbnail that opened it. Pointer: click a thumbnail, or drag the stage
- * sideways to swipe. Every control is an icon *plus* a visible word.
+ * One large stage, a caption/counter row, explicit Previous/Next/Play controls
+ * and a thumbnail strip. It auto-advances every five seconds, but only while
+ * the visitor is not reading it: hovering or focusing the gallery pauses it,
+ * a hidden tab pauses it, and any manual navigation stops it until Play is
+ * pressed again. With `prefers-reduced-motion` the slideshow never starts and
+ * every transition collapses to zero duration.
+ *
+ * Clicking the stage (or Enlarge) opens `ImageLightbox` at that slide. The
+ * image order is the admin panel's array order — the same `ProjectImageDto[]`
+ * the gallery editor saves — so reordering in `/admin` reorders the slideshow,
+ * and alt text and captions render exactly as typed there.
  */
 
 const EASE_AURORA: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const AUTOPLAY_MS = 5000;
 
 export interface ProjectGalleryProps {
   images: ProjectImageDto[];
@@ -33,223 +48,288 @@ function captionFor(image: ProjectImageDto, index: number): string {
 }
 
 export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
-  const [index, setIndex] = useState<number | null>(null);
-  const [direction, setDirection] = useState(1);
+  const count = images.length;
   const reduceMotion = useReducedMotion();
 
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [autoPlay, setAutoPlay] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [pageHidden, setPageHidden] = useState(false);
 
-  const isOpen = index !== null;
-  const count = images.length;
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const activeThumbRef = useRef<HTMLButtonElement | null>(null);
+  const draggedRef = useRef(false);
 
-  const close = useCallback(() => {
-    setIndex(null);
-    triggerRef.current?.focus();
-    triggerRef.current = null;
+  const safeIndex = Math.min(index, Math.max(count - 1, 0));
+
+  const autoEnabled =
+    !reduceMotion &&
+    autoPlay &&
+    count > 1 &&
+    !hovered &&
+    !focused &&
+    !pageHidden &&
+    lightboxIndex === null;
+
+  useEffect(() => {
+    const onVisibility = () => setPageHidden(document.hidden);
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
+
+  useEffect(() => {
+    if (!autoEnabled) return;
+    const id = window.setInterval(() => {
+      setDirection(1);
+      setIndex((current) => (current + 1) % count);
+    }, AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [autoEnabled, count]);
+
+  useEffect(() => {
+    activeThumbRef.current?.scrollIntoView({
+      block: "nearest",
+      inline: "nearest",
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [safeIndex, reduceMotion]);
 
   const step = useCallback(
     (delta: number) => {
       if (count === 0) return;
+      setAutoPlay(false);
       setDirection(delta);
-      setIndex((current) => (current === null ? current : (current + delta + count) % count));
+      setIndex((current) => (current + delta + count) % count);
     },
     [count],
   );
 
-  // Lock the page behind the dialog and move focus into it.
-  useEffect(() => {
-    if (!isOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeButtonRef.current?.focus();
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isOpen]);
+  const goTo = useCallback(
+    (next: number) => {
+      if (count === 0) return;
+      setAutoPlay(false);
+      setDirection(next >= safeIndex ? 1 : -1);
+      setIndex(((next % count) + count) % count);
+    },
+    [count, safeIndex],
+  );
 
-  // Keyboard: close, navigate, and keep Tab inside the dialog.
-  useEffect(() => {
-    if (!isOpen) return;
+  const openLightbox = useCallback((target: number, trigger: HTMLElement) => {
+    triggerRef.current = trigger;
+    setAutoPlay(false);
+    setIndex(target);
+    setLightboxIndex(target);
+  }, []);
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        close();
-        return;
-      }
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        step(1);
-        return;
-      }
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        step(-1);
-        return;
-      }
-      if (event.key !== "Tab") return;
-
-      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
-      );
-      if (!focusable || focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (!first || !last) return;
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [close, isOpen, step]);
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null);
+    triggerRef.current?.focus();
+    triggerRef.current = null;
+  }, []);
 
   if (count === 0) return null;
 
-  const active = index === null ? null : images[index];
-  const activeIndex = index ?? 0;
+  const active = images[safeIndex];
+  if (!active) return null;
+
+  const caption = captionFor(active, safeIndex);
 
   return (
-    <div>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {images.map((image, itemIndex) => (
-          <li key={`${image.path}-${itemIndex}`}>
+    <div
+      role="group"
+      aria-roledescription="carousel"
+      aria-label={`${projectTitle} gallery`}
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          step(1);
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          step(-1);
+        }
+      }}
+      className="rounded-card"
+    >
+      <div
+        className="relative h-[clamp(15rem,46svh,38rem)] w-full overflow-hidden rounded-card border border-line bg-canvas-2/60 sm:h-[clamp(20rem,56svh,44rem)]"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setFocused(true)}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            setFocused(false);
+          }
+        }}
+      >
+        <AnimatePresence initial={false} mode="popLayout">
+          <motion.div
+            key={`${active.path}-${safeIndex}`}
+            className="absolute inset-0"
+            initial={reduceMotion ? false : { opacity: 0, x: direction * 48 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, x: direction * -48 }}
+            transition={{ duration: reduceMotion ? 0 : 0.42, ease: EASE_AURORA }}
+            drag={count > 1 ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.08}
+            onDragStart={() => {
+              draggedRef.current = true;
+            }}
+            onDragEnd={(_event, info) => {
+              if (info.offset.x < -60) step(1);
+              else if (info.offset.x > 60) step(-1);
+              window.setTimeout(() => {
+                draggedRef.current = false;
+              }, 80);
+            }}
+          >
             <button
               type="button"
               onClick={(event) => {
-                triggerRef.current = event.currentTarget;
-                setDirection(1);
-                setIndex(itemIndex);
+                if (draggedRef.current) return;
+                openLightbox(safeIndex, event.currentTarget);
               }}
-              className="glass card-lift group block w-full overflow-hidden text-left"
-              aria-label={`Open image ${itemIndex + 1} of ${count}: ${captionFor(image, itemIndex)}`}
+              className="block h-full w-full cursor-zoom-in"
+              aria-label={`Enlarge image ${safeIndex + 1} of ${count}: ${caption}`}
             >
               <ImageFrame
-                src={image.path}
-                alt={altFor(image, projectTitle, itemIndex)}
-                seed={`${projectTitle}-${itemIndex}`}
-                label={captionFor(image, itemIndex)}
+                src={active.path}
+                alt={altFor(active, projectTitle, safeIndex)}
+                seed={`${projectTitle}-${safeIndex}`}
+                label={caption}
                 kind="Gallery"
-                className="aspect-[16/10] w-full"
+                fit="contain"
+                className="h-full w-full"
                 roundedClassName="rounded-none"
-                sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 100vw"
+                sizes="(min-width: 1024px) 1400px, 100vw"
+                priority={safeIndex === 0}
+                quality={88}
               />
-              <span className="flex items-center justify-between gap-3 px-4 py-3">
-                <span className="label-mono truncate">{captionFor(image, itemIndex)}</span>
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-teal">
-                  <Expand className="h-3.5 w-3.5" aria-hidden="true" />
-                  <span>Enlarge</span>
-                </span>
-              </span>
             </button>
-          </li>
-        ))}
-      </ul>
+          </motion.div>
+        </AnimatePresence>
+
+        <button
+          type="button"
+          onClick={() => step(-1)}
+          disabled={count < 2}
+          className="pill absolute left-3 top-1/2 z-10 -translate-y-1/2 bg-canvas/80 backdrop-blur"
+          aria-label="Previous image"
+        >
+          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Previous</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => step(1)}
+          disabled={count < 2}
+          className="pill absolute right-3 top-1/2 z-10 -translate-y-1/2 bg-canvas/80 backdrop-blur"
+          aria-label="Next image"
+        >
+          <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Next</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={(event) => openLightbox(safeIndex, event.currentTarget)}
+          className="pill absolute right-3 top-3 z-10 bg-canvas/80 backdrop-blur"
+        >
+          <Expand className="h-4 w-4" aria-hidden="true" />
+          <span>Enlarge</span>
+        </button>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <p className="flex min-w-0 items-center gap-2 text-sm text-muted">
+          <ImageIcon className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
+          <span className="truncate">{caption}</span>
+          <span className="label-mono shrink-0" aria-live="polite">
+            {safeIndex + 1} / {count}
+          </span>
+        </p>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setAutoPlay((value) => !value)}
+            aria-pressed={autoPlay}
+            disabled={count < 2 || Boolean(reduceMotion)}
+            className="pill"
+            title={reduceMotion ? "Auto-play is off because reduced motion is enabled" : undefined}
+          >
+            {autoPlay ? (
+              <Pause className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <Play className="h-4 w-4" aria-hidden="true" />
+            )}
+            <span>{autoPlay ? "Pause" : "Play"}</span>
+          </button>
+          <button type="button" onClick={() => step(-1)} disabled={count < 2} className="pill">
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            <span>Previous</span>
+          </button>
+          <button type="button" onClick={() => step(1)} disabled={count < 2} className="pill">
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+            <span>Next</span>
+          </button>
+        </div>
+      </div>
+
+      {count > 1 ? (
+        <ul className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:thin]">
+          {images.map((image, itemIndex) => {
+            const isActive = itemIndex === safeIndex;
+            const label = `Go to image ${itemIndex + 1} of ${count}: ${captionFor(image, itemIndex)}`;
+
+            return (
+              <li key={`${image.path}-${itemIndex}`} className="shrink-0">
+                <button
+                  ref={isActive ? activeThumbRef : undefined}
+                  type="button"
+                  onClick={() => goTo(itemIndex)}
+                  aria-current={isActive ? "true" : undefined}
+                  aria-label={label}
+                  className={`relative block h-16 w-24 overflow-hidden rounded-control border transition sm:h-20 sm:w-32 ${
+                    isActive
+                      ? "border-teal ring-2 ring-[color-mix(in_oklab,var(--c-teal)_35%,transparent)]"
+                      : "border-line opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <ImageFrame
+                    src={image.path}
+                    alt=""
+                    seed={`${projectTitle}-${itemIndex}`}
+                    label={captionFor(image, itemIndex)}
+                    fit="cover"
+                    className="h-full w-full"
+                    roundedClassName="rounded-none"
+                    sizes="128px"
+                  />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
 
       <AnimatePresence>
-        {isOpen && active ? (
-          <motion.div
-            key="lightbox"
-            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.25, ease: EASE_AURORA }}
-          >
-            <div
-              className="absolute inset-0 bg-[color-mix(in_oklab,var(--c-canvas)_88%,transparent)] backdrop-blur-sm"
-              onClick={close}
-              aria-hidden="true"
-            />
-
-            <div
-              ref={dialogRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label={`${projectTitle} — image gallery`}
-              className="glass-strong hairline relative z-10 flex max-h-full w-full max-w-4xl flex-col overflow-hidden"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-3 py-2.5">
-                <p className="flex min-w-0 items-center gap-2 text-sm text-muted">
-                  <ImageIcon className="h-4 w-4 text-teal" aria-hidden="true" />
-                  <span className="truncate">{captionFor(active, activeIndex)}</span>
-                  <span className="label-mono shrink-0">
-                    {activeIndex + 1} / {count}
-                  </span>
-                </p>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => step(-1)}
-                    className="pill"
-                    disabled={count < 2}
-                  >
-                    <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-                    <span>Previous</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => step(1)}
-                    className="pill"
-                    disabled={count < 2}
-                  >
-                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                    <span>Next</span>
-                  </button>
-                  <button
-                    ref={closeButtonRef}
-                    type="button"
-                    onClick={close}
-                    className="pill"
-                  >
-                    <X className="h-4 w-4" aria-hidden="true" />
-                    <span>Close</span>
-                  </button>
-                </div>
-              </div>
-
-              <motion.div
-                key={active.path}
-                 className="relative h-[44svh] w-full sm:h-[56svh]"
-                initial={reduceMotion ? false : { opacity: 0, x: direction * 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: reduceMotion ? 0 : 0.35, ease: EASE_AURORA }}
-                drag={count > 1 ? "x" : false}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.12}
-                onDragEnd={(_event, info) => {
-                  if (info.offset.x < -60) step(1);
-                  else if (info.offset.x > 60) step(-1);
-                }}
-              >
-                <Image
-                  src={active.path}
-                  alt={altFor(active, projectTitle, activeIndex)}
-                  fill
-                  sizes="(min-width: 1024px) 1024px, 100vw"
-                  unoptimized={active.path.startsWith("/media/")}
-                   className="pointer-events-none object-contain p-2 sm:p-4"
-                />
-              </motion.div>
-
-              {active.caption ? (
-                <p className="border-t border-line px-3 py-2.5 text-sm text-muted">
-                  {active.caption}
-                </p>
-              ) : null}
-            </div>
-          </motion.div>
+        {lightboxIndex !== null ? (
+          <ImageLightbox
+            images={images}
+            projectTitle={projectTitle}
+            index={lightboxIndex}
+            onClose={closeLightbox}
+            onIndexChange={(next) => {
+              setIndex(next);
+              setLightboxIndex(next);
+            }}
+          />
         ) : null}
       </AnimatePresence>
     </div>
