@@ -237,6 +237,33 @@ ss -tlnp | grep 8026
   `docker compose --env-file .env exec -T app npx tsx prisma/seed.ts`
 - Full on-demand runbook (gatekeeper env, PUBLIC_PORT/INTERNAL_PORT/WEB_BIND, manual deploy and
   teardown endpoints): `ON_DEMAND_HOSTING.md`
+- `/api/health` reports `gitSha: "unknown"` on this box: the VPS build does not receive
+  `GIT_SHA` as a build argument. Content-based checks are used instead; pass the arg in the
+  deploy script if a SHA match is wanted there.
+
+### Interface revision — deployed and verified 2026-11-24 (`3d5083f`)
+
+Pushed to `main`; the GitHub Actions workflow rebuilt the image and ran
+`/opt/deploy-gazi-portfolio.sh`, then reseeded and restarted `web` (so the bind-mounted nginx
+config reloads). No database migration was required.
+
+Verified against the live origin `https://gazi.ciphercall.dev`:
+
+| Check | Result |
+|-------|--------|
+| Public shell at 1440px | 1376px content width, `scrollWidth` 1440 (no horizontal overflow) |
+| Project carousel (`/projects/hms-hospital`) | 32 slides, 504px stage, autoplay and controls present |
+| Lightbox | 1398×862 in a 1440×900 viewport, 60px header, focus moves to Close |
+| Zoom | `matrix(2,0,0,2,0,0)` at 2×; Escape closes and returns focus to Enlarge |
+| Light-mode contrast | ink 17.6:1, muted 10.3:1, faint 7.2:1 on the cream canvas |
+| Admin round-trip | login, project save, gallery reorder reflected in the public carousel, then restored |
+
+Local Docker verification before the push: all four containers healthy, the HTTP surface green
+over IPv4 (`127.0.0.1:8023` — on this machine `localhost` resolves to the local gatekeeper's
+`::8023` listener, see the troubleshooting table), both CV PDFs valid (839 KB designed, 20 KB
+ATS) and the running bundle containing the build SHA. `npm run typecheck`, `npm run lint` and
+`npm run test` (29 tests) ran inside the `app` container. The local stack and image were removed
+afterwards; the two named volumes were kept.
 
 ### Scheduled LinkedIn posts while the stack sleeps
 
