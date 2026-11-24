@@ -38,6 +38,22 @@ const nextConfig: NextConfig = {
 
   experimental: {
     optimizePackageImports: ["lucide-react", "motion", "react-markdown"],
+    /*
+     * Server Actions compare the request's `Origin` against the forwarded host.
+     * The live stack sits behind the on-demand gatekeeper, which rewrites the
+     * forwarded host to its own loopback address, so every admin save was
+     * rejected as "Invalid Server Actions request". Naming the real origins here
+     * keeps the CSRF check meaningful without depending on proxy header shape.
+     */
+    serverActions: {
+      allowedOrigins: [
+        "gazi.ciphercall.dev",
+        "localhost:8023",
+        "127.0.0.1:8023",
+        "localhost:8026",
+        "127.0.0.1:8026",
+      ],
+    },
   },
 
   async headers() {

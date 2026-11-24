@@ -20,3 +20,7 @@ jobs:
           script: |
             /opt/deploy-gazi-portfolio.sh
             cd /opt/github/gazi-portfolio/deploy && docker compose --env-file .env exec -T app npx tsx prisma/seed.ts
+            # nginx.conf and default.conf are bind-mounted, so a compose "up"
+            # with an unchanged compose file leaves the old config loaded.
+            # Restart web so proxy header/config edits take effect on deploy.
+            cd /opt/github/gazi-portfolio/deploy && docker compose --env-file .env restart web

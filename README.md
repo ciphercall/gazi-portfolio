@@ -154,9 +154,11 @@ docs/                the guides below
   with thumbnails, and a near-fullscreen lightbox with 2× zoom and drag-to-pan. Light mode is a
   refined warm-paper palette with ink/muted/faint at ~9:1 and ~7:1 contrast. Full detail:
   [`docs/INTERFACE.md`](docs/INTERFACE.md).
-- **Admin saves through the proxy** — nginx now forwards `Host`/`X-Forwarded-Host` as `$http_host`.
-  `$host` dropped the port, so every Server Action behind nginx on `:8023`/`:8026` was rejected as
-  `Invalid Server Actions request`; reordering a gallery or saving a project could not persist.
+- **Admin saves through the proxy** — nginx now forwards `Host`/`X-Forwarded-Host` as `$http_host`
+  (port included) and `next.config.ts` names the public origins in
+  `experimental.serverActions.allowedOrigins`. Without both, every Server Action behind nginx or the
+  gatekeeper was rejected as `Invalid Server Actions request`, and a gallery reorder could not be
+  saved. The deploy workflow now restarts `web` so bind-mounted nginx config changes take effect.
 - **Apps & sites**: a new `AppLink` model (`WEB` / `ANDROID`) with migration
   `20261116120000_app_links`, a full `/admin/app-links` CRUD (create, edit, reorder, publish,
   delete) and a **non-destructive** seed of the studio site and both Android builds
