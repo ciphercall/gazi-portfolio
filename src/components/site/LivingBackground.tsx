@@ -7,21 +7,31 @@ import {
   applyPointerInfluence,
   blendedRing,
   glyphTransform,
+  iconAlpha,
+  iconShapeIndex,
   morphState,
   rippleProgress,
 } from "@/lib/background/field";
-import { ringAt, type Point } from "@/lib/background/glyph-shapes";
+import {
+  detailsAt,
+  ringAt,
+  toneAt,
+  type IconDetail,
+  type Point,
+} from "@/lib/background/glyph-shapes";
 
 /**
  * The site's living background.
  *
  * Industry silhouettes — database, document, monitor, phone, cloud, shield,
- * chip, code — drift and morph into each other continuously. The field leans
- * toward the cursor and a click sends a ripple through it.
+ * chip, code — drift and morph into each other continuously. Whenever a shape
+ * settles, its colourful icon and detail artwork resolve inside the silhouette,
+ * hold while the shape rests, and dissolve as the next morph begins. The field
+ * leans toward the cursor and a click sends a ripple through it.
  *
  * One canvas, no dependencies, `pointer-events: none`. Paused when the tab is
- * hidden, static under `prefers-reduced-motion`, DPR capped so a 4K display
- * does not pay for pixels nobody sees.
+ * hidden, static under `prefers-reduced-motion` (where the icons rest visible),
+ * DPR capped so a 4K display does not pay for pixels nobody sees.
  */
 
 interface Rgb {
@@ -36,10 +46,13 @@ interface Ripple {
   at: number;
 }
 
-const FALLBACKS: [Rgb, Rgb, Rgb] = [
+const WHITE: Rgb = { r: 255, g: 255, b: 255 };
+
+const FALLBACKS: [Rgb, Rgb, Rgb, Rgb] = [
   { r: 25, g: 211, b: 197 },
   { r: 34, g: 211, b: 238 },
   { r: 167, g: 139, b: 250 },
+  { r: 255, g: 122, b: 182 },
 ];
 
 function parseColor(value: string): Rgb | null {
@@ -89,6 +102,7 @@ function readPalette(): { accents: Rgb[]; light: boolean } {
       read("--c-teal", FALLBACKS[0]),
       read("--c-cyan", FALLBACKS[1]),
       read("--c-violet", FALLBACKS[2]),
+      read("--c-rose", FALLBACKS[3]),
     ],
     light: document.documentElement.classList.contains("light"),
   };
@@ -115,6 +129,74 @@ function traceSmoothRing(context: CanvasRenderingContext2D, points: Point[]): vo
   }
 
   context.closePath();
+}
+
+/**
+ * Draws the settled element as a colourful icon: gradient fill, bold outline,
+ * and its interior detail strokes (bands, text lines, screen, tick, pins,
+ * chevrons). Details are drawn rigidly inside the icon so they stay legible,
+ * unlike the liquid silhouette behind them.
+ */
+function drawIconLayer(
+  context: CanvasRenderingContext2D,
+  ring: Point[],
+  details: IconDetail[],
+  accent: Rgb,
+  second: Rgb,
+  cx: number,
+  cy: number,
+  size: number,
+  rotation: number,
+  opacity: number,
+): void {
+  if (opacity <= 0.01) return;
+
+  const glow = context.createRadialGradient(cx, cy, 0, cx, cy, size * 0.66);
+  glow.addColorStop(0, rgba(accent, 0.13 * opacity));
+  glow.addColorStop(1, rgba(accent, 0));
+  context.fillStyle = glow;
+  context.beginPath();
+  context.arc(cx, cy, size * 0.66, 0, Math.PI * 2);
+  context.fill();
+
+  context.save();
+  context.translate(cx, cy);
+  context.rotate(rotation);
+  context.scale(size, size);
+
+  const gradient = context.createLinearGradient(-0.5, -0.5, 0.5, 0.5);
+  gradient.addColorStop(0, rgba(accent, 0.42 * opacity));
+  gradient.addColorStop(1, rgba(second, 0.32 * opacity));
+
+  traceSmoothRing(context, ring);
+  context.fillStyle = gradient;
+  context.fill();
+  context.strokeStyle = rgba(accent, 0.95 * opacity);
+  context.lineWidth = 0.02;
+  context.lineJoin = "round";
+  context.lineCap = "round";
+  context.stroke();
+
+  // Bright line work is what makes the silhouette read as an icon even when
+  // only part of it shows between the content panels.
+  context.strokeStyle = rgba(WHITE, 0.72 * opacity);
+  context.lineWidth = 0.03;
+  for (const detail of details) {
+    context.beginPath();
+    if (detail.kind === "polyline") {
+      const [first, ...rest] = detail.points;
+      if (!first) continue;
+      context.moveTo(first[0], first[1]);
+      for (const [x, y] of rest) context.lineTo(x, y);
+    } else if (detail.kind === "rect") {
+      context.rect(detail.x, detail.y, detail.w, detail.h);
+    } else {
+      context.ellipse(detail.cx, detail.cy, detail.rx, detail.ry, 0, 0, Math.PI * 2);
+    }
+    context.stroke();
+  }
+
+  context.restore();
 }
 
 export function LivingBackground() {
@@ -242,6 +324,29 @@ export function LivingBackground() {
         context.strokeStyle = rgba(accent, stroke);
         context.lineWidth = 1.15;
         context.stroke();
+
+        // Once the shape has settled, its recognisable icon resolves in place
+        // and fades again as the next morph starts.
+        const settle = iconAlpha(elapsed, glyph.phase);
+        if (settle > 0.01) {
+          const iconIndex = iconShapeIndex(state);
+          const [toneA, toneB] = toneAt(iconIndex);
+          const iconAccent = palette.accents[toneA % palette.accents.length] ?? FALLBACKS[0];
+          const iconSecond = palette.accents[toneB % palette.accents.length] ?? FALLBACKS[1];
+
+          drawIconLayer(
+            context,
+            ringAt(iconIndex),
+            detailsAt(iconIndex),
+            iconAccent,
+            iconSecond,
+            transform.cx,
+            transform.cy,
+            transform.size,
+            transform.rotation,
+            settle,
+          );
+        }
       }
 
       for (let index = ripples.length - 1; index >= 0; index -= 1) {
