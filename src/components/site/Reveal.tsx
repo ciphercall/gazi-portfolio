@@ -26,7 +26,7 @@ export interface RevealProps {
   amount?: number;
 }
 
-export function Reveal({ children, delay = 0, y = 20, className, amount = 0.15 }: RevealProps) {
+export function Reveal({ children, delay = 0, y = 14, className, amount = 0.15 }: RevealProps) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
@@ -39,7 +39,7 @@ export function Reveal({ children, delay = 0, y = 20, className, amount = 0.15 }
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount }}
-      transition={{ duration: 0.65, delay, ease: EASE_AURORA }}
+      transition={{ duration: 0.5, delay, ease: EASE_AURORA }}
     >
       {children}
     </motion.div>

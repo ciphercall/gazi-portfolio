@@ -14,11 +14,11 @@ import { AURORA_SWEEP } from "@/components/ui/aurora";
 export type ActionVariant = "primary" | "ghost" | "quiet";
 
 const BASE =
-  "group inline-flex items-center gap-2 rounded-full text-sm font-medium transition duration-300 ease-aurora";
+  "group inline-flex items-center gap-1.5 rounded-full text-[12.5px] font-medium transition duration-300 ease-aurora";
 
 const VARIANTS: Record<ActionVariant, string> = {
   primary:
-    "px-5 py-2.5 text-on-accent shadow-glow hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0",
+    "px-4 py-2 text-on-accent shadow-glow hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0",
   ghost: "pill",
   quiet:
     "px-1 py-0.5 text-muted underline-offset-4 hover:text-ink hover:underline decoration-line-strong",
