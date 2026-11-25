@@ -97,7 +97,7 @@ export default async function ProjectDetailPage({
         ])}
       />
 
-      <Section className="pt-12 sm:pt-16">
+      <Section className="pt-8 sm:pt-10">
         <nav aria-label="Breadcrumb">
           <Link
             href="/projects"
@@ -108,73 +108,75 @@ export default async function ProjectDetailPage({
           </Link>
         </nav>
 
-        <header className="mt-8 max-w-5xl">
-          {project.featured ? (
-            <div className="mb-4">
-              <Chip tone="violet" icon={<Layers className="h-3.5 w-3.5" />}>
-                Featured case study
-              </Chip>
-            </div>
-          ) : null}
-
-          <h1 className="text-display font-semibold text-ink">{project.title}</h1>
-          <p className="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{project.summary}</p>
-
-          {meta.length > 0 ? (
-            <dl className="mt-7 flex flex-wrap gap-3">
-              {meta.map((item) => (
-                <div key={item.label} className="pill">
-                  <span className="text-teal" aria-hidden="true">
-                    {item.icon}
-                  </span>
-                  <dt className="label-mono">{item.label}</dt>
-                  <dd className="font-medium text-ink">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
-          ) : null}
-
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            {project.liveUrl ? (
-              <ActionLink
-                href={project.liveUrl}
-                variant="primary"
-                external
-                icon={<ExternalLink className="h-4 w-4" />}
-              >
-                Open live site
-              </ActionLink>
-            ) : null}
-            {project.repoUrl ? (
-              <ActionLink href={project.repoUrl} external icon={<BrandIcon name="github" className="h-4 w-4" />}>
-                View repository
-              </ActionLink>
-            ) : null}
-            <ActionLink href="/contact" icon={<ArrowRight className="h-4 w-4" />}>
-              Build something like this
-            </ActionLink>
+        <div className="mt-4 grid gap-3 lg:grid-cols-12 lg:gap-4">
+          <div className="min-w-0 lg:col-span-8">
+            <ImageFrame
+              src={project.coverPath}
+              alt={`${project.title} — cover image`}
+              seed={project.slug}
+              label={project.title}
+              kind="Project cover"
+              className="aspect-[16/9] w-full"
+              sizes="(min-width: 1536px) 1020px, (min-width: 1024px) 66vw, 100vw"
+              priority
+            />
           </div>
-        </header>
 
-        <div className="mt-8">
-          <ImageFrame
-            src={project.coverPath}
-            alt={`${project.title} — cover image`}
-            seed={project.slug}
-            label={project.title}
-            kind="Project cover"
-            className="aspect-[16/9] w-full"
-            sizes="(min-width: 1536px) 1440px, 100vw"
-            priority
-          />
+          <div className="glass hairline flex min-w-0 flex-col rounded-card p-4 lg:col-span-4">
+            {project.featured ? (
+              <div className="mb-2">
+                <Chip tone="violet" icon={<Layers className="h-3 w-3" />}>
+                  Featured case study
+                </Chip>
+              </div>
+            ) : null}
+
+            <h1 className="text-title font-semibold text-ink">{project.title}</h1>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{project.summary}</p>
+
+            {meta.length > 0 ? (
+              <dl className="mt-3 flex flex-wrap gap-1.5">
+                {meta.map((item) => (
+                  <div key={item.label} className="pill">
+                    <span className="text-teal" aria-hidden="true">
+                      {item.icon}
+                    </span>
+                    <dt className="label-mono">{item.label}</dt>
+                    <dd className="text-[12px] font-medium text-ink">{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
+
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              {project.liveUrl ? (
+                <ActionLink
+                  href={project.liveUrl}
+                  variant="primary"
+                  external
+                  icon={<ExternalLink className="h-4 w-4" />}
+                >
+                  Open live site
+                </ActionLink>
+              ) : null}
+              {project.repoUrl ? (
+                <ActionLink href={project.repoUrl} external icon={<BrandIcon name="github" className="h-4 w-4" />}>
+                  View repository
+                </ActionLink>
+              ) : null}
+              <ActionLink href="/contact" icon={<ArrowRight className="h-4 w-4" />}>
+                Build something like this
+              </ActionLink>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.7fr)_minmax(320px,0.8fr)] lg:gap-10 xl:gap-14">
-          <article aria-labelledby="case-study-heading">
+        <div className="mt-3 grid gap-3 lg:grid-cols-12 lg:gap-4">
+          <article aria-labelledby="case-study-heading" className="glass hairline min-w-0 rounded-card p-4 lg:col-span-8 sm:p-5">
             <h2 id="case-study-heading" className="label-mono">
               Case study
             </h2>
-            <div className="mt-5">
+            <div className="mt-3">
               {project.body.trim() ? (
                 <Markdown>{project.body}</Markdown>
               ) : (
@@ -186,11 +188,11 @@ export default async function ProjectDetailPage({
             </div>
           </article>
 
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="glass hairline p-5">
-              <h2 className="font-display text-base font-semibold text-ink">Project details</h2>
+          <aside className="min-w-0 lg:col-span-4 lg:sticky lg:top-20 lg:self-start">
+            <div className="glass hairline rounded-card p-4">
+              <h2 className="font-display text-[13.5px] font-semibold text-ink">Project details</h2>
 
-              <dl className="mt-5 grid gap-4 text-sm">
+              <dl className="mt-3 grid gap-2.5 text-[12.5px]">
                 <div>
                   <dt className="label-mono">Role</dt>
                   <dd className="mt-1 text-muted">{project.role ?? "Full-stack developer"}</dd>
@@ -213,7 +215,7 @@ export default async function ProjectDetailPage({
                 </div>
               </dl>
 
-              <div className="mt-6 flex flex-wrap gap-2 border-t border-line pt-5">
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-3">
                 {project.liveUrl ? (
                   <a
                     href={project.liveUrl}
@@ -249,7 +251,7 @@ export default async function ProjectDetailPage({
         </div>
 
         {project.images.length > 0 ? (
-          <section className="mt-16" aria-labelledby="gallery-heading">
+          <section className="mt-6" aria-labelledby="gallery-heading">
             <div className="flex flex-wrap items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-control border border-line bg-panel text-teal" aria-hidden="true">
                 <Images className="h-5 w-5" />
@@ -272,17 +274,17 @@ export default async function ProjectDetailPage({
         ) : null}
 
         {nextProject ? (
-          <nav aria-label="Next project" className="mt-16">
+          <nav aria-label="Next project" className="mt-6">
             <Link
               href={`/projects/${nextProject.slug}`}
-              className="glass hairline card-lift group flex flex-wrap items-center justify-between gap-4 p-5"
+              className="glass hairline bento-lift group flex flex-wrap items-center justify-between gap-3 rounded-card p-4"
             >
               <span className="min-w-0">
                 <span className="label-mono block">Next case study</span>
-                <span className="mt-1 block font-display text-xl font-semibold text-ink">
+                <span className="mt-0.5 block font-display text-base font-semibold text-ink">
                   {nextProject.title}
                 </span>
-                <span className="mt-1 block max-w-2xl text-sm text-muted">
+                <span className="mt-0.5 block max-w-2xl text-[12.5px] text-muted">
                   {nextProject.summary}
                 </span>
               </span>

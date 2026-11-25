@@ -88,7 +88,7 @@ function DownloadButton({ href, label }: { href: string; label: string }) {
     <a
       href={href}
       download
-      className="inline-flex items-center gap-2 rounded-control border border-line-strong bg-panel px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-teal hover:bg-panel-strong"
+      className="inline-flex items-center gap-2 rounded-control border border-line-strong bg-panel px-3.5 py-2 text-[12.5px] font-medium text-ink transition-colors hover:border-teal hover:bg-panel-strong"
     >
       <Download className="size-4 text-teal" aria-hidden />
       {label}
@@ -116,10 +116,10 @@ function VariantCard({
   accent: string;
 }) {
   return (
-    <article className="glass hairline flex flex-col p-5">
-      <div className="flex items-center gap-3">
+    <article className="glass hairline flex flex-col rounded-card p-4">
+      <div className="flex items-center gap-2.5">
         <span
-          className={`grid size-10 place-items-center rounded-control border border-line ${accent}`}
+          className={`grid size-8 place-items-center rounded-control border border-line ${accent}`}
           aria-hidden
         >
           {icon}
@@ -127,19 +127,19 @@ function VariantCard({
         <p className="label-mono">{eyebrow}</p>
       </div>
 
-      <h2 className="mt-4 text-xl font-semibold text-ink">{title}</h2>
-      <p className="mt-3 text-sm leading-relaxed text-muted">{body}</p>
+      <h2 className="mt-2 text-[14.5px] font-semibold text-ink">{title}</h2>
+      <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">{body}</p>
 
-      <ul className="mt-5 space-y-2.5">
+      <ul className="mt-3 space-y-1.5">
         {features.map((feature) => (
-          <li key={feature} className="flex gap-2.5 text-sm text-muted">
-            <CircleCheck className="mt-0.5 size-4 shrink-0 text-teal" aria-hidden />
+          <li key={feature} className="flex gap-2 text-[12px] text-muted">
+            <CircleCheck className="mt-0.5 size-3.5 shrink-0 text-teal" aria-hidden />
             <span>{feature}</span>
           </li>
         ))}
       </ul>
 
-      <div className="mt-auto flex flex-wrap items-center gap-4 pt-7">
+      <div className="mt-auto flex flex-wrap items-center gap-3 pt-4">
         <DownloadButton href={href} label="Download PDF" />
         <span className="label-mono">PDF{sizeHint ? ` · ${sizeHint}` : ""}</span>
       </div>
@@ -173,22 +173,22 @@ export default async function CvDownloadPage() {
   const profile = source?.profile;
 
   return (
-    <main className="relative mx-auto w-full max-w-[var(--shell-max)] overflow-hidden px-4 pb-16 pt-20 sm:px-6 lg:px-8">
+    <main className="relative mx-auto w-full max-w-[var(--shell-max)] overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pt-10 lg:px-8">
       <div className="aurora-mesh" aria-hidden />
 
       <div className="relative">
         <p className="label-mono">Curriculum vitae</p>
-        <h1 className="mt-4 text-display font-semibold text-ink">
+        <h1 className="mt-2 text-display font-semibold text-ink">
           Two CVs. <span className="text-aurora">One set of facts.</span>
         </h1>
-        <p className="mt-6 max-w-2xl leading-relaxed text-muted">
+        <p className="mt-3 max-w-2xl text-[13.5px] leading-relaxed text-muted">
           The same career, written for two different readers. Take the designed edition to
           send to a person; take the ATS edition when you are uploading to a job portal that
           feeds an applicant tracking system. Both are generated from this site, so neither
           can quietly go out of date.
         </p>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
           <VariantCard
             icon={<Sparkles className="size-5 text-teal" />}
             eyebrow="For people"
@@ -217,15 +217,15 @@ export default async function CvDownloadPage() {
         </div>
 
         {profile ? (
-          <section className="mt-14">
+          <section className="mt-6">
             <h2 className="text-title font-semibold text-ink">The short version</h2>
-            <div className="glass hairline mt-8 p-5">
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <h3 className="text-2xl font-semibold text-ink">{profile.fullName}</h3>
-                <p className="text-sm text-teal">{profile.headline}</p>
+            <div className="glass hairline mt-3 rounded-card p-4">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+                <h3 className="text-lg font-semibold text-ink">{profile.fullName}</h3>
+                <p className="text-[12.5px] text-teal">{profile.headline}</p>
               </div>
-              <p className="mt-5 max-w-3xl leading-relaxed text-muted">{profile.summary}</p>
-              <div className="mt-6 flex flex-wrap gap-2.5">
+              <p className="mt-2.5 text-[13px] leading-relaxed text-muted">{profile.summary}</p>
+              <div className="mt-3 flex flex-wrap gap-1.5">
                 <span className="pill">{profile.location}</span>
                 <a className="pill" href={`mailto:${profile.email}`}>
                   {profile.email}
@@ -247,25 +247,25 @@ export default async function CvDownloadPage() {
           </section>
         ) : null}
 
-        <section className="mt-14">
+        <section className="mt-6">
           <h2 className="text-title font-semibold text-ink">Why two versions exist</h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-muted">
+          <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-muted">
             Most CVs that never reach a human are not rejected — they are misread. A design
             that is lovely in a browser can extract as interleaved nonsense, so this site
             ships both and lets you choose.
           </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {EXPLAINER.map((item) => (
-              <article key={item.title} className="glass p-5">
-                <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{item.body}</p>
+              <article key={item.title} className="glass rounded-card p-3.5">
+                <h3 className="text-[13.5px] font-semibold text-ink">{item.title}</h3>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-muted">{item.body}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="mt-20 flex flex-wrap items-center gap-4 border-t border-line pt-8">
-          <p className="text-sm text-muted">
+        <section className="mt-8 flex flex-wrap items-center gap-3 border-t border-line pt-5">
+          <p className="text-[12.5px] text-muted">
             Both files are regenerated automatically whenever the content on this site changes
             — there is no stale copy to download.
           </p>

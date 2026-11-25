@@ -77,7 +77,7 @@ export default async function ContactPage() {
         ])}
       />
 
-      <Section className="pt-14 sm:pt-20" grid>
+      <Section className="pt-8 sm:pt-10" grid>
         <SectionHeading
           as="h1"
           eyebrow="Contact"
@@ -90,35 +90,33 @@ export default async function ContactPage() {
           lead="Available for full-time roles, contract work and focused projects. Pick whichever channel suits you — every one of them reaches me directly."
         />
 
-        <div className="mt-7 flex flex-wrap items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <AvailabilityChip />
           {profile.location ? (
             <span className="pill text-muted">
-              <MapPin className="h-4 w-4 text-faint" aria-hidden="true" />
+              <MapPin className="h-3.5 w-3.5 text-faint" aria-hidden="true" />
               <span>{profile.location}</span>
             </span>
           ) : null}
         </div>
 
-        <div className="mt-12">
+        <div className="mt-4">
           <ContactGrid channels={channels} />
         </div>
-      </Section>
 
-      <Section id="how-to-reach" tight>
-        <div className="grid gap-6 lg:grid-cols-3">
-          <section className="glass hairline p-5" aria-labelledby="brief-heading">
-            <div className="flex items-center gap-3">
-              <IconBadge>
-                <ListChecks className="h-5 w-5" aria-hidden="true" />
+        <div className="mt-3 grid gap-3 lg:grid-cols-3">
+          <section className="glass hairline rounded-card p-3.5" aria-labelledby="brief-heading">
+            <div className="flex items-center gap-2.5">
+              <IconBadge size="sm">
+                <ListChecks className="h-4 w-4" aria-hidden="true" />
               </IconBadge>
-              <h2 id="brief-heading" className="font-display text-base font-semibold text-ink">
+              <h2 id="brief-heading" className="font-display text-[13.5px] font-semibold text-ink">
                 What to include
               </h2>
             </div>
-            <ul className="mt-4 grid gap-3">
+            <ul className="mt-2.5 grid gap-2">
               {BRIEF_CHECKLIST.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted">
+                <li key={item} className="flex gap-2.5 text-[12px] leading-relaxed text-muted">
                   <span
                     aria-hidden="true"
                     className="mt-2 h-1.5 w-1.5 shrink-0 rounded-sm"
@@ -132,16 +130,16 @@ export default async function ContactPage() {
             </ul>
           </section>
 
-          <section className="glass hairline p-5" aria-labelledby="reply-heading">
-            <div className="flex items-center gap-3">
-              <IconBadge toneClassName="text-violet">
-                <Clock className="h-5 w-5" aria-hidden="true" />
+          <section className="glass hairline rounded-card p-3.5" aria-labelledby="reply-heading">
+            <div className="flex items-center gap-2.5">
+              <IconBadge size="sm" toneClassName="text-violet">
+                <Clock className="h-4 w-4" aria-hidden="true" />
               </IconBadge>
-              <h2 id="reply-heading" className="font-display text-base font-semibold text-ink">
+              <h2 id="reply-heading" className="font-display text-[13.5px] font-semibold text-ink">
                 How I reply
               </h2>
             </div>
-            <ul className="mt-4 grid gap-3 text-sm leading-relaxed text-muted">
+            <ul className="mt-2.5 grid gap-2 text-[12px] leading-relaxed text-muted">
               <li>
                 <span className="block font-medium text-ink">Within business hours</span>
                 Most messages get an answer the same working day, Bangladesh time (GMT+6).
@@ -158,16 +156,16 @@ export default async function ContactPage() {
             </ul>
           </section>
 
-          <section className="glass hairline p-5" aria-labelledby="cv-heading">
-            <div className="flex items-center gap-3">
-              <IconBadge toneClassName="text-cyan">
-                <Sparkles className="h-5 w-5" aria-hidden="true" />
+          <section className="glass hairline rounded-card p-3.5" aria-labelledby="cv-heading">
+            <div className="flex items-center gap-2.5">
+              <IconBadge size="sm" toneClassName="text-cyan">
+                <Sparkles className="h-4 w-4" aria-hidden="true" />
               </IconBadge>
-              <h2 id="cv-heading" className="font-display text-base font-semibold text-ink">
+              <h2 id="cv-heading" className="font-display text-[13.5px] font-semibold text-ink">
                 In a hurry?
               </h2>
             </div>
-            <p className="mt-4 text-sm leading-relaxed text-muted">
+            <p className="mt-2.5 text-[12px] leading-relaxed text-muted">
               The CV has the same story in one document: roles, dates, stack and education. Useful
               if you are passing this on to someone else.
             </p>

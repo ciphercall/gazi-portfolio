@@ -83,35 +83,39 @@ export default async function ProjectsPage({
         ]}
       />
 
-      <Section className="pt-14 sm:pt-20">
-        <SectionHeading
-          as="h1"
-          eyebrow="Projects"
-          title={
-            <>
-              Systems in production — <span className="text-aurora">built, shipped, maintained</span>
-            </>
-          }
-          lead="ERP, e-commerce, HRM, supply chain, real-time chat and industrial control. Filter by the technology you care about."
-        />
-
-        <div className="mt-10">
+      <Section
+        className="pt-8 sm:pt-10"
+        rail={
+          <SectionHeading
+            as="h1"
+            eyebrow="Projects"
+            title={
+              <>
+                Systems in production —{" "}
+                <span className="text-aurora">built, shipped, maintained</span>
+              </>
+            }
+            lead="ERP, e-commerce, HRM, supply chain, real-time chat and industrial control. Filter by the technology you care about."
+          />
+        }
+      >
+        <div className="sticky top-[4.25rem] z-20 rounded-card border border-line bg-[color-mix(in_oklab,var(--c-canvas)_86%,transparent)] p-2 backdrop-blur">
           <ProjectFilters tech={tech} active={activeTech} />
         </div>
 
-        <p className="mt-6 flex items-center gap-2 text-sm text-muted">
-          <LayoutGrid className="h-4 w-4 text-faint" aria-hidden="true" />
+        <p className="mt-3 flex items-center gap-2 text-[12.5px] text-muted">
+          <LayoutGrid className="h-3.5 w-3.5 text-faint" aria-hidden="true" />
           <span>{countLabel}</span>
         </p>
 
         {projects.length > 0 ? (
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {projects.map((project, index) => (
-              <Reveal key={project.slug} delay={index * 0.04} className="h-full">
+              <Reveal key={project.slug} delay={index * 0.03} className="h-full">
                 <ProjectCard
                   project={project}
                   priority={index === 0}
-                  sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 100vw"
+                  sizes="(min-width: 1536px) 24vw, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 100vw"
                 />
               </Reveal>
             ))}
