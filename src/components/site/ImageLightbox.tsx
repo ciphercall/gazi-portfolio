@@ -156,7 +156,7 @@ export function ImageLightbox({
         transition={{ duration: reduceMotion ? 0 : 0.3, ease: EASE_AURORA }}
       >
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2 sm:px-4 sm:py-3">
-          <p className="flex min-w-0 items-center gap-2 text-sm text-muted">
+          <p className="flex min-w-0 items-center gap-2 text-[12.5px] text-muted">
             <ImageIcon className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
             <span className="truncate">{captionFor(active, safeIndex)}</span>
             <span className="label-mono shrink-0">
@@ -169,7 +169,7 @@ export function ImageLightbox({
               type="button"
               onClick={() => setZoomed((value) => !value)}
               aria-pressed={zoomed}
-              className="pill"
+              className="pill px-3 py-1.5 text-[12px]"
             >
               {zoomed ? (
                 <Minimize2 className="h-4 w-4" aria-hidden="true" />
@@ -178,7 +178,12 @@ export function ImageLightbox({
               )}
               <span>{zoomed ? "Fit" : "Zoom 2×"}</span>
             </button>
-            <button ref={closeButtonRef} type="button" onClick={onClose} className="pill">
+            <button
+              ref={closeButtonRef}
+              type="button"
+              onClick={onClose}
+              className="pill px-3 py-1.5 text-[12px]"
+            >
               <X className="h-4 w-4" aria-hidden="true" />
               <span>Close</span>
             </button>
