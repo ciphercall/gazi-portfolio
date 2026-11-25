@@ -129,23 +129,35 @@ rotation. Each one holds a silhouette for 11 s, then morphs into the next over
 `src/lib/background/field.ts`; `field.test.ts` covers the ring bounds, morph
 endpoints, pointer falloff and drift determinism.
 
+**Icon reveal.** While a shape rests it becomes the element's icon:
+`glyph-shapes.ts` exports `SHAPE_DETAILS` (database bands, page text lines, a
+screen rect, a shield tick, a chip core, code chevrons) transformed into the
+same normalised space as the ring, plus `ICON_TONES` accent pairs. The renderer
+fills the settled ring with a two-accent gradient (`0.42` → `0.32` alpha), adds
+a bold outline and white detail strokes. `iconAlpha()` in `field.ts` keeps the
+icon at 1 through the hold, fades it to 0 in the first 18 % of a morph, and
+brings the destination icon back over the last 28 %. Details are drawn rigidly
+inside the icon; the liquid silhouette continues behind. Covered by
+`field.test.ts` (alpha boundaries, 1→0→1 cycle, detail bounds).
+
 **Interaction.** The pointer is eased into the field; glyphs within ~34 % of the
 shortest viewport side are pulled toward it and light up. A click adds a ripple
 that expands over 1.2 s. Pointer listeners are on `window` (the canvas is inert),
 and all interaction is skipped under `prefers-reduced-motion`, which paints one
-static frame instead.
+static frame instead — with every glyph resting on its visible icon.
 
-**Colour.** Accent stops are read from `--c-teal` / `--c-cyan` / `--c-violet` at
-runtime and refreshed through a `MutationObserver` on `<html class>`, so the
-canvas follows the light/dark toggle without a reload.
+**Colour.** Accent stops are read from `--c-teal` / `--c-cyan` / `--c-violet` /
+`--c-rose` at runtime and refreshed through a `MutationObserver` on
+`<html class>`, so the canvas follows the light/dark toggle without a reload.
 
 ## Portrait
 
-The hero portrait and the About portrait both use `profile.avatarPath` (managed
-media). `ImageFrame` falls back to deterministic monogram art when the field is
-empty or the image fails, and the hero image carries a short `sizes` hint.
-Locally, the Docker media volume must contain the uploaded file *and* the
-`profile.avatarPath` row must point at it — a media file alone is not enough.
+The portrait uses `profile.avatarPath` in the hero only — the About band used to
+repeat it and now carries the at-a-glance panel instead. `ImageFrame` falls back
+to deterministic monogram art when the field is empty or the image fails, and the
+hero image carries a short `sizes` hint. Locally, the Docker media volume must
+contain the uploaded file *and* the `profile.avatarPath` row must point at it —
+a media file alone is not enough.
 
 ---
 
@@ -200,8 +212,8 @@ cd gazi-portfolio\deploy
 docker compose --env-file .env exec -T app sh -c "npm run typecheck && npm run lint && npm run test"
 ```
 
-The suite is now four files / 40 tests: timeline, formatting, ATS PDF, and the
-background field maths.
+The suite is now four files / 45 tests: timeline, formatting, ATS PDF, and the
+background field maths (including icon-alpha timing and detail bounds).
 
 Browser checks at `http://127.0.0.1:8023` (`localhost` can resolve to a local
 gatekeeper listener on `::8023`): every public route at 1440 and 1920 with no
@@ -209,4 +221,6 @@ horizontal overflow; carousel autoplay/pause/stop/play, thumbnails, keyboard,
 touch swipe; lightbox at 2× with pan and Escape focus return; light-mode contrast
 on canvas and glass; admin gallery reorder/alt/caption round-trip reflected in the
 public slideshow; the living canvas animates (two pixel samples differ), reacts to
-pointer movement and clicks, and is static under reduced motion.
+pointer movement and clicks, and is static under reduced motion. Each settled glyph
+shows its coloured icon during the hold (checked in both themes at 1440), and the
+portrait appears exactly once on `/`.
