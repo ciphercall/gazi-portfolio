@@ -31,7 +31,7 @@ export function ProjectCard({
 
   return (
     <article
-      className={`glass hairline card-lift group relative flex h-full flex-col overflow-hidden ${className}`}
+      className={`glass hairline bento-lift group relative flex h-full flex-col overflow-hidden rounded-card ${className}`}
     >
       <ImageFrame
         src={project.coverPath}
@@ -43,9 +43,10 @@ export function ProjectCard({
         roundedClassName="rounded-none"
         sizes={sizes}
         priority={priority}
+        imgClassName="transition-transform duration-500 ease-aurora group-hover:scale-[1.03]"
       />
 
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
+      <div className="flex flex-1 flex-col p-3.5">
         {project.featured ? (
           <div className="mb-3">
             <Chip tone="violet" icon={<Star className="h-3.5 w-3.5" />}>
@@ -54,7 +55,7 @@ export function ProjectCard({
           </div>
         ) : null}
 
-        <h3 className="font-display text-lg font-semibold text-ink">
+        <h3 className="font-display text-[14.5px] font-semibold leading-snug text-ink">
           <Link
             href={`/projects/${project.slug}`}
             className="after:absolute after:inset-0 after:rounded-card"
@@ -63,10 +64,12 @@ export function ProjectCard({
           </Link>
         </h3>
 
-        <p className="mt-2 text-sm leading-relaxed text-muted">{project.summary}</p>
+        <p className="mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed text-muted">
+          {project.summary}
+        </p>
 
         {project.techStack.length > 0 ? (
-          <ul className="mt-4 flex flex-wrap gap-2">
+          <ul className="mt-3 flex flex-wrap gap-1.5">
             {tech.map((item) => (
               <li key={item}>
                 <Chip>{item}</Chip>
@@ -80,8 +83,8 @@ export function ProjectCard({
           </ul>
         ) : null}
 
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4">
-          <div className="flex flex-wrap items-center gap-3 text-xs text-faint">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-3">
+          <div className="flex flex-wrap items-center gap-2.5 text-[11px] text-faint">
             {project.role ? (
               <span className="inline-flex items-center gap-1.5">
                 <Briefcase className="h-3.5 w-3.5" aria-hidden="true" />
@@ -102,9 +105,9 @@ export function ProjectCard({
             ) : null}
           </div>
 
-          <span className="inline-flex items-center gap-2 text-sm font-medium text-teal transition group-hover:text-cyan">
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            <span>View case study</span>
+          <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-teal transition group-hover:text-cyan">
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Case study</span>
           </span>
         </div>
       </div>
