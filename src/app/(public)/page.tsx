@@ -152,11 +152,9 @@ export default async function HomePage() {
 
       <Section id="about">
         <AboutSection
-          fullName={profile.fullName}
           headline={profile.headline}
           summary={profile.summary}
           location={profile.location}
-          avatarPath={profile.avatarPath}
           focus={focus}
         />
       </Section>

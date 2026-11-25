@@ -2,32 +2,26 @@ import { Download, MapPin, Sparkles } from "lucide-react";
 
 import { ActionLink } from "@/components/ui/ActionLink";
 import { Chip } from "@/components/ui/Chip";
-import { ImageFrame } from "@/components/ui/ImageFrame";
 import { CV_PATH } from "@/components/site/contact-links";
 
 /**
- * About band: portrait plate on the left, the profile summary set in large
- * comfortable type on the right. The portrait falls back to a seeded aurora
- * plate with the subject's monogram when no photo has been uploaded, so the
- * layout never depends on a file existing.
+ * About band: the summary and the at-a-glance panel, side by side. The portrait
+ * belongs to the hero; repeating it here made the home page show the same photo
+ * twice, so this band carries context instead.
  */
 
 export interface AboutSectionProps {
-  fullName: string;
   headline: string;
   summary: string;
   location: string;
-  avatarPath: string | null;
   /** Short chips under the summary — technologies or focus areas. */
   focus?: string[];
 }
 
 export function AboutSection({
-  fullName,
   headline,
   summary,
   location,
-  avatarPath,
   focus = [],
 }: AboutSectionProps) {
   const firstStop = summary.indexOf(". ");
@@ -35,32 +29,8 @@ export function AboutSection({
   const rest = firstStop > 0 ? summary.slice(firstStop + 2) : "";
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-12 lg:gap-4">
-      <div className="flex flex-col gap-3 lg:col-span-3">
-        <ImageFrame
-          src={avatarPath}
-          alt={`Portrait of ${fullName}, ${headline}`}
-          seed={fullName}
-          label={fullName}
-          kind="Portrait"
-          className="aspect-[4/5] w-full"
-          sizes="(min-width: 1024px) 340px, 45vw"
-        />
-
-        <div className="glass flex items-center gap-2.5 p-2.5">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-control bg-panel text-teal">
-            <MapPin className="h-4 w-4" aria-hidden="true" />
-          </span>
-          <span className="min-w-0">
-            <span className="label-mono block">Based in</span>
-            <span className="block truncate text-[12.5px] font-medium text-ink">
-              {location || "Remote-friendly"}
-            </span>
-          </span>
-        </div>
-      </div>
-
-      <div className="glass hairline rounded-card p-4 sm:p-5 lg:col-span-6">
+    <div className="grid gap-3 lg:grid-cols-12 lg:gap-4">
+      <div className="glass hairline rounded-card p-4 sm:p-5 lg:col-span-8">
         <p className="label-mono">About</p>
         <h2 className="mt-2 text-title font-semibold">
           Turning requirements into{" "}
@@ -86,7 +56,7 @@ export function AboutSection({
         </div>
       </div>
 
-      <div className="glass hairline flex flex-col rounded-card p-4 lg:col-span-3">
+      <div className="glass hairline flex flex-col rounded-card p-4 lg:col-span-4">
         <p className="label-mono">At a glance</p>
 
         <dl className="mt-3 grid gap-2 text-[12.5px]">
@@ -97,7 +67,10 @@ export function AboutSection({
             </dd>
           </div>
           <div className="flex items-baseline justify-between gap-3 border-b border-line pb-2">
-            <dt className="text-faint">Location</dt>
+            <dt className="flex items-center gap-1.5 text-faint">
+              <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+              Location
+            </dt>
             <dd className="text-right font-medium text-ink">{location || "Remote"}</dd>
           </div>
           <div className="flex items-baseline justify-between gap-3">
