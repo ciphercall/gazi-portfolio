@@ -8,10 +8,12 @@ import {
   applyPointerInfluence,
   blendedRing,
   glyphTransform,
+  iconAlpha,
+  iconShapeIndex,
   morphState,
   rippleProgress,
 } from "./field";
-import { GLYPH_NAMES, RING_POINTS, SHAPE_RINGS, SHAPES } from "./glyph-shapes";
+import { GLYPH_NAMES, RING_POINTS, SHAPE_DETAILS, SHAPE_RINGS, SHAPES } from "./glyph-shapes";
 
 describe("glyph rings", () => {
   it("has one ring per industry motif", () => {
@@ -131,5 +133,49 @@ describe("rippleProgress", () => {
     expect(rippleProgress(-50)).toBe(0);
     expect(rippleProgress(600)).toBeCloseTo(0.5, 5);
     expect(rippleProgress(5000)).toBe(1);
+  });
+});
+
+describe("icon reveal", () => {
+  it("is fully visible while the shape rests", () => {
+    expect(iconAlpha(0, 0)).toBe(1);
+    expect(iconAlpha(HOLD_MS - 1, 0)).toBe(1);
+  });
+
+  it("fades out at the start of a morph and back in at the end", () => {
+    const fading = iconAlpha(HOLD_MS + MORPH_MS * 0.1, 0);
+    expect(fading).toBeGreaterThan(0);
+    expect(fading).toBeLessThan(0.9);
+    expect(iconAlpha(HOLD_MS + MORPH_MS * 0.5, 0)).toBe(0);
+    expect(iconAlpha(HOLD_MS + MORPH_MS * 0.95, 0)).toBeGreaterThan(0.8);
+  });
+
+  it("is fully back when the next hold begins", () => {
+    expect(iconAlpha(CYCLE_MS - 0.001, 0)).toBeCloseTo(1, 3);
+    expect(iconAlpha(CYCLE_MS + 500, 0)).toBe(1);
+  });
+
+  it("switches to the destination icon only once the morph is past halfway", () => {
+    const early = morphState(HOLD_MS + MORPH_MS * 0.2, 0);
+    const late = morphState(HOLD_MS + MORPH_MS * 0.9, 0);
+    expect(iconShapeIndex(early)).toBe(early.from);
+    expect(iconShapeIndex(late)).toBe(late.to);
+  });
+
+  it("keeps detail artwork inside the silhouette box", () => {
+    for (const name of GLYPH_NAMES) {
+      for (const detail of SHAPE_DETAILS[name]) {
+        const values =
+          detail.kind === "polyline"
+            ? detail.points.flat()
+            : detail.kind === "rect"
+              ? [detail.x, detail.y, detail.x + detail.w, detail.y + detail.h]
+              : [detail.cx - detail.rx, detail.cx + detail.rx, detail.cy - detail.ry, detail.cy + detail.ry];
+        for (const value of values) {
+          expect(Number.isFinite(value)).toBe(true);
+          expect(Math.abs(value)).toBeLessThan(0.6);
+        }
+      }
+    }
   });
 });

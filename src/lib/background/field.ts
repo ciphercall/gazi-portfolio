@@ -127,6 +127,36 @@ export function rippleProgress(ageMs: number, durationMs = RIPPLE_MS): number {
   return Math.min(1, Math.max(0, ageMs / durationMs));
 }
 
+/** Fraction of the morph spent fading the settled icon out / the next one in. */
+export const ICON_FADE_OUT = 0.18;
+export const ICON_FADE_IN = 0.28;
+
+/**
+ * How visible the element's icon is at this moment: fully visible while the
+ * shape rests, gone during the middle of the morph, and cross-faded at the two
+ * boundaries so the icon never pops.
+ */
+export function iconAlpha(elapsedMs: number, phase: number): number {
+  const shifted = elapsedMs + phase * CYCLE_MS;
+  const local = shifted % CYCLE_MS;
+  if (local <= HOLD_MS) return 1;
+
+  const morph = local - HOLD_MS;
+  const fadeOut = MORPH_MS * ICON_FADE_OUT;
+  const fadeInStart = MORPH_MS * (1 - ICON_FADE_IN);
+
+  if (morph <= fadeOut) return 1 - easeInOutCubic(morph / fadeOut);
+  if (morph >= fadeInStart) {
+    return easeInOutCubic((morph - fadeInStart) / (MORPH_MS - fadeInStart));
+  }
+  return 0;
+}
+
+/** The element whose icon should be drawn for a given morph state. */
+export function iconShapeIndex(state: MorphState): number {
+  return state.t < 0.5 ? state.from : state.to;
+}
+
 /** Deterministic drift, so every visit sees the same composition. */
 export function glyphTransform(
   glyph: FieldGlyph,
