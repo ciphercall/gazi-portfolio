@@ -26,23 +26,29 @@ per-page maximum:
 | `SiteNav`, `SiteFooter` | same shell |
 | `/cv` | same shell |
 
-Text stays readable at that width: prose paragraphs keep their own `max-w-2xl` /
-`max-w-3xl` caps, and `SectionHeading` moves its lead paragraph beside the title
-from `xl` up:
+The page body is a bento system, not a stack of full-width bands:
 
-```
-xl: grid-cols-[minmax(0,1.05fr) minmax(0,0.95fr)], items-end, gap-14
-```
+- `Hero` is a 12-column grid: identity card `lg:col-span-6`, portrait
+  `lg:col-span-3`, current roles + focus + quick links `lg:col-span-3`, a
+  four-cell stats ribbon `lg:col-span-12` and a technology marquee
+  `lg:col-span-12`.
+- `Section` accepts a `rail` prop. On `lg+` it renders the heading in a
+  `col-span-3` column (sticky from `xl`) and the content in `col-span-9`; below
+  `lg` it stacks. Home, Projects, Experience, Skills, Apps, Education and Contact
+  all use it.
+- `SectionHeading` never splits into inner columns — it is used inside the rail,
+  where a two-column split collapsed the title to one word per line.
+- The projects index is `sm:grid-cols-2 lg:grid-cols-3`; its technology filter
+  collapses to 14 chips with an `All N technologies` toggle (active filter always
+  stays visible).
+- Featured case studies use a scroll-pinned horizontal rail (`FeaturedRail`) that
+  measures the real overflow distance, with a plain grid fallback below `lg` and
+  for reduced motion.
+- Contact tiles are a flex-wrap row whose items grow, so the last row fills the
+  width instead of leaving empty slots.
 
-Below `xl` the heading and lead stack exactly as before. `align="center"` keeps
-the old single centred column.
-
-Grids consume the extra width rather than stretching cards: the projects index is
-`sm:grid-cols-2 lg:grid-cols-3`, and the landing page's featured band is
-`lg:grid-cols-2 2xl:grid-cols-3`. Image `sizes` values in those grids match the
-new column widths so the optimiser does not over-fetch.
-
-`TimelineChart` is unchanged: it scales to its container and keeps its
+Image `sizes` values in each grid match the column widths so the optimiser does
+not over-fetch. `TimelineChart` scales to its container and keeps its
 `min-w-[44rem]` horizontal-scroll fallback on small screens.
 
 ---
@@ -106,6 +112,43 @@ and `contain` (gallery stage, so a screenshot never loses an edge to cropping).
 
 ---
 
+## Living background — “field of practice”
+
+`AmbientBackground` mounts one inert canvas (`LivingBackground`) plus the grid
+overlay. The canvas is `aria-hidden`, `pointer-events: none`, capped at DPR 1.5,
+and pauses its rAF loop when the tab is hidden.
+
+**Shapes.** Eight industry silhouettes — database, document, monitor, phone,
+cloud, shield, chip, code — are authored as polygons in
+`src/lib/background/glyph-shapes.ts`, resampled to equal 48-point rings and
+centred. Equal point counts are what allow one shape to morph into the next.
+
+**Motion.** Six glyphs at fixed anchors drift on two sine channels with a small
+rotation. Each one holds a silhouette for 11 s, then morphs into the next over
+3 s with a per-point wobble. The schedule and pointer maths live in
+`src/lib/background/field.ts`; `field.test.ts` covers the ring bounds, morph
+endpoints, pointer falloff and drift determinism.
+
+**Interaction.** The pointer is eased into the field; glyphs within ~34 % of the
+shortest viewport side are pulled toward it and light up. A click adds a ripple
+that expands over 1.2 s. Pointer listeners are on `window` (the canvas is inert),
+and all interaction is skipped under `prefers-reduced-motion`, which paints one
+static frame instead.
+
+**Colour.** Accent stops are read from `--c-teal` / `--c-cyan` / `--c-violet` at
+runtime and refreshed through a `MutationObserver` on `<html class>`, so the
+canvas follows the light/dark toggle without a reload.
+
+## Portrait
+
+The hero portrait and the About portrait both use `profile.avatarPath` (managed
+media). `ImageFrame` falls back to deterministic monogram art when the field is
+empty or the image fails, and the hero image carries a short `sizes` hint.
+Locally, the Docker media volume must contain the uploaded file *and* the
+`profile.avatarPath` row must point at it — a media file alone is not enough.
+
+---
+
 ## Light mode — warm paper
 
 Both themes live in `src/app/globals.css`. Dark is the default
@@ -132,10 +175,11 @@ In light mode:
 
 - `--c-muted` and `--c-faint` sit around 9:1 and 7:1 against the canvas, so small
   meta text is readable rather than decorative.
-- The ambient aurora drops to `opacity: .18`, the glyphs to `.05` and the grain to
-  `.02` — the atmosphere stays, without washing contrast out of body text.
+- The living canvas drops its fill/stroke alphas (`.06` / `.11` versus `.08` /
+  `.16` in dark), and the grain to `.02` — the atmosphere stays, without washing
+  contrast out of body text.
 - `.glass` gains a soft shadow so cards read as surfaces on cream.
-- `.label-mono` is 12 px / weight 500 / `.12em` tracking in both themes.
+- `.label-mono` is 11 px / weight 600 / `.12em` tracking in both themes.
 
 Component text that previously leaned on opacity (`text-ink/90` in the hero and
 stats, `text-ink/85` in the image fallback monogram, the footer summary in
@@ -152,13 +196,17 @@ Run inside the Docker stack, never on the host:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\portfolio-deploy.ps1 -Action up -Build
 powershell -ExecutionPolicy Bypass -File .\portfolio-deploy.ps1 -Action verify
-docker compose -f gazi-portfolio\deploy\docker-compose.yml --env-file gazi-portfolio\deploy\.env exec -T app npm run typecheck
-docker compose -f gazi-portfolio\deploy\docker-compose.yml --env-file gazi-portfolio\deploy\.env exec -T app npm run lint
-docker compose -f gazi-portfolio\deploy\docker-compose.yml --env-file gazi-portfolio\deploy\.env exec -T app npm run test
+cd gazi-portfolio\deploy
+docker compose --env-file .env exec -T app sh -c "npm run typecheck && npm run lint && npm run test"
 ```
 
-Browser checks at `http://localhost:8023`: every public route at 1440 and 1920 with
-no horizontal overflow; carousel autoplay/pause/stop/play, thumbnails, keyboard,
+The suite is now four files / 40 tests: timeline, formatting, ATS PDF, and the
+background field maths.
+
+Browser checks at `http://127.0.0.1:8023` (`localhost` can resolve to a local
+gatekeeper listener on `::8023`): every public route at 1440 and 1920 with no
+horizontal overflow; carousel autoplay/pause/stop/play, thumbnails, keyboard,
 touch swipe; lightbox at 2× with pan and Escape focus return; light-mode contrast
 on canvas and glass; admin gallery reorder/alt/caption round-trip reflected in the
-public slideshow.
+public slideshow; the living canvas animates (two pixel samples differ), reacts to
+pointer movement and clicks, and is static under reduced motion.

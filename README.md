@@ -70,12 +70,18 @@ and, by extension, the printed CV.
 
 ## Interface
 
-Public pages share one container width (`--shell-max`, 92rem) so content fills wide screens
-instead of sitting in a narrow column. Project galleries are slideshows: autoplay every five
-seconds, paused on hover/focus and stopped by any manual navigation, with a thumbnail strip and
-keyboard/touch/swipe controls. Any image opens a near-fullscreen viewer with 2× zoom and drag-to-pan.
-Light mode is a warm-paper palette whose ink/muted/faint tokens sit at ~9:1 and ~7:1 contrast.
-Full reference: [`docs/INTERFACE.md`](docs/INTERFACE.md).
+Public pages share one container width (`--shell-max`, 92rem) and are laid out as a bento system:
+a 12-column hero (identity, portrait, current roles, stats ribbon, technology marquee), sticky
+3-column section rails beside 9-column content, a scroll-pinned featured-case-study rail, and dense
+multi-column grids. A single inert canvas paints eight morphing industry silhouettes behind every
+page — database, document, monitor, phone, cloud, shield, chip, code — continuously drifting,
+leaning toward the cursor and rippling on click, and static under reduced motion.
+
+Project galleries are slideshows: autoplay every five seconds, paused hover/focus on the stage and
+stopped by any manual navigation, with a thumbnail strip and keyboard/touch/swipe controls. Any
+image opens a near-fullscreen viewer with 2× zoom and drag-to-pan. The hero and About portraits use
+the uploaded `profile.avatarPath`. Light mode is a warm-paper palette whose ink/muted/faint tokens
+sit at ~9:1 and ~7:1 contrast. Full reference: [`docs/INTERFACE.md`](docs/INTERFACE.md).
 
 ## Quick start
 
@@ -149,10 +155,12 @@ docs/                the guides below
 
 ## Recent hardening (latest pass)
 
-- **Interface refresh** — one public layout shell (`--shell-max`, 92rem), section headings whose
-  lead sits beside the title on wide screens, project galleries turned into an autoplay slideshow
-  with thumbnails, and a near-fullscreen lightbox with 2× zoom and drag-to-pan. Light mode is a
-  refined warm-paper palette with ink/muted/faint at ~9:1 and ~7:1 contrast. Full detail:
+- **Bento layout + living background** — the public site now uses a 12-column bento hero, sticky
+  3-column section rails, a measured scroll-pinned projects rail, a collapsed technology filter and
+  a compact type scale scoped to `.site` (admin keeps the original scale). A canvas behind every
+  page paints eight morphing industry silhouettes which react to the pointer and clicks; the maths
+  is unit-tested and the layer is inert and static under reduced motion. The production portrait is
+  rendered in the hero and About from `profile.avatarPath`. Full detail:
   [`docs/INTERFACE.md`](docs/INTERFACE.md).
 - **Admin saves through the proxy** — nginx now forwards `Host`/`X-Forwarded-Host` as `$http_host`
   (port included) and `next.config.ts` names the public origins in
