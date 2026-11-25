@@ -37,27 +37,27 @@ export async function SiteFooter({
   const year = new Date().getFullYear();
 
   return (
-    <footer className="no-print relative mt-16 border-t border-line">
+    <footer className="no-print relative mt-10 border-t border-line">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{ backgroundImage: AURORA_LINE }}
       />
 
-      <div className="mx-auto w-full max-w-[var(--shell-max)] px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-[var(--shell-max)] px-4 py-7 sm:px-6 lg:px-8">
         <div
-          className={`grid gap-8 ${
+          className={`grid gap-6 ${
             appLinks.length > 0
               ? "md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]"
               : "md:grid-cols-[1.4fr_1fr_1.1fr]"
           }`}
         >
           <div>
-            <Link href="/" className="font-display text-lg font-semibold text-ink">
+            <Link href="/" className="font-display text-[15px] font-semibold text-ink">
               {fullName}
             </Link>
-            <p className="mt-1 text-sm text-muted">{headline}</p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+            <p className="mt-0.5 text-[12.5px] text-muted">{headline}</p>
+            <p className="mt-2.5 max-w-sm text-[12px] leading-relaxed text-muted">
               {summary.length > 220 ? `${summary.slice(0, 217).trimEnd()}…` : summary}
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-2">
@@ -71,21 +71,21 @@ export async function SiteFooter({
             </div>
           </div>
 
-          <nav aria-label="Footer" className="text-sm">
+          <nav aria-label="Footer" className="text-[12px]">
             <h2 className="label-mono">Explore</h2>
-            <ul className="mt-4 grid gap-1">
+            <ul className="mt-2 grid gap-0.5">
               {NAV_LINKS.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="group flex items-center gap-3 rounded-control px-2 py-2 text-muted transition hover:bg-panel hover:text-ink"
+                      className="group flex items-center gap-2 rounded-control px-1.5 py-1.5 text-muted transition hover:bg-panel hover:text-ink"
                     >
-                      <Icon className="h-4 w-4 text-faint group-hover:text-teal" aria-hidden="true" />
+                      <Icon className="h-3.5 w-3.5 text-faint group-hover:text-teal" aria-hidden="true" />
                       <span className="min-w-0">
-                        <span className="block font-medium">{item.label}</span>
-                        <span className="block text-xs text-faint">{item.blurb}</span>
+                        <span className="block font-medium leading-tight">{item.label}</span>
+                        <span className="block text-[11px] leading-tight text-faint">{item.blurb}</span>
                       </span>
                     </Link>
                   </li>
@@ -147,7 +147,7 @@ export async function SiteFooter({
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 border-t border-line pt-5 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col gap-2 border-t border-line pt-4 text-[11px] text-faint sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {fullName}. Built with Next.js, Prisma and a lot of dark-mode pixels.
           </p>

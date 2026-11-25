@@ -9,6 +9,7 @@ import { Mail, Menu, X } from "lucide-react";
 import { ActionLink } from "@/components/ui/ActionLink";
 import { AURORA_SWEEP } from "@/components/ui/aurora";
 import { NAV_LINKS, isActivePath } from "@/components/site/nav-links";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 
 /**
@@ -70,25 +71,26 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
   }, [open]);
 
   return (
-    <header className="no-print sticky top-0 z-40 px-4 pt-3 sm:px-6 lg:px-8">
+    <header className="no-print sticky top-0 z-40 px-4 pt-2 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-[var(--shell-max)]">
         <div
-          className="glass-nav hairline flex items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-3.5"
+          className="glass-nav hairline relative flex items-center gap-2 px-2 py-1 sm:gap-2.5 sm:px-3 sm:py-1.5"
           data-scrolled={scrolled}
         >
+          <ScrollProgress />
           <Link
             href="/"
             className="flex min-w-0 items-center gap-2.5 rounded-control p-1 transition hover:bg-panel"
           >
             <span
               aria-hidden="true"
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-control font-display text-sm font-semibold text-on-accent"
+              className="grid h-7 w-7 shrink-0 place-items-center rounded-control font-display text-[12px] font-semibold text-on-accent"
               style={{ backgroundImage: AURORA_SWEEP }}
             >
               {initialsOf(fullName)}
             </span>
             <span className="min-w-0 max-w-[42vw] sm:max-w-none">
-              <span className="block truncate text-sm font-semibold leading-tight text-ink">
+              <span className="block truncate text-[12.5px] font-semibold leading-tight text-ink">
                 {fullName}
               </span>
               <span className="label-mono block truncate">{tagline}</span>
@@ -104,14 +106,14 @@ export function SiteNav({ fullName, tagline }: SiteNavProps) {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm transition duration-300 ease-aurora ${
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[12.5px] transition duration-300 ease-aurora ${
                     active
                       ? "bg-panel font-medium text-ink"
                       : "text-muted hover:bg-panel hover:text-ink"
                   }`}
                 >
                   <Icon
-                    className={`h-4 w-4 ${active ? "text-teal" : "text-faint"}`}
+                    className={`h-3.5 w-3.5 ${active ? "text-teal" : "text-faint"}`}
                     aria-hidden="true"
                   />
                   <span>{item.label}</span>
