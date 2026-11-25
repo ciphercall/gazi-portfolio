@@ -48,16 +48,16 @@ export function SkillsSection({ groups }: { groups: SkillGroup[] }) {
   const track = [...all, ...all];
 
   return (
-    <div className="mt-12">
-      <div className="marquee-mask relative overflow-hidden py-1" aria-hidden="true">
+    <div>
+      <div className="marquee-mask relative overflow-hidden py-0.5" aria-hidden="true">
         <div className="marquee-track hover:[animation-play-state:paused]">
           {track.map((item, index) => (
             <span
               key={`${item}-${index}`}
-              className="mr-3 inline-flex items-center gap-2 rounded-full border border-line bg-panel px-3 py-1.5 text-sm text-muted"
+              className="mr-2.5 inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-2.5 py-1 text-[12px] text-muted"
             >
               <span
-                className="h-1.5 w-1.5 shrink-0 rounded-sm"
+                className="h-1 w-1 shrink-0 rounded-sm"
                 style={{ backgroundImage: AURORA_SWEEP }}
               />
               {item}
@@ -66,28 +66,28 @@ export function SkillsSection({ groups }: { groups: SkillGroup[] }) {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {groups.map((group, index) => {
           const Icon = categoryIcon(group.category);
           return (
-            <Reveal key={group.category} delay={index * 0.05}>
+            <Reveal key={group.category} delay={index * 0.04}>
               <section
-                className="glass hairline h-full p-4"
+                className="glass hairline h-full rounded-card p-3.5"
                 aria-label={`${group.category} skills`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <IconBadge size="sm">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   </IconBadge>
-                  <div>
-                    <h3 className="font-display text-base font-semibold text-ink">
+                  <div className="min-w-0">
+                    <h3 className="truncate font-display text-[13.5px] font-semibold text-ink">
                       {group.category}
                     </h3>
                     <p className="label-mono">{group.items.length} skills</p>
                   </div>
                 </div>
 
-                <ul className="mt-4 flex flex-wrap gap-2">
+                <ul className="mt-3 flex flex-wrap gap-1.5">
                   {group.items.map((item) => (
                     <li key={item}>
                       <Chip tone="outline">{item}</Chip>

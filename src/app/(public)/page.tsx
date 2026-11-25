@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Briefcase, Boxes, Layers, TrendingUp } from "lucide-react";
+import { ArrowRight, Briefcase, Boxes, Layers, TrendingUp } from "lucide-react";
 
 import { AboutSection } from "@/components/site/AboutSection";
 import { ContactGrid } from "@/components/site/ContactGrid";
 import { EducationSection } from "@/components/site/EducationSection";
 import { EcosystemSection } from "@/components/site/ecosystem";
 import { ExperienceGraph } from "@/components/site/ExperienceGraph";
-import { Hero } from "@/components/site/Hero";
+import { Hero, type HeroStat } from "@/components/site/Hero";
 import { JsonLd } from "@/components/site/JsonLd";
+import { MiniRoleCards } from "@/components/site/MiniRoleCards";
 import { ProjectsSection } from "@/components/site/ProjectsSection";
 import { Section } from "@/components/site/Section";
 import { SkillsSection } from "@/components/site/SkillsSection";
-import { StatsStrip, type StatItem } from "@/components/site/StatsStrip";
 import { contactChannels } from "@/components/site/contact-channels";
 import { contactLinks, type ContactHandles } from "@/components/site/contact-links";
 import { countSkills, formatTenure, halfYearsSince } from "@/components/site/format";
@@ -101,32 +101,35 @@ export default async function HomePage() {
     for (const tag of item.tags) tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
   }
   const focus = [...tagCounts.entries()]
+    .filter(([tag]) => !/^(full|part)[- ]time$/i.test(tag))
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, 6)
     .map(([tag]) => tag);
 
-  const stats: StatItem[] = [
+  const stats: HeroStat[] = [
     {
-      icon: <TrendingUp className="h-5 w-5" />,
-      value: `${formatTenure(years)}+`,
-      label: "Years of experience",
-      hint: earliestStart ? `Shipping since ${earliestStart.slice(0, 4)}` : undefined,
+      icon: <TrendingUp className="h-3.5 w-3.5" />,
+      value: years,
+      suffix: "+",
+      decimals: Number.isInteger(years) ? 0 : 1,
+      label: "Years",
+      hint: earliestStart ? `Since ${earliestStart.slice(0, 4)}` : undefined,
     },
     {
-      icon: <Boxes className="h-5 w-5" />,
-      value: String(projects.length),
-      label: "Production systems shipped",
-      hint: "Web, mobile and industrial",
+      icon: <Boxes className="h-3.5 w-3.5" />,
+      value: projects.length,
+      label: "Systems",
+      hint: "Web, mobile, industrial",
     },
     {
-      icon: <Layers className="h-5 w-5" />,
-      value: String(countSkills(skills)),
-      label: "Technologies in use",
-      hint: `Across ${skills.length} stack categories`,
+      icon: <Layers className="h-3.5 w-3.5" />,
+      value: countSkills(skills),
+      label: "Technologies",
+      hint: `Across ${skills.length} categories`,
     },
     {
-      icon: <Briefcase className="h-5 w-5" />,
-      value: String(currentRoles.length),
+      icon: <Briefcase className="h-3.5 w-3.5" />,
+      value: currentRoles.length,
       label: "Current roles",
       hint: "Held at the same time",
     },
@@ -142,11 +145,10 @@ export default async function HomePage() {
         subheadline={profile.subheadline}
         location={profile.location}
         currentRoles={currentRoles}
+        avatarPath={profile.avatarPath}
+        stats={stats}
+        focus={focus}
       />
-
-      <Section id="stats" tight>
-        <StatsStrip items={stats} />
-      </Section>
 
       <Section id="about">
         <AboutSection
@@ -159,73 +161,106 @@ export default async function HomePage() {
         />
       </Section>
 
-      <Section id="experience" grid>
-        <SectionHeading
-          eyebrow="Experience"
-          title={
-            <>
-              Every role, in order — <span className="text-aurora">no gaps glossed over</span>
-            </>
-          }
-          lead={`${formatTenure(years)}+ years across enterprise ERP, industrial automation and product teams — laid out to scale, with concurrent roles side by side.`}
-        />
+      <Section
+        id="experience"
+        grid
+        rail={
+          <>
+            <SectionHeading
+              eyebrow="Experience"
+              title={
+                <>
+                  Every role, in order — <span className="text-aurora">no gaps glossed over</span>
+                </>
+              }
+              lead={`${formatTenure(years)}+ years across enterprise ERP, industrial automation and product teams — laid out to scale, with concurrent roles side by side.`}
+            />
+            <div className="mt-4">
+              <ActionLink href="/experience" icon={<Briefcase className="h-4 w-4" />}>
+                The full timeline
+              </ActionLink>
+            </div>
+          </>
+        }
+      >
         <ExperienceGraph entries={experienceGroups.all} variant="compact" />
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <ActionLink href="/experience" icon={<Briefcase className="h-4 w-4" />}>
-            The full timeline, with detail
-          </ActionLink>
+        <div className="mt-3">
+          <MiniRoleCards entries={experienceGroups.all.slice(0, 3)} />
         </div>
       </Section>
 
-      <Section id="skills">
-        <SectionHeading
-          eyebrow="Skills"
-          title={
-            <>
-              A stack that spans <span className="text-aurora">web, mobile and the factory floor</span>
-            </>
-          }
-          lead="Laravel and React are the daily tools; PLC and SCADA work is the part of the list most developers cannot offer."
-        />
+      <Section
+        id="skills"
+        rail={
+          <SectionHeading
+            eyebrow="Skills"
+            title={
+              <>
+                A stack that spans <span className="text-aurora">web, mobile and the factory floor</span>
+              </>
+            }
+            lead="Laravel and React are the daily tools; PLC and SCADA work is the part of the list most developers cannot offer."
+          />
+        }
+      >
         <SkillsSection groups={skills} />
       </Section>
 
-      <Section id="projects" grid>
-        <SectionHeading
-          eyebrow="Projects"
-          title={
-            <>
-              Systems running in production <span className="text-aurora">right now</span>
-            </>
-          }
-          lead="Each case study covers what the system does and the engineering decisions behind it."
-        />
-        <ProjectsSection projects={featured} />
+      <Section
+        id="projects"
+        grid
+        rail={
+          <>
+            <SectionHeading
+              eyebrow="Projects"
+              title={
+                <>
+                  Systems running in production <span className="text-aurora">right now</span>
+                </>
+              }
+              lead="Each case study covers what the system does and the engineering decisions behind it."
+            />
+            <div className="mt-4">
+              <ActionLink href="/projects" icon={<ArrowRight className="h-4 w-4" />}>
+                All projects
+              </ActionLink>
+            </div>
+          </>
+        }
+      >
+        <ProjectsSection projects={featured} showAllLink={false} />
       </Section>
 
       <EcosystemSection links={appLinks} />
 
-      <Section id="education">
-        <SectionHeading
-          eyebrow="Education & certifications"
-          title="Formal grounding for the practical work"
-        />
+      <Section
+        id="education"
+        rail={
+          <SectionHeading
+            eyebrow="Education & certifications"
+            title="Formal grounding for the practical work"
+          />
+        }
+      >
         <EducationSection educations={educations} certifications={certifications} />
       </Section>
 
-      <Section id="contact" grid>
-        <SectionHeading
-          eyebrow="Contact"
-          title={
-            <>
-              Tell me what you are building — <span className="text-aurora">I reply fast</span>
-            </>
-          }
-          lead="WhatsApp is quickest, email is best for anything with a document attached."
-        />
-        <div className="mt-12">
-          <ContactGrid channels={channels} />
-        </div>
+      <Section
+        id="contact"
+        grid
+        rail={
+          <SectionHeading
+            eyebrow="Contact"
+            title={
+              <>
+                Tell me what you are building — <span className="text-aurora">I reply fast</span>
+              </>
+            }
+            lead="WhatsApp is quickest, email is best for anything with a document attached."
+          />
+        }
+      >
+        <ContactGrid channels={channels} />
       </Section>
     </main>
   );
