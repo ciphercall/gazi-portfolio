@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { AmbientBackground } from "@/components/site/AmbientBackground";
+import { PageTransition } from "@/components/site/PageTransition";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
 import {
@@ -49,7 +50,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
   const links = contactLinks(handles);
 
   return (
-    <div id="top" className="relative flex min-h-dvh flex-col">
+    <div id="top" className="site relative flex min-h-dvh flex-col">
       <AmbientBackground />
       <div className="relative z-10 flex min-h-dvh flex-col">
         <a
@@ -67,7 +68,7 @@ export default async function PublicLayout({ children }: { children: ReactNode }
           cannot end up with nested <main> elements. The skip link still lands here.
         */}
         <div id="main" className="flex-1">
-          {children}
+          <PageTransition>{children}</PageTransition>
         </div>
 
         <SiteFooter

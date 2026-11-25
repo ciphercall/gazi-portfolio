@@ -47,7 +47,9 @@
   --r-control: 12px;
 
   /* layout: the one page width every public surface shares */
-  --shell-max: 92rem;
+  --shell-max: 96rem;
+  --bento-gap: 0.75rem;
+  --r-card-compact: 16px;
 
   /* motion */
   --ease-aurora: cubic-bezier(0.22, 1, 0.36, 1);
@@ -88,6 +90,37 @@
     0 16px 40px -20px rgba(11, 109, 102, 0.35);
 
   color-scheme: light;
+}
+
+/*
+ * Public-site compaction.
+ *
+ * The admin panel shares this stylesheet, so the tighter scale is scoped to the
+ * public layout only. `@theme inline` bakes the token values into the utilities,
+ * so scoped variables alone do not reach them; the two rules below carry the
+ * compact display/title sizes for every public page.
+ */
+.site {
+  --text-display: clamp(1.95rem, 3.2vw, 3rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.028em;
+  --text-title: clamp(1.2rem, 1.8vw, 1.7rem);
+  --text-title--line-height: 1.15;
+  --text-title--letter-spacing: -0.018em;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.site .text-display {
+  font-size: clamp(1.95rem, 3.2vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.028em;
+}
+
+.site .text-title {
+  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.018em;
 }
 
 /* ------------------------------------------------- 2. expose to Tailwind v4 */
@@ -331,8 +364,8 @@
 
   .label-mono {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 0.6875rem;
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--c-faint);
@@ -406,6 +439,54 @@
     box-shadow: var(--shadow-lift);
   }
 
+  /* Bento density: a 2px lift instead of 4 keeps dense grids from jittering. */
+  .bento-lift {
+    transition: transform 0.35s var(--ease-aurora), border-color 0.35s var(--ease-aurora),
+      box-shadow 0.35s var(--ease-aurora);
+  }
+  .bento-lift:hover {
+    transform: translateY(-2px);
+    border-color: var(--c-line-strong);
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* Pointer spotlight: the wrapper sets --mx/--my from the pointer. */
+  .spotlight-card {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease-aurora);
+    background: radial-gradient(
+      260px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in oklab, var(--c-teal) 16%, transparent),
+      transparent 62%
+    );
+  }
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+  @media (pointer: coarse) {
+    .spotlight-card::before {
+      display: none;
+    }
+  }
+
+  /* Hero name: a single masked rise, the one oversized type moment. */
+  .name-mask {
+    animation: mask-rise 0.9s var(--ease-aurora) both;
+  }
+  .name-mask-late {
+    animation-delay: 0.12s;
+  }
+
   /* Ambient background layer — fixed, behind content, non-interactive. */
   .ambient-root {
     position: fixed;
@@ -416,17 +497,13 @@
     contain: strict;
   }
 
-  .ambient-aurora {
+  /* The living field paints its own colour blooms; the canvas is inert. */
+  .living-canvas {
     position: absolute;
-    inset: -40% -20% auto -20%;
-    height: 150%;
-    background:
-      radial-gradient(38% 44% at 18% 22%, color-mix(in oklab, var(--c-teal) 42%, transparent), transparent 70%),
-      radial-gradient(34% 40% at 78% 12%, color-mix(in oklab, var(--c-cyan) 34%, transparent), transparent 70%),
-      radial-gradient(42% 46% at 62% 66%, color-mix(in oklab, var(--c-violet) 38%, transparent), transparent 72%);
-    filter: blur(70px);
-    opacity: 0.32;
-    animation: aurora-drift 70s var(--ease-aurora) infinite alternate;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .ambient-grid {
@@ -448,38 +525,11 @@
     -webkit-mask-image: radial-gradient(75% 65% at 50% 40%, #000 20%, transparent 100%);
   }
 
-  .ambient-glyph {
-    position: absolute;
-    color: var(--c-teal);
-    opacity: 0.08;
-    filter: blur(0.4px);
-    animation: ambient-float 60s var(--ease-aurora) infinite alternate;
-    will-change: transform;
-  }
-
-  .ambient-glyph--violet {
-    color: var(--c-violet);
-    opacity: 0.07;
-  }
-
-  .ambient-glyph--cyan {
-    color: var(--c-cyan);
-    opacity: 0.06;
-  }
-
   /*
    * In light mode the decorative layers sit directly behind body text, so the
    * same opacity that reads as atmosphere on near-black turns into a wash that
    * eats contrast on cream. They stay present, just quieter.
    */
-  .light .ambient-aurora {
-    opacity: 0.18;
-  }
-  .light .ambient-glyph,
-  .light .ambient-glyph--violet,
-  .light .ambient-glyph--cyan {
-    opacity: 0.05;
-  }
   .light .grain::before {
     opacity: 0.02;
   }
@@ -550,6 +600,19 @@
   }
   to {
     opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes mask-rise {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, 0.35em, 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 -10% 0);
     transform: none;
   }
 }

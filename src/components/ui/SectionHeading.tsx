@@ -30,47 +30,33 @@ export function SectionHeading({
   as: Heading = "h2",
 }: SectionHeadingProps) {
   const centered = align === "center";
-  // On wide screens the lead sits beside the title instead of under it, so the
-  // band uses the full shell rather than leaving its right half empty.
-  const twoColumn = !centered && Boolean(lead);
 
+  // Headings are used both full-width and inside the 3-column sticky rail, so
+  // the block never splits into inner columns: that collapsed the rail headings
+  // to one word per line.
   return (
-    <div
-      className={`${
-        centered
-          ? "mx-auto max-w-3xl text-center"
-          : twoColumn
-            ? "grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] xl:items-end xl:gap-14"
-            : "max-w-4xl"
-      } ${className}`}
-    >
-      <div className={centered ? "" : "max-w-3xl"}>
-        {eyebrow ? (
-          <p
-            className={`label-mono flex items-center gap-3 ${
-              centered ? "justify-center" : ""
-            }`}
-          >
-            <span
-              className="hidden h-px w-8 sm:block"
-              style={{ backgroundImage: AURORA_LINE }}
-              aria-hidden="true"
-            />
-            {eyebrow}
-          </p>
-        ) : null}
-
-        <Heading id={id} className="mt-3 text-title font-semibold">
-          {title}
-        </Heading>
-      </div>
-
-      {lead ? (
+    <div className={`${centered ? "mx-auto max-w-3xl text-center" : ""} ${className}`}>
+      {eyebrow ? (
         <p
-          className={`text-base leading-relaxed text-muted sm:text-lg ${
-            centered ? "mt-3" : "xl:pb-1.5"
+          className={`label-mono flex items-center gap-3 ${
+            centered ? "justify-center" : ""
           }`}
         >
+          <span
+            className="hidden h-px w-8 sm:block"
+            style={{ backgroundImage: AURORA_LINE }}
+            aria-hidden="true"
+          />
+          {eyebrow}
+        </p>
+      ) : null}
+
+      <Heading id={id} className="mt-2 text-title font-semibold">
+        {title}
+      </Heading>
+
+      {lead ? (
+        <p className="mt-2.5 max-w-[62ch] text-[13.5px] leading-relaxed text-muted">
           {lead}
         </p>
       ) : null}
