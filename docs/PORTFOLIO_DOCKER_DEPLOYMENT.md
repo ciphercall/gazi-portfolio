@@ -265,6 +265,30 @@ ATS) and the running bundle containing the build SHA. `npm run typecheck`, `npm 
 `npm run test` (29 tests) ran inside the `app` container. The local stack and image were removed
 afterwards; the two named volumes were kept.
 
+### Bento + living background — deployed and verified 2026-11-25 (`5b0a746`)
+
+Pushed to `main`; the GitHub Actions workflow rebuilt the image and deployed it.
+No database migration was required. The Android companion was released separately
+as OTA build `0.3.3+106` (forced, prod channel).
+
+Verified against `https://gazi.ciphercall.dev` after the deploy:
+
+| Check | Result |
+|-------|--------|
+| Home / health / project / admin login | 200, 200, 200, 200 |
+| Living canvas in SSR HTML | `living-canvas` present |
+| Portrait | `/api/v1/profile` returns the managed avatar path; hero renders it |
+| Light-mode contrast | ink 17.6:1, muted 10.3:1, faint 7.2:1 |
+| Admin | Login page reachable; no schema, action or upload contract changed |
+
+Local Docker verification before the push: the stack was rebuilt from the
+committed source, all four containers healthy, and `npm run typecheck`,
+`npm run lint` and `npm run test` (4 files / 40 tests) passed inside the `app`
+container. Browser checks at `127.0.0.1:8023` confirmed the canvas animates and
+is static under reduced motion. The local stack was **left running** for the
+owner's manual test; the production portrait was seeded into the local media
+volume and `profile.avatarPath` for that test only.
+
 ### Scheduled LinkedIn posts while the stack sleeps
 
 The gatekeeper stops the whole compose stack â€” scheduler included â€” after five hours of
