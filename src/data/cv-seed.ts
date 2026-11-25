@@ -1284,7 +1284,7 @@ export const PROJECTS: SeedProject[] = [
     role: "Project Manager",
     client: "People's Poultry & Hatchery Limited",
     year: 2026,
-    liveUrl: "https://zkteco.peoplesitsolution.online",
+    liveUrl: "https://device.pphl.online",
     repoUrl: "https://github.com/Tanvirshibli/zkteco-Automation-management-PPHL",
     techStack: ["Laravel", "PostgreSQL", "Redis", "Docker", "Livewire"],
     featured: false,

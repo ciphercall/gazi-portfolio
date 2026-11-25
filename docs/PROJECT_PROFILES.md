@@ -434,7 +434,7 @@ This tool is the annotation half of the HMS dental surface, which the case study
   pushes into the HR system's attendance rules.
 - **What it does:** an ADMS-protocol receiver and dashboard that ingests device punches, maps them
   to employees and shifts, and feeds the attendance engine — live at
-  `zkteco.peoplesitsolution.online`.
+  `device.pphl.online`.
 - **Commit note:** 605 personal commits as sole author.
 - **Outcome:** Device punches reach attendance automatically, removing the daily export-import step.
 

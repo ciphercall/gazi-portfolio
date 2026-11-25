@@ -73,7 +73,7 @@ the repository that backs the project.
 | 28 | `rocket-launcher-ota` | Independent | 2026-08-12 → 2026-11-14 | `rocket-launcher` 2026-08-12 → 2026-11-14 (148) | Personal repo, sole author; publishes OTA builds for the attendance app | verified |
 | 29 | `pphl-accounts-erp` | People's Poultry & Hatchery Limited | 2024-07-09 → present | `pphl_account-laravel` 2024-08-27 → 2026-11-03 (89); `pphl-accounts-client` 2024-07-09 → 2026-11-03 (291) | `PPHL-ERP` org + dated commits | verified |
 | 30 | `scm-data-migration` | People's Poultry & Hatchery Limited | 2026-02-22 → 2026-11-21 | worked inside `Backend_Supply_Chain_Management` | Same repository and period as the SCM platform's personal commits | derived |
-| 31 | `zkteco-attendance` | People's Poultry & Hatchery Limited | 2026-06-17 → present | `zkteco-Automation-management-PPHL` 2026-06-17 → 2026-11-21 (605) | PPHL engineering group + 605 commits as sole author; live at `zkteco.peoplesitsolution.online` | verified |
+| 31 | `zkteco-attendance` | People's Poultry & Hatchery Limited | 2026-06-17 → present | `zkteco-Automation-management-PPHL` 2026-06-17 → 2026-11-21 (605) | PPHL engineering group + 605 commits as sole author; live at `device.pphl.online` | verified |
 | 32 | `gazi-portfolio-companion-app` | Independent | 2026-10-15 → present | `gazi-portfolio-app` 2026-10-15 → 2026-11-21 (19) | Own product | verified |
 
 ## Attribution corrections against the previous seed data
