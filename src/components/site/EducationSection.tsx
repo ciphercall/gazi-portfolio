@@ -41,38 +41,38 @@ function issuedLabel(issuedOn: Date | string | null): string {
 export function EducationSection({ educations, certifications }: EducationSectionProps) {
   const both = educations.length > 0 && certifications.length > 0;
   return (
-    <div className={`mt-10 grid gap-5 ${both ? "lg:grid-cols-2" : "lg:grid-cols-1"}`}>
+    <div className={`grid gap-3 ${both ? "sm:grid-cols-2" : ""}`}>
       {educations.length > 0 ? (
         <Reveal>
-          <section className="glass hairline h-full p-5" aria-labelledby="education-heading">
-            <div className="flex items-center gap-3">
-              <IconBadge>
-                <GraduationCap className="h-5 w-5" aria-hidden="true" />
+          <section className="glass hairline h-full rounded-card p-4" aria-labelledby="education-heading">
+            <div className="flex items-center gap-2.5">
+              <IconBadge size="sm">
+                <GraduationCap className="h-4 w-4" aria-hidden="true" />
               </IconBadge>
               <div>
-                <h3 id="education-heading" className="font-display text-lg font-semibold text-ink">
+                <h3 id="education-heading" className="font-display text-[13.5px] font-semibold text-ink">
                   Education
                 </h3>
                 <p className="label-mono">{educations.length} qualifications</p>
               </div>
             </div>
 
-            <ul className="mt-5 grid gap-4">
+            <ul className="mt-3 grid gap-3">
               {educations.map((entry) => (
-                <li key={`${entry.school}-${entry.degree}`} className="border-b border-line pb-4 last:border-b-0 last:pb-0">
-                  <h4 className="font-display text-base font-semibold text-ink">
+                <li key={`${entry.school}-${entry.degree}`} className="border-b border-line pb-3 last:border-b-0 last:pb-0">
+                  <h4 className="font-display text-[13px] font-semibold leading-snug text-ink">
                     {entry.degree}
                     {entry.field ? <span className="text-muted"> · {entry.field}</span> : null}
                   </h4>
-                  <p className="mt-1 text-sm text-muted">{entry.school}</p>
-                  <p className="mt-2 inline-flex items-center gap-2 text-xs text-faint">
-                    <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                  <p className="mt-0.5 text-[12.5px] text-muted">{entry.school}</p>
+                  <p className="mt-1.5 inline-flex items-center gap-1.5 text-[11px] text-faint">
+                    <CalendarDays className="h-3 w-3" aria-hidden="true" />
                     <span>
                       {entry.startYear} — {entry.endYear}
                     </span>
                   </p>
                   {entry.details ? (
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{entry.details}</p>
+                    <p className="mt-1.5 text-[12px] leading-relaxed text-muted">{entry.details}</p>
                   ) : null}
                 </li>
               ))}
@@ -83,15 +83,15 @@ export function EducationSection({ educations, certifications }: EducationSectio
 
       {certifications.length > 0 ? (
         <Reveal delay={0.05}>
-          <section className="glass hairline h-full p-5" aria-labelledby="certifications-heading">
-            <div className="flex items-center gap-3">
-              <IconBadge toneClassName="text-violet">
-                <Award className="h-5 w-5" aria-hidden="true" />
+          <section className="glass hairline h-full rounded-card p-4" aria-labelledby="certifications-heading">
+            <div className="flex items-center gap-2.5">
+              <IconBadge size="sm" toneClassName="text-violet">
+                <Award className="h-4 w-4" aria-hidden="true" />
               </IconBadge>
               <div>
                 <h3
                   id="certifications-heading"
-                  className="font-display text-lg font-semibold text-ink"
+                  className="font-display text-[13.5px] font-semibold text-ink"
                 >
                   Certifications
                 </h3>
@@ -99,12 +99,12 @@ export function EducationSection({ educations, certifications }: EducationSectio
               </div>
             </div>
 
-            <ul className="mt-5 grid gap-4">
+            <ul className="mt-3 grid gap-3">
               {certifications.map((entry) => {
                 const issued = issuedLabel(entry.issuedOn);
                 return (
-                  <li key={entry.name} className="border-b border-line pb-4 last:border-b-0 last:pb-0">
-                    <h4 className="font-display text-base font-semibold text-ink">
+                  <li key={entry.name} className="border-b border-line pb-3 last:border-b-0 last:pb-0">
+                    <h4 className="font-display text-[13px] font-semibold leading-snug text-ink">
                       {entry.url ? (
                         <a
                           href={entry.url}
@@ -120,11 +120,11 @@ export function EducationSection({ educations, certifications }: EducationSectio
                       )}
                     </h4>
                     {entry.issuer ? (
-                      <p className="mt-1 text-sm text-muted">{entry.issuer}</p>
+                      <p className="mt-0.5 text-[12.5px] text-muted">{entry.issuer}</p>
                     ) : null}
                     {issued ? (
-                      <p className="mt-2 inline-flex items-center gap-2 text-xs text-faint">
-                        <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                      <p className="mt-1.5 inline-flex items-center gap-1.5 text-[11px] text-faint">
+                        <CalendarDays className="h-3 w-3" aria-hidden="true" />
                         <span>Issued {issued}</span>
                       </p>
                     ) : null}
