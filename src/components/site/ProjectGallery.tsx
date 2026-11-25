@@ -246,8 +246,8 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        <p className="flex min-w-0 items-center gap-2 text-sm text-muted">
-          <ImageIcon className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
+        <p className="flex min-w-0 items-center gap-2 text-[12.5px] text-muted">
+          <ImageIcon className="h-3.5 w-3.5 shrink-0 text-teal" aria-hidden="true" />
           <span className="truncate">{caption}</span>
           <span className="label-mono shrink-0" aria-live="polite">
             {safeIndex + 1} / {count}
@@ -260,7 +260,7 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
             onClick={() => setAutoPlay((value) => !value)}
             aria-pressed={autoPlay}
             disabled={count < 2 || Boolean(reduceMotion)}
-            className="pill"
+            className="pill px-3 py-1.5 text-[12px]"
             title={reduceMotion ? "Auto-play is off because reduced motion is enabled" : undefined}
           >
             {autoPlay ? (
@@ -270,12 +270,22 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
             )}
             <span>{autoPlay ? "Pause" : "Play"}</span>
           </button>
-          <button type="button" onClick={() => step(-1)} disabled={count < 2} className="pill">
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          <button
+            type="button"
+            onClick={() => step(-1)}
+            disabled={count < 2}
+            className="pill px-3 py-1.5 text-[12px]"
+          >
+            <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Previous</span>
           </button>
-          <button type="button" onClick={() => step(1)} disabled={count < 2} className="pill">
-            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          <button
+            type="button"
+            onClick={() => step(1)}
+            disabled={count < 2}
+            className="pill px-3 py-1.5 text-[12px]"
+          >
+            <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Next</span>
           </button>
         </div>
@@ -295,7 +305,7 @@ export function ProjectGallery({ images, projectTitle }: ProjectGalleryProps) {
                   onClick={() => goTo(itemIndex)}
                   aria-current={isActive ? "true" : undefined}
                   aria-label={label}
-                  className={`relative block h-16 w-24 overflow-hidden rounded-control border transition sm:h-20 sm:w-32 ${
+                  className={`relative block h-14 w-20 overflow-hidden rounded-control border transition sm:h-16 sm:w-24 ${
                     isActive
                       ? "border-teal ring-2 ring-[color-mix(in_oklab,var(--c-teal)_35%,transparent)]"
                       : "border-line opacity-70 hover:opacity-100"
