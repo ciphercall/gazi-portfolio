@@ -289,6 +289,29 @@ is static under reduced motion. The local stack was **left running** for the
 owner's manual test; the production portrait was seeded into the local media
 volume and `profile.avatarPath` for that test only.
 
+### One portrait + icon reveal — deployed and verified 2026-11-25 (`a3934b5`)
+
+Pushed to `main`; the GitHub Actions workflow rebuilt and deployed the image. No
+migration was required. The Android companion shipped the same field change as
+OTA `0.3.5+108` (forced, prod).
+
+Verified live (`https://gazi.ciphercall.dev`, cache-busted — Cloudflare can hold
+the previous HTML for a short window):
+
+| Check | Result |
+|-------|--------|
+| Home / `/api/health` | 200, 200 |
+| Living canvas | `living-canvas` element present |
+| Portrait count on `/` | 1 image (`/media/profile/2026/10/…webp`) |
+| Icons | settled glyphs show the coloured database/document/monitor/shield artwork in a live screenshot |
+| Light mode | icons and text both legible at 1440 |
+
+Local Docker verification before the push: the stack rebuilt from source,
+`npm run typecheck`, `npm run lint` and `npm run test` (4 files / 45 tests, five
+new icon-reveal assertions) passed inside the `app` container. Browser checks at
+`127.0.0.1:8023` confirmed one portrait, icons in both themes, pointer/ripple
+interaction and the static reduced-motion frame. Stack left running for review.
+
 ### Scheduled LinkedIn posts while the stack sleeps
 
 The gatekeeper stops the whole compose stack â€” scheduler included â€” after five hours of
