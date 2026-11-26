@@ -63,7 +63,13 @@ export function EcosystemSection({ links }: EcosystemSectionProps) {
                     ) : (
                       <Download className="h-4 w-4" aria-hidden="true" />
                     )}
-                    <span>{isWeb ? "Open site" : "Download APK"}</span>
+                    <span>
+                      {isWeb
+                        ? "Open site"
+                        : link.release
+                          ? `Download APK · v${link.release.versionName} (${link.release.versionCode})`
+                          : "Download APK"}
+                    </span>
                   </a>
                 </div>
               </article>

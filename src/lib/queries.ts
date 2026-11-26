@@ -1,3 +1,4 @@
+import { fetchLatestRelease } from "@/lib/app-releases";
 import { prisma } from "@/lib/db";
 import { contentHash } from "@/lib/crypto";
 import { getCvSettings } from "@/lib/settings";
@@ -80,6 +81,8 @@ export interface AppLinkDto {
   tagline: string;
   href: string;
   platform: "WEB" | "ANDROID";
+  /** Present when the href was resolved from a live OTA manifest. */
+  release?: { versionName: string; versionCode: number };
 }
 
 /* ---------------------------------------------------------------- profile --- */
@@ -130,13 +133,28 @@ export async function getAppLinks(): Promise<AppLinkDto[]> {
     orderBy: [{ order: "asc" }, { name: "asc" }],
   });
 
-  return rows.map((row) => ({
+  const links: AppLinkDto[] = rows.map((row) => ({
     slug: row.slug,
     name: row.name,
     tagline: row.tagline,
     href: row.href,
     platform: row.platform,
   }));
+
+  // Android entries with a known OTA manifest point at the newest build; the
+  // stored href remains the fallback if GitHub is unreachable.
+  return Promise.all(
+    links.map(async (link) => {
+      if (link.platform !== "ANDROID") return link;
+      const latest = await fetchLatestRelease(link.slug);
+      if (!latest) return link;
+      return {
+        ...link,
+        href: latest.apk.url,
+        release: { versionName: latest.versionName, versionCode: latest.versionCode },
+      };
+    }),
+  );
 }
 
 /* --------------------------------------------------------------- projects --- */
