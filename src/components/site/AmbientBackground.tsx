@@ -11,6 +11,7 @@ export function AmbientBackground() {
   return (
     <div className="ambient-root" aria-hidden="true">
       <LivingBackground />
+      <div className="field-veil" />
       <div className="ambient-grid" />
     </div>
   );

@@ -176,7 +176,7 @@ export default async function CvDownloadPage() {
     <main className="relative mx-auto w-full max-w-[var(--shell-max)] overflow-hidden px-4 pb-10 pt-8 sm:px-6 sm:pt-10 lg:px-8">
       <div className="aurora-mesh" aria-hidden />
 
-      <div className="relative">
+      <div className="glass-section relative px-3.5 py-5 sm:px-6 sm:py-7">
         <p className="label-mono">Curriculum vitae</p>
         <h1 className="mt-2 text-display font-semibold text-ink">
           Two CVs. <span className="text-aurora">One set of facts.</span>

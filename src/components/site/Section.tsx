@@ -19,6 +19,8 @@ export interface SectionProps {
   grid?: boolean;
   /** Sticky left column at xl: eyebrow, title, lead, actions. */
   rail?: ReactNode;
+  /** Frosted surface behind the whole band. Off only for full-bleed media. */
+  surface?: boolean;
 }
 
 export function Section({
@@ -28,24 +30,27 @@ export function Section({
   tight = false,
   grid = false,
   rail,
+  surface = true,
 }: SectionProps) {
   return (
     <section
       id={id}
-      className={`relative isolate px-4 ${
-        tight ? "py-8 sm:py-10" : "py-12 sm:py-14 lg:py-16"
-      } sm:px-6 lg:px-8 ${className}`}
+      className={`relative isolate px-3 sm:px-4 lg:px-6 ${
+        tight ? "py-4 sm:py-5" : "py-6 sm:py-8 lg:py-10"
+      } ${className}`}
     >
       {grid ? <div className="grid-overlay" aria-hidden="true" /> : null}
       <div className="relative z-10 mx-auto w-full max-w-[var(--shell-max)]">
-        {rail ? (
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
-            <div className="lg:col-span-3 xl:sticky xl:top-24 xl:self-start">{rail}</div>
-            <div className="min-w-0 lg:col-span-9">{children}</div>
-          </div>
-        ) : (
-          children
-        )}
+        <div className={surface ? "glass-section px-3.5 py-5 sm:px-6 sm:py-7" : ""}>
+          {rail ? (
+            <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+              <div className="lg:col-span-3 xl:sticky xl:top-24 xl:self-start">{rail}</div>
+              <div className="min-w-0 lg:col-span-9">{children}</div>
+            </div>
+          ) : (
+            children
+          )}
+        </div>
       </div>
     </section>
   );

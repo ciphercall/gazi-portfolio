@@ -18,15 +18,15 @@
   /* canvas + surfaces */
   --c-canvas: #060910;
   --c-canvas-2: #0b1220;
-  --c-panel: rgba(255, 255, 255, 0.04);
-  --c-panel-strong: rgba(255, 255, 255, 0.07);
+  --c-panel: rgba(255, 255, 255, 0.10);
+  --c-panel-strong: rgba(255, 255, 255, 0.15);
   --c-line: rgba(255, 255, 255, 0.08);
   --c-line-strong: rgba(255, 255, 255, 0.16);
 
   /* type */
   --c-ink: #f8fafc;
-  --c-muted: #94a3b8;
-  --c-faint: #64748b;
+  --c-muted: #a9b7c9;
+  --c-faint: #8595a9;
 
   /* aurora accents (identical language in both themes) */
   --c-teal: #17c7b7;
@@ -242,6 +242,25 @@
     border-radius: var(--r-card);
     -webkit-backdrop-filter: blur(14px) saturate(140%);
     backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  /*
+   * The public page's content band. Every `Section` renders its whole inner
+   * layout on this frosted surface so the animated field reads as a backdrop,
+   * never as competition for the text.
+   */
+  .glass-section {
+    position: relative;
+    border-radius: var(--r-card);
+    border: 1px solid var(--c-line);
+    background: color-mix(in oklab, var(--c-canvas-2) 66%, transparent);
+    -webkit-backdrop-filter: blur(22px) saturate(130%);
+    backdrop-filter: blur(22px) saturate(130%);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .light .glass-section {
+    background: color-mix(in oklab, #ffffff 82%, transparent);
   }
 
   .glass-strong {
@@ -497,13 +516,25 @@
     contain: strict;
   }
 
-  /* The living field paints its own colour blooms; the canvas is inert. */
+  /* The living field is outline-only now; the canvas stays inert. */
   .living-canvas {
     position: absolute;
     inset: 0;
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  /* Quiets the animated field behind the content; the sections add frost on top. */
+  .field-veil {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklab, var(--c-canvas) 42%, transparent);
+    pointer-events: none;
+  }
+
+  .light .field-veil {
+    background: color-mix(in oklab, var(--c-canvas) 40%, transparent);
   }
 
   .ambient-grid {
