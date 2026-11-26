@@ -12,22 +12,17 @@ import {
   morphState,
   rippleProgress,
 } from "@/lib/background/field";
-import {
-  detailsAt,
-  ringAt,
-  toneAt,
-  type IconDetail,
-  type Point,
-} from "@/lib/background/glyph-shapes";
+import { iconAssetAt, ringAt, toneAt, type Point } from "@/lib/background/glyph-shapes";
 
 /**
  * The site's living background.
  *
- * Industry silhouettes — database, document, monitor, phone, cloud, shield,
- * chip, code — drift and morph into each other continuously. Whenever a shape
- * settles, its colourful icon and detail artwork resolve inside the silhouette,
- * hold while the shape rests, and dissolve as the next morph begins. The field
- * leans toward the cursor and a click sends a ripple through it.
+ * Industry outlines — database, document, monitor, phone, cloud, shield, chip,
+ * code — drift and morph into each other continuously, drawn as colourful
+ * outlines with no fill. Whenever a shape settles, the real Lucide icon vendored
+ * under `public/icons/field` resolves in its place (gradient-tinted), holds while
+ * the shape rests, and dissolves as the next morph begins. The field leans
+ * toward the cursor and a click sends a ripple through it.
  *
  * One canvas, no dependencies, `pointer-events: none`. Paused when the tab is
  * hidden, static under `prefers-reduced-motion` (where the icons rest visible),
@@ -45,8 +40,6 @@ interface Ripple {
   y: number;
   at: number;
 }
-
-const WHITE: Rgb = { r: 255, g: 255, b: 255 };
 
 const FALLBACKS: [Rgb, Rgb, Rgb, Rgb] = [
   { r: 25, g: 211, b: 197 },
@@ -131,74 +124,6 @@ function traceSmoothRing(context: CanvasRenderingContext2D, points: Point[]): vo
   context.closePath();
 }
 
-/**
- * Draws the settled element as a colourful icon: gradient fill, bold outline,
- * and its interior detail strokes (bands, text lines, screen, tick, pins,
- * chevrons). Details are drawn rigidly inside the icon so they stay legible,
- * unlike the liquid silhouette behind them.
- */
-function drawIconLayer(
-  context: CanvasRenderingContext2D,
-  ring: Point[],
-  details: IconDetail[],
-  accent: Rgb,
-  second: Rgb,
-  cx: number,
-  cy: number,
-  size: number,
-  rotation: number,
-  opacity: number,
-): void {
-  if (opacity <= 0.01) return;
-
-  const glow = context.createRadialGradient(cx, cy, 0, cx, cy, size * 0.66);
-  glow.addColorStop(0, rgba(accent, 0.13 * opacity));
-  glow.addColorStop(1, rgba(accent, 0));
-  context.fillStyle = glow;
-  context.beginPath();
-  context.arc(cx, cy, size * 0.66, 0, Math.PI * 2);
-  context.fill();
-
-  context.save();
-  context.translate(cx, cy);
-  context.rotate(rotation);
-  context.scale(size, size);
-
-  const gradient = context.createLinearGradient(-0.5, -0.5, 0.5, 0.5);
-  gradient.addColorStop(0, rgba(accent, 0.42 * opacity));
-  gradient.addColorStop(1, rgba(second, 0.32 * opacity));
-
-  traceSmoothRing(context, ring);
-  context.fillStyle = gradient;
-  context.fill();
-  context.strokeStyle = rgba(accent, 0.95 * opacity);
-  context.lineWidth = 0.02;
-  context.lineJoin = "round";
-  context.lineCap = "round";
-  context.stroke();
-
-  // Bright line work is what makes the silhouette read as an icon even when
-  // only part of it shows between the content panels.
-  context.strokeStyle = rgba(WHITE, 0.72 * opacity);
-  context.lineWidth = 0.03;
-  for (const detail of details) {
-    context.beginPath();
-    if (detail.kind === "polyline") {
-      const [first, ...rest] = detail.points;
-      if (!first) continue;
-      context.moveTo(first[0], first[1]);
-      for (const [x, y] of rest) context.lineTo(x, y);
-    } else if (detail.kind === "rect") {
-      context.rect(detail.x, detail.y, detail.w, detail.h);
-    } else {
-      context.ellipse(detail.cx, detail.cy, detail.rx, detail.ry, 0, 0, Math.PI * 2);
-    }
-    context.stroke();
-  }
-
-  context.restore();
-}
-
 export function LivingBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -221,6 +146,51 @@ export function LivingBackground() {
     let hasPointer = false;
     const ripples: Ripple[] = [];
 
+    // Real vendored icons, rasterised once and gradient-tinted per theme.
+    const iconImages = new Map<number, HTMLImageElement>();
+    const tintCache = new Map<string, HTMLCanvasElement>();
+
+    const tintedIcon = (index: number, accent: Rgb, second: Rgb): HTMLCanvasElement | null => {
+      const image = iconImages.get(index);
+      if (!image || !image.complete || image.naturalWidth === 0) return null;
+
+      const key = `${index}:${palette.light ? "l" : "d"}:${accent.r},${accent.g},${accent.b}:${second.r},${second.g},${second.b}`;
+      const cached = tintCache.get(key);
+      if (cached) return cached;
+
+      const size = 256;
+      const offscreen = document.createElement("canvas");
+      offscreen.width = size;
+      offscreen.height = size;
+      const tint = offscreen.getContext("2d");
+      if (!tint) return null;
+
+      tint.drawImage(image, 0, 0, size, size);
+      tint.globalCompositeOperation = "source-in";
+      const gradient = tint.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, rgba(accent, 1));
+      gradient.addColorStop(1, rgba(second, 1));
+      tint.fillStyle = gradient;
+      tint.fillRect(0, 0, size, size);
+
+      tintCache.set(key, offscreen);
+      return offscreen;
+    };
+
+    const preloadIcons = () => {
+      for (let index = 0; ; index += 1) {
+        const asset = iconAssetAt(index);
+        if (!asset) break;
+        const image = new Image();
+        image.decoding = "async";
+        image.src = asset;
+        image.onload = () => {
+          if (reduced) draw(startedAt);
+        };
+        iconImages.set(index, image);
+      }
+    };
+
     const resize = () => {
       const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
       width = window.innerWidth;
@@ -237,8 +207,7 @@ export function LivingBackground() {
 
       const elapsed = now - startedAt;
       const shortest = Math.min(width, height);
-      const fillAlpha = palette.light ? 0.06 : 0.08;
-      const strokeAlpha = palette.light ? 0.11 : 0.16;
+      const outlineAlpha = palette.light ? 0.34 : 0.3;
 
       pointer.x += (pointer.targetX - pointer.x) * 0.08;
       pointer.y += (pointer.targetY - pointer.y) * 0.08;
@@ -288,64 +257,42 @@ export function LivingBackground() {
                     (shortest * 0.65),
               )
             : 0;
-        const fill = fillAlpha * (1 + proximity * 0.9);
-        const stroke = strokeAlpha * (1 + proximity * 1.2);
-
-        const bloom = context.createRadialGradient(
-          transform.cx,
-          transform.cy,
-          0,
-          transform.cx,
-          transform.cy,
-          transform.size * 0.75,
-        );
-        bloom.addColorStop(
-          0,
-          rgba(accent, (palette.light ? 0.05 : 0.075) * (1 + proximity * 0.7)),
-        );
-        bloom.addColorStop(1, rgba(accent, 0));
-        context.fillStyle = bloom;
-        context.beginPath();
-        context.arc(transform.cx, transform.cy, transform.size * 0.75, 0, Math.PI * 2);
-        context.fill();
-
+        // No fills anywhere: the field is colourful outlining only.
+        const outline = outlineAlpha * (1 + proximity * 1.3);
         const gradient = context.createLinearGradient(
           transform.cx - transform.size / 2,
           transform.cy - transform.size / 2,
           transform.cx + transform.size / 2,
           transform.cy + transform.size / 2,
         );
-        gradient.addColorStop(0, rgba(accent, fill));
-        gradient.addColorStop(1, rgba(second, fill * 0.5));
+        gradient.addColorStop(0, rgba(accent, outline));
+        gradient.addColorStop(1, rgba(second, outline * 0.85));
 
         traceSmoothRing(context, points);
-        context.fillStyle = gradient;
-        context.fill();
-        context.strokeStyle = rgba(accent, stroke);
-        context.lineWidth = 1.15;
+        context.strokeStyle = gradient;
+        context.lineWidth = 1.5 + proximity * 1.2;
+        context.lineJoin = "round";
         context.stroke();
 
-        // Once the shape has settled, its recognisable icon resolves in place
-        // and fades again as the next morph starts.
+        // Once the shape has settled, the real downloaded icon resolves in
+        // place and fades again as the next morph starts.
         const settle = iconAlpha(elapsed, glyph.phase);
         if (settle > 0.01) {
           const iconIndex = iconShapeIndex(state);
           const [toneA, toneB] = toneAt(iconIndex);
           const iconAccent = palette.accents[toneA % palette.accents.length] ?? FALLBACKS[0];
           const iconSecond = palette.accents[toneB % palette.accents.length] ?? FALLBACKS[1];
+          const icon = tintedIcon(iconIndex, iconAccent, iconSecond);
 
-          drawIconLayer(
-            context,
-            ringAt(iconIndex),
-            detailsAt(iconIndex),
-            iconAccent,
-            iconSecond,
-            transform.cx,
-            transform.cy,
-            transform.size,
-            transform.rotation,
-            settle,
-          );
+          if (icon) {
+            const iconSize = transform.size * 0.84;
+            context.save();
+            context.globalAlpha = settle * (palette.light ? 0.84 : 0.82);
+            context.translate(transform.cx, transform.cy);
+            context.rotate(transform.rotation);
+            context.drawImage(icon, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
+            context.restore();
+          }
         }
       }
 
@@ -423,10 +370,12 @@ export function LivingBackground() {
 
     const themeObserver = new MutationObserver(() => {
       palette = readPalette();
+      tintCache.clear();
       if (reduced) draw(startedAt);
     });
 
     resize();
+    preloadIcons();
     start();
 
     window.addEventListener("resize", resize);

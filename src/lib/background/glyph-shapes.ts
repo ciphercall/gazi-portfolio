@@ -255,95 +255,25 @@ export function ringAt(index: number): Point[] {
 }
 
 /**
- * Interior artwork that turns a settled silhouette into a recognisable icon:
- * database bands, page text, a screen, a shield tick, and so on. Authored in the
- * same 0–1 box as the silhouette polygons and transformed with the same
- * centre/scale, so the details sit exactly inside the ring.
+ * The real icon artwork for each element: Lucide outline SVGs vendored under
+ * `public/icons/field` (ISC, see the LICENSE beside them). The morph still runs
+ * on the equal-point rings above; when a shape settles its downloaded icon is
+ * drawn in place, so the artwork is a real icon rather than a hand-made sketch.
  */
-export type IconDetail =
-  | { kind: "polyline"; points: [number, number][] }
-  | { kind: "rect"; x: number; y: number; w: number; h: number; radius?: number }
-  | { kind: "ellipse"; cx: number; cy: number; rx: number; ry: number };
-
-const RAW_DETAILS: Record<GlyphName, IconDetail[]> = {
-  database: [
-    { kind: "ellipse", cx: 0.5, cy: 0.38, rx: 0.29, ry: 0.085 },
-    { kind: "ellipse", cx: 0.5, cy: 0.58, rx: 0.29, ry: 0.085 },
-  ],
-  document: [
-    { kind: "polyline", points: [[0.31, 0.46], [0.63, 0.46]] },
-    { kind: "polyline", points: [[0.31, 0.58], [0.63, 0.58]] },
-    { kind: "polyline", points: [[0.31, 0.7], [0.54, 0.7]] },
-    { kind: "polyline", points: [[0.64, 0.14], [0.64, 0.3], [0.8, 0.3]] },
-  ],
-  monitor: [
-    { kind: "rect", x: 0.2, y: 0.26, w: 0.6, h: 0.3, radius: 0.03 },
-    { kind: "polyline", points: [[0.5, 0.64], [0.5, 0.76]] },
-  ],
-  phone: [
-    { kind: "rect", x: 0.36, y: 0.2, w: 0.28, h: 0.54, radius: 0.04 },
-    { kind: "polyline", points: [[0.44, 0.16], [0.56, 0.16]] },
-  ],
-  cloud: [],
-  shield: [{ kind: "polyline", points: [[0.37, 0.5], [0.46, 0.6], [0.64, 0.38]] }],
-  chip: [{ kind: "rect", x: 0.36, y: 0.36, w: 0.28, h: 0.28, radius: 0.03 }],
-  code: [
-    { kind: "polyline", points: [[0.52, 0.3], [0.4, 0.5], [0.52, 0.7]] },
-    { kind: "polyline", points: [[0.62, 0.28], [0.56, 0.72]] },
-  ],
+export const ICON_ASSETS: Record<GlyphName, string> = {
+  database: "/icons/field/database.svg",
+  document: "/icons/field/file-text.svg",
+  monitor: "/icons/field/monitor.svg",
+  phone: "/icons/field/smartphone.svg",
+  cloud: "/icons/field/cloud.svg",
+  shield: "/icons/field/shield.svg",
+  chip: "/icons/field/cpu.svg",
+  code: "/icons/field/code-xml.svg",
 };
 
-function ringFrame(ring: Point[]): { cx: number; cy: number; scale: number } {
-  const xs = ring.map((point) => point.x);
-  const ys = ring.map((point) => point.y);
-  const minX = Math.min(...xs);
-  const maxX = Math.max(...xs);
-  const minY = Math.min(...ys);
-  const maxY = Math.max(...ys);
-
-  return {
-    cx: (minX + maxX) / 2,
-    cy: (minY + maxY) / 2,
-    scale: Math.max(maxX - minX, maxY - minY) || 1,
-  };
-}
-
-function transformDetail(detail: IconDetail, frame: ReturnType<typeof ringFrame>): IconDetail {
-  const x = (value: number) => (value - frame.cx) / frame.scale;
-  const y = (value: number) => (value - frame.cy) / frame.scale;
-  const s = (value: number) => value / frame.scale;
-
-  switch (detail.kind) {
-    case "polyline":
-      return { kind: "polyline", points: detail.points.map(([px, py]) => [x(px), y(py)]) };
-    case "rect":
-      return {
-        kind: "rect",
-        x: x(detail.x),
-        y: y(detail.y),
-        w: s(detail.w),
-        h: s(detail.h),
-        radius: detail.radius === undefined ? undefined : s(detail.radius),
-      };
-    case "ellipse":
-      return { kind: "ellipse", cx: x(detail.cx), cy: y(detail.cy), rx: s(detail.rx), ry: s(detail.ry) };
-  }
-}
-
-export const SHAPE_DETAILS: Record<GlyphName, IconDetail[]> = GLYPH_NAMES.reduce(
-  (accumulator, name) => {
-    // The frame must come from the raw polygon (0–1 space), which is the same
-    // frame `normaliseRing` uses; the exported rings are already centred.
-    const frame = ringFrame(resamplePolygon(RAW[name]));
-    accumulator[name] = RAW_DETAILS[name].map((detail) => transformDetail(detail, frame));
-    return accumulator;
-  },
-  {} as Record<GlyphName, IconDetail[]>,
-);
-
-export function detailsAt(index: number): IconDetail[] {
+export function iconAssetAt(index: number): string | null {
   const name = GLYPH_NAMES[index];
-  return name ? SHAPE_DETAILS[name] : [];
+  return name ? ICON_ASSETS[name] : null;
 }
 
 /** Accent pairs (indices into the theme palette) per element. */

@@ -13,7 +13,7 @@ import {
   morphState,
   rippleProgress,
 } from "./field";
-import { GLYPH_NAMES, RING_POINTS, SHAPE_DETAILS, SHAPE_RINGS, SHAPES } from "./glyph-shapes";
+import { GLYPH_NAMES, ICON_ASSETS, RING_POINTS, SHAPE_RINGS, SHAPES } from "./glyph-shapes";
 
 describe("glyph rings", () => {
   it("has one ring per industry motif", () => {
@@ -162,20 +162,10 @@ describe("icon reveal", () => {
     expect(iconShapeIndex(late)).toBe(late.to);
   });
 
-  it("keeps detail artwork inside the silhouette box", () => {
+  it("maps every element to a vendored SVG icon asset", () => {
     for (const name of GLYPH_NAMES) {
-      for (const detail of SHAPE_DETAILS[name]) {
-        const values =
-          detail.kind === "polyline"
-            ? detail.points.flat()
-            : detail.kind === "rect"
-              ? [detail.x, detail.y, detail.x + detail.w, detail.y + detail.h]
-              : [detail.cx - detail.rx, detail.cx + detail.rx, detail.cy - detail.ry, detail.cy + detail.ry];
-        for (const value of values) {
-          expect(Number.isFinite(value)).toBe(true);
-          expect(Math.abs(value)).toBeLessThan(0.6);
-        }
-      }
+      expect(ICON_ASSETS[name]).toMatch(/^\/icons\/field\/[a-z-]+\.svg$/);
     }
+    expect(new Set(Object.values(ICON_ASSETS)).size).toBe(GLYPH_NAMES.length);
   });
 });
