@@ -73,12 +73,14 @@ and, by extension, the printed CV.
 Public pages share one container width (`--shell-max`, 92rem) and are laid out as a bento system:
 a 12-column hero (identity, portrait, current roles, stats ribbon, technology marquee), sticky
 3-column section rails beside 9-column content, a scroll-pinned featured-case-study rail, and dense
-multi-column grids. A single inert canvas paints eight morphing industry silhouettes behind every
-page — database, document, monitor, phone, cloud, shield, chip, code — continuously drifting,
-leaning toward the cursor and rippling on click, and static under reduced motion. Whenever a shape
-settles, its coloured icon resolves inside the silhouette (database bands, page text, a screen, a
-shield tick, chip core, code chevrons), holds while the shape rests, and fades as the next morph
-starts.
+multi-column grids. A single inert canvas paints eight morphing industry outlines behind every
+page — database, document, monitor, phone, cloud, shield, chip, code — with no fill colour,
+continuously drifting, leaning toward the cursor and rippling on click, and static under reduced
+motion. Whenever a shape settles, that element's real Lucide SVG (vendored under
+`public/icons/field`) resolves in place, gradient-tinted, holds while the shape rests, and fades as
+the next morph starts. Every section sits on a frosted `.glass-section` surface over a veiled field,
+so content always reads above the animation, and Android download links resolve the newest APK from
+each app's OTA manifest.
 
 Project galleries are slideshows: autoplay every five seconds, paused hover/focus on the stage and
 stopped by any manual navigation, with a thumbnail strip and keyboard/touch/swipe controls. Any
@@ -162,11 +164,16 @@ docs/                the guides below
 - **Bento layout + living background** — the public site now uses a 12-column bento hero, sticky
   3-column section rails, a measured scroll-pinned projects rail, a collapsed technology filter and
   a compact type scale scoped to `.site` (admin keeps the original scale). A canvas behind every
-  page paints eight morphing industry silhouettes which react to the pointer and clicks; each
-  settled silhouette resolves into a coloured, recognisable icon and fades as its next morph
-  starts. The maths is unit-tested and the layer is inert and static under reduced motion. The
-  production portrait appears once per page, in the hero. Full detail:
-  [`docs/INTERFACE.md`](docs/INTERFACE.md).
+  page paints eight morphing industry outlines which react to the pointer and clicks; each settled
+  outline resolves into its real, gradient-tinted Lucide SVG and fades as the next morph starts.
+  Every public section is frosted (`.glass-section`) behind a field veil, and the dark surface and
+  text tokens were raised so copy always wins. The maths is unit-tested and the layer is inert and
+  static under reduced motion. The production portrait appears once per page, in the hero. Full
+  detail: [`docs/INTERFACE.md`](docs/INTERFACE.md).
+- **Dynamic mobile APK links** — Android app links whose slug maps to a rocket-launcher manifest
+  (`portfolio-android`, `studio-android`) resolve the latest split APK server-side with a five
+  minute revalidation and show its version in the download label. The admin-managed `href` remains
+  the fallback when GitHub is unreachable, so `/admin/app-links` keeps working unchanged.
 - **Admin saves through the proxy** — nginx now forwards `Host`/`X-Forwarded-Host` as `$http_host`
   (port included) and `next.config.ts` names the public origins in
   `experimental.serverActions.allowedOrigins`. Without both, every Server Action behind nginx or the

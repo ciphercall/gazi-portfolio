@@ -129,16 +129,24 @@ rotation. Each one holds a silhouette for 11 s, then morphs into the next over
 `src/lib/background/field.ts`; `field.test.ts` covers the ring bounds, morph
 endpoints, pointer falloff and drift determinism.
 
-**Icon reveal.** While a shape rests it becomes the element's icon:
-`glyph-shapes.ts` exports `SHAPE_DETAILS` (database bands, page text lines, a
-screen rect, a shield tick, a chip core, code chevrons) transformed into the
-same normalised space as the ring, plus `ICON_TONES` accent pairs. The renderer
-fills the settled ring with a two-accent gradient (`0.42` → `0.32` alpha), adds
-a bold outline and white detail strokes. `iconAlpha()` in `field.ts` keeps the
-icon at 1 through the hold, fades it to 0 in the first 18 % of a morph, and
-brings the destination icon back over the last 28 %. Details are drawn rigidly
-inside the icon; the liquid silhouette continues behind. Covered by
-`field.test.ts` (alpha boundaries, 1→0→1 cycle, detail bounds).
+**Icon reveal.** When a shape settles, the renderer draws that element's real
+downloaded icon — the Lucide SVGs in `public/icons/field` (`database`,
+`file-text`, `monitor`, `smartphone`, `cloud`, `shield`, `cpu`, `code-xml`;
+ISC, see the LICENSE there). Each file is loaded once, rasterised at 256 px into
+an offscreen canvas and gradient-tinted with the element's `ICON_TONES` pair, so
+the actual stroke artwork is what the visitor sees. `iconAlpha()` in `field.ts`
+keeps the icon at 1 through the hold, fades it to 0 in the first 18 % of a morph,
+and brings the destination icon back over the last 28 %. The morph silhouette
+itself is outline-only: no fill colour is ever painted. Covered by
+`field.test.ts` (alpha boundaries, 1→0→1 cycle, one asset per motif).
+
+**Content surfaces.** Every public band is wrapped by `Section` in a
+`.glass-section` surface (blurred, bordered, canvas-tinted), and `.field-veil`
+sits between the canvas and the page at 42 % canvas opacity. Dark
+`--c-panel`/`--c-panel-strong` are 10 %/15 % white and `--c-muted`/`--c-faint`
+were raised to `#a9b7c9`/`#8595a9`, so body copy, pills and metadata outrank the
+animation even before a section's frost is drawn. Under reduced motion the field
+is static but the same frost and contrast remain.
 
 **Interaction.** The pointer is eased into the field; glyphs within ~34 % of the
 shortest viewport side are pulled toward it and light up. A click adds a ripple
@@ -199,6 +207,19 @@ stats, `text-ink/85` in the image fallback monogram, the footer summary in
 
 Dark mode tokens and its look are unchanged.
 
+## Apps download links
+
+`src/lib/app-releases.ts` maps an app-link slug to its rocket-launcher OTA
+manifest (`portfolio-android` → `ota/gazi-portfolio`, `studio-android` →
+`ota/studio-app`). `getAppLinks()` resolves Android entries on the server with
+`fetch(..., { next: { revalidate: 300 } })`, copies the newest `apks` URL
+(preferring arm64, then armeabi-v7a) over the stored `href`, and attaches the
+published `versionName`/`versionCode`, which the card renders as
+`Download APK · v0.3.6 (109)`. The admin-managed `href` remains the fallback
+when the manifest cannot be read, so `/admin/app-links` needs no extra field and
+keeps full control. `pickLatestApk()` is unit-tested in
+`src/lib/app-releases.test.ts`.
+
 ---
 
 ## Verification used for this pass
@@ -212,8 +233,9 @@ cd gazi-portfolio\deploy
 docker compose --env-file .env exec -T app sh -c "npm run typecheck && npm run lint && npm run test"
 ```
 
-The suite is now four files / 45 tests: timeline, formatting, ATS PDF, and the
-background field maths (including icon-alpha timing and detail bounds).
+The suite is now five files / 49 tests: timeline, formatting, ATS PDF, the
+background field maths (including icon-alpha timing and one asset per motif),
+and the OTA-manifest release parser.
 
 Browser checks at `http://127.0.0.1:8023` (`localhost` can resolve to a local
 gatekeeper listener on `::8023`): every public route at 1440 and 1920 with no
@@ -222,5 +244,7 @@ touch swipe; lightbox at 2× with pan and Escape focus return; light-mode contra
 on canvas and glass; admin gallery reorder/alt/caption round-trip reflected in the
 public slideshow; the living canvas animates (two pixel samples differ), reacts to
 pointer movement and clicks, and is static under reduced motion. Each settled glyph
-shows its coloured icon during the hold (checked in both themes at 1440), and the
-portrait appears exactly once on `/`.
+shows the real Lucide icon during the hold (checked in both themes at 1440), the
+frosted sections keep copy readable over the field, the portrait appears exactly
+once on `/`, and the Android download links resolve to the newest published
+build with its version in the label.

@@ -312,6 +312,21 @@ new icon-reveal assertions) passed inside the `app` container. Browser checks at
 `127.0.0.1:8023` confirmed one portrait, icons in both themes, pointer/ripple
 interaction and the static reduced-motion frame. Stack left running for review.
 
+### Real icons, content-first field, dynamic APK links - deployed 2026-11-25 (`e51bad9`)
+
+Pushed to `main`; GitHub Actions rebuilt and deployed the image. Verified live
+with a cache-busted request (Cloudflare caches the HTML briefly):
+
+- `/` and `/api/health` return 200; the HTML carries `living-canvas` and
+  `glass-section`; exactly one portrait image is rendered.
+- The apps cards and footer links resolve their Android downloads from the OTA
+  manifests and read `Download APK · v0.3.6 (109)` after the 0.3.6 publish; the
+  admin-managed `href` remains the offline fallback, so `/admin/app-links` is
+  unchanged.
+- Local Docker verification before the push: `tsc`, ESLint and 49/49 tests
+  (including the new release parser). The stack was left running for review.
+- No migration; the admin gallery contract is untouched.
+
 ### Scheduled LinkedIn posts while the stack sleeps
 
 The gatekeeper stops the whole compose stack â€” scheduler included â€” after five hours of
